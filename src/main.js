@@ -112,7 +112,7 @@ let path = to.matched[to.matched.length - 1].path;
 if (notAuthority.indexOf(path) === -1) {
     store.dispatch("route_change", to.matched);
     // 获取权限
-    	store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
+//  	store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
     	next()
 //  permissionReady()
 //    .then(() => {

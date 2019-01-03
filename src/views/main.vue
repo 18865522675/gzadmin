@@ -99,8 +99,7 @@ export default {
   computed: mapState(["crumbs", "routesArr", "userInfo"]),
   components: {},
   mounted() {
-  	console.log(JSON.parse(this.userInfo));
-  	this.user=JSON.parse(this.userInfo)
+//	this.user=JSON.parse(this.userInfo)
   	this.routesList=this.$router.options.routes[3].children.slice(1);
   },
   methods: {

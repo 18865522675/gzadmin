@@ -77,7 +77,7 @@
 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 					添加
 				</div>
-				 <download url="student/before/downloadMould" class="marL10" />
+				 <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
   		</div>
   		<div class="pageCon">
   			 <el-table

@@ -335,12 +335,12 @@ export default {
       this.pageNum = val;
       this.get_ajax();
     },
-    getStudentList(){
+    getKindList(){
     	this.$api.message.getNoticeKindsList().then((res)=>{
     		this.kindList=res.data.pageList
     	})
     },
-    getStationsList(){
+    getStationList(){
     	this.$api.message.getNoticeStationsList().then((res)=>{
     		this.stationList=res.data.pageList
     	})

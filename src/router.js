@@ -16,6 +16,7 @@ import router_systemManagement from "./routers/router_systemManagement"; //系�
 import router_message from "./routers/router_message"; //公告邮件
 import router_payment from "./routers/router_payment"; //缴费管理
 import router_orderPay from "./routers/router_orderPay"; //订单缴费
+import router_teachManage from "./routers/router_teachManage"; //订单缴费
 
 Vue.use(Router);
 
@@ -64,9 +65,10 @@ export default new Router({
         router_studentManagement, //学生管理
 //      router_studyManage, //学习管理
         router_orderPay, //订单缴费
-        router_payment, //缴费管理
+//      router_payment, //缴费管理
         router_message, //公告邮件
-        router_systemManagement //系统管理
+        router_systemManagement, //系统管理
+        router_teachManage
       ]
     }
   ]
