@@ -26,17 +26,28 @@ const router_module = {
               "../views/studentManagement/studentPre.vue"
             ], resolve)
         },
-        {
-          path: "/studentManagement/studentInformation_look/:id",
-          meta: {
-            title: "学习笔记，学习作业，测评记录",
-            show: false
-          },
-          component: resolve =>
-            require([
-              "../views/studentManagement/studentInformation_look.vue"
-            ], resolve)
-        }
+          {
+              path: "/studentManagement/studentDetailPre/:studentId/:studentName",
+              meta: {
+                  title: "学生-查看",
+                  show: false
+              },
+              component: resolve =>
+                  require([
+                      "../views/studentManagement/studentDetailPre.vue"
+                  ], resolve)
+          }
+        // {
+        //   path: "/studentManagement/studentInformation_look/:id",
+        //   meta: {
+        //     title: "学习笔记，学习作业，测评记录",
+        //     show: false
+        //   },
+        //   component: resolve =>
+        //     require([
+        //       "../views/studentManagement/studentInformation_look.vue"
+        //     ], resolve)
+        // }
       ]
     },
     {

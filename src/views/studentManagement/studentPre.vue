@@ -125,19 +125,16 @@
 		          width="200">
 		        </el-table-column>
 		        <el-table-column
-		          prop="publishTime"
-		          label="科类"
-		          :formatter="$fun.table.time">
-		        </el-table-column>
-		        <el-table-column
-		          prop="publishTime"
-		          label="专业"
-		          :formatter="$fun.table.time">
-		        </el-table-column>
-		        <el-table-column
 		          prop="disciplineName"
-		          label="函授站"
-		          :formatter="$fun.table.time">
+		          label="科类">
+		        </el-table-column>
+		        <el-table-column
+		          prop="majorName"
+		          label="专业">
+		        </el-table-column>
+		        <el-table-column
+		          prop="stationName"
+		          label="函授站">
 		        </el-table-column>
 		        <el-table-column
 		          label="状态"
@@ -148,10 +145,11 @@
 		        </el-table-column>
 		        <el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="350">
 		          <template slot-scope="scope">
 					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveOut(scope.row.id)">转出</el-button>
 		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>
+					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/student/before" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
@@ -207,10 +205,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="报考年份" prop="enrollYear">
-          <el-input v-model.trim="form.enrollYear" placeholder="请输入证件号码"></el-input>
+          <el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-radio-group v-model.trim="form.ableStatus">
+          <el-radio-group v-model="form.ableStatus">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="0">禁用</el-radio>
           </el-radio-group>
@@ -291,7 +289,6 @@ export default {
         level:"",
         disciplineId:"",
         enrollYear:"",
-        ableStatus:1,
       },
       tableData: [],
       //分页——start
@@ -314,10 +311,11 @@ export default {
       	level:"",
       	enrollYear:"",
       	remark:"",
+		  ableStatus:1,
       },
       rulesForm: {
         name: [
-          { required: true, message: "请输入名称", trigger: "blur" },
+          { required: true, message: "请输入学生姓名", trigger: "blur" },
           {
             min: 1,
             max: 20,
@@ -325,12 +323,24 @@ export default {
             trigger: "change"
           }
         ],
-        kindId: [
-          { required: true, message: "请选择类别", trigger: "blur" },
+          cardType: [
+          { required: true, message: "请选择证件类型", trigger: "blur" },
         ],
-        content: [
-          { required: true, message: "请输入内容", trigger: "blur" },
+          cardNo: [
+          { required: true, message: "请输入证件号码", trigger: "blur" },
         ],
+          disciplineId: [
+              { required: true, message: "请选择科类", trigger: "blur" },
+          ],
+          level: [
+              { required: true, message: "请选择层次", trigger: "blur" },
+          ],
+          majorId: [
+              { required: true, message: "请选择专业", trigger: "blur" },
+          ],
+          enrollYear: [
+              { required: true, message: "请输入年份", trigger: "blur" },
+          ]
      },
 
 
@@ -391,7 +401,8 @@ export default {
                         studentId:this.actionId,
 						...this.saveOutForm
 					}).then((res)=>{
-						this.$message.success("转出成功")
+						this.$message.success("转出成功");
+						this.ready_ajax()
 					}).catch((e)=>{
                         this.$message.success("转出失败")
 					})
@@ -408,7 +419,8 @@ export default {
                       studentId:this.actionId,
 					  ...this.saveAppendForm
                   }).then((res)=>{
-                      this.$message.success("补录成功")
+                      this.$message.success("补录成功");
+                      this.ready_ajax()
                   }).catch((e)=>{
                       this.$message.success("失败")
 				  })
@@ -476,6 +488,7 @@ export default {
       	level:"",
       	enrollYear:"",
       	remark:"",
+		  ableStatus:1
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
