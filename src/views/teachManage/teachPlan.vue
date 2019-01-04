@@ -50,7 +50,7 @@
 				添加
 			</div>
 			<download url="teaching/plan/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1"  />
-			<upload class="mr10" url="/order/payment/upload"  :ok="get_ajax" v-if="extra.indexOf('数据导出')>-1" ></upload>
+			<upload class="mr10" url="/order/payment/upload"  :ok="get_ajax" v-if="extra.indexOf('批量导入')>-1" ></upload>
   		</div>
   		<div class="pageCon">
   			 <el-table
@@ -474,12 +474,12 @@ export default {
     },
     get_TeachPlanDisciplineList(){
     	this.$api.teachManage.get_TeachPlanDisciplineList().then((res)=>{
-    		this.disciplineList=res.data.pageList
+    		this.disciplineList=res.data
     	})
     },
     get_TeachPlanMajorList(){
     	this.$api.teachManage.get_TeachPlanMajorList().then((res)=>{
-    		this.majorList=res.data.pageList
+    		this.majorList=res.data
     	})
     }
     //分页end

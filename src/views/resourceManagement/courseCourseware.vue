@@ -286,7 +286,7 @@
           label="讲师简介">
         </el-table-column>
         <el-table-column
-          prop="playUrl"
+          prop="url"
           :show-overflow-tooltip="true"
           label="播放地址">
         </el-table-column>
@@ -299,12 +299,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="duration"
+          prop="times"
           label="时长（秒）"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="sort"
+          prop="sorting"
           label="顺序号">
         </el-table-column>
         <el-table-column
@@ -333,10 +333,12 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="200">
           <template slot-scope="scope">
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+            <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
             <baseDelBtn delUrl="resource/ware" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,true)" v-if="scope.row.ableStatus==0">启用</el-button>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,false)" v-else>禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -570,6 +572,28 @@ export default {
   },
   methods: {
     //课程列表
+      ableAction(id,type){
+          if(type){
+              this.$api.resourceManagement.courseCourseware_enable({
+                  wareId:id
+              }).then((res)=>{
+                  this.$message.success("启用成功");
+                  this.ready_ajax()
+              }).catch(()=>{
+                  this.$message.error("启用失败")
+              })
+              return
+          }
+
+          this.$api.resourceManagement.courseCourseware_disable({
+              wareId:id
+          }).then((res)=>{
+              this.$message.success("禁用成功");
+              this.ready_ajax()
+          }).catch(()=>{
+              this.$message.error("禁用失败")
+          })
+      },
     get_listCourse() {
       this.$api.resourceManagement
         .courseCourseware_get_listCourse()
@@ -655,10 +679,10 @@ export default {
 //      version: row.version, //课件版本号
         teacher: row.teacher, //课程讲师
         teacherSummary: row.teacherSummary, //讲师简介
-        url: row.playUrl, //播放地址
-        logo: row.coverUrl, //封面地址
-        times: row.duration, //时长
-        sorting: row.sort, //顺序号
+        url: row.url, //播放地址
+        logo: row.logo, //封面地址
+        times: row.times, //时长
+        sorting: row.sorting, //顺序号
         remark: row.remark, //备注
         ableStatus: row.ableStatus //启用状态(1启用0禁用)
       };

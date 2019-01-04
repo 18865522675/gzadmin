@@ -4,7 +4,7 @@
   		<div class="pageHead flexItem">
   			<span class='label'>类别</span>
   			<div class="marL10">
-				 <el-select v-model="tableForm.courseId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+				 <el-select v-model="tableForm.kindId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 		              <el-option label="所有" value=""/>
 		              <el-option
 		                v-for="(item,index) in kindList"
@@ -15,7 +15,7 @@
 		 	</div>
 		 	<span class='label marL10'>函授站</span>
 		 	<div class="marL10">
-				 <el-select v-model="tableForm.courseId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+				 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 		              <el-option label="所有" value=""/>
 		              <el-option
 		                v-for="(item, index) in stationList"
@@ -26,7 +26,7 @@
 		 	</div>
 		 	<div class="marL10">
  					<!--searchInp-->
-				<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入内容">
+				<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入公告标题">
 				 	<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
 				</el-input>
  			</div>
@@ -55,20 +55,21 @@
 		          width="60">
 		        </el-table-column>
 		        <el-table-column
-		          prop="name"
+		          prop="title"
 		          label="标题">
 		        </el-table-column>
 		        <el-table-column
-		          prop="type"
+		          prop="kindName"
 		          label="类别">
 		        </el-table-column>
 		         <el-table-column
 		          prop="content"
 		          width="320"
+				  :show-overflow-tooltip="true"
 		          label="内容">
 		        </el-table-column>
 		         <el-table-column
-		          prop="publisher"
+		          prop="sendName"
 		          width="120"
 		          label="发布者">
 		        </el-table-column>
@@ -92,9 +93,9 @@
 		        </el-table-column>
 		        <el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="200">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="extra.indexOf('发布')>-1">发布</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1" >发布</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/notice/notice" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
@@ -158,7 +159,9 @@ export default {
       extra: [],
       tableLoading: true,
       tableForm: {
-        name: ""
+		  name:"",
+		  kindId:"",
+		  stationId:""
       },
       tableData: [],
       //分页——start
@@ -169,10 +172,11 @@ export default {
       dialogAddVisible: false,
       dialogType: 0,
       form: {
-        name: "", //课件名称
-        code: "", //课件编码
-        remark: "", //备注
-        ableStatus: 1 //启用状态(1启用0禁用)
+          kindId:"",
+          ableStatus:1,
+          remark:"",
+          content:"",
+          title:""
       },
       rulesForm: {
         name: [
@@ -231,12 +235,16 @@ export default {
     	this.$alert('确认发布此公告？', '发布', {
           confirmButtonText: '确定',
           callback: action => {
-							this.$api.message.notice_publish(id).then((res)=>{
-								this.$message.success("发布成功");
-								this.get_ajax()
-							}).catch((e)=>{
-								this.$message.error("发布失败")
-							})
+              if(action=='confirm'){
+                  this.$api.message.notice_publish(id).then((res)=>{
+                      this.$message.success("发布成功");
+                      this.get_ajax()
+                  }).catch((e)=>{
+                      this.$message.error("发布失败")
+                  })
+			  }else{
+                  this.$message.info("已取消发布")
+			  }
           }
         });
     },
@@ -245,7 +253,8 @@ export default {
       this.$api.message
         .getNoticeList({
           pageNum: this.pageNum,
-          pageSize: this.pageSize,	
+          pageSize: this.pageSize,
+			...this.tableForm
         })
         .then(res => {
           this.extra = res.data.extra;
@@ -266,10 +275,11 @@ export default {
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
-        name: "", //课件名称
-        code: "", //课件编码
-        remark: "", //备注
-        ableStatus: 1 //启用状态(1启用0禁用)
+          kindId:"",
+          ableStatus:1,
+          remark:"",
+          content:"",
+          title:""
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -281,6 +291,7 @@ export default {
       this.dialogAddVisible = true;
       this.form = {
         id: row.id,
+		  title:row.title,
         kindId: row.kindId, //课件名称
         content: row.content, //课件编码
         remark: row.remark, //备注
@@ -337,12 +348,12 @@ export default {
     },
     getKindList(){
     	this.$api.message.getNoticeKindsList().then((res)=>{
-    		this.kindList=res.data.pageList
+    		this.kindList=res.data
     	})
     },
     getStationList(){
     	this.$api.message.getNoticeStationsList().then((res)=>{
-    		this.stationList=res.data.pageList
+    		this.stationList=res.data
     	})
     }
     //分页end

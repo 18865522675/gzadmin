@@ -71,27 +71,22 @@
 		            {{scope.row.readed==1?"已读":"未读"}}
 		          </template>
 		        </el-table-column>
-		        <el-table-column
-		          prop="publisher"
-		          width="120"
-		          label="收件人是否已删">
-		        </el-table-column>
-		        <el-table-column
-		          prop="updateTime"
-		          label="更新时间"
-		          width="200"
-		          :formatter="$fun.table.time">
-		        </el-table-column>
-		        <!--<el-table-column
-		          prop="publisher"
-		          width="120"
-		          label="备注">
-		        </el-table-column>-->
-		        <el-table-column
-		          prop="publisher"
-		          width="120"
-		          label="发布状态">
-		        </el-table-column>
+		        <!--<el-table-column-->
+		          <!--prop="publisher"-->
+		          <!--width="120"-->
+		          <!--label="收件人是否已删">-->
+		        <!--</el-table-column>-->
+		        <!--<el-table-column-->
+		          <!--prop="updateTime"-->
+		          <!--label="更新时间"-->
+		          <!--width="200"-->
+		          <!--:formatter="$fun.table.time">-->
+		        <!--</el-table-column>-->
+		        <!--<el-table-column-->
+		          <!--prop="publisher"-->
+		          <!--width="120"-->
+		          <!--label="发布状态">-->
+		        <!--</el-table-column>-->
 		        <!--<el-table-column
 		          label="状态"
 		          width="80">
@@ -103,7 +98,7 @@
 		          fixed="right"
 		          label="操作">
 		          <template slot-scope="scope">
-		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+		            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
 		            <baseDelBtn delUrl="/notice/msg" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
@@ -131,9 +126,9 @@
         <el-form-item label="标题" prop="title">
           <el-input v-model.trim="form.title" placeholder="请输入标题（不超过20个字）"></el-input>
         </el-form-item>
-         <el-form-item label="收件人" prop="kindId">
+         <el-form-item label="收件人" prop="receivedIds">
           <el-select  style="width:100%" v-model="form.receivedIds" multiple placeholder="请选择收件人">
-          	<el-option v-for="(item,index) in kindList" :key="index" :value="item.id" :label="item.name">
+          	<el-option v-for="(item,index) in kindList" :key="index" :value="item.id" :label="item.userName">
           		
           	</el-option>
           </el-select>
@@ -160,7 +155,8 @@ export default {
       extra: [],
       tableLoading: true,
       tableForm: {
-        name: ""
+        name: "",
+		  stationId:""
       },
       tableData: [],
       //分页——start
@@ -187,8 +183,8 @@ export default {
             trigger: "change"
           }
         ],
-        kindId: [
-          { required: true, message: "请选择类别", trigger: "blur" },
+		  receivedIds: [
+          { required: true, message: "请选择收件人", trigger: "blur" },
         ],
         content: [
           { required: true, message: "请输入内容", trigger: "blur" },
@@ -284,7 +280,7 @@ export default {
         id: row.id,
         title: row.title, //课件名称
         content: row.content, //课件编码
-        receivedIds:row.receivedIds.split(",")
+        receivedIds:row.receivedIds.join(",")
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -293,8 +289,9 @@ export default {
     //添加编辑数据
     add_ajax() {
       if (this.dialogType === 0) {
+          this.form.receivedIds=this.form.receivedIds.join(",")
         this.$api.message
-          .notice_add(this.form)
+          .stationMsg_add(this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -337,12 +334,12 @@ export default {
     },
     getStudentList(){
     	this.$api.message.getStudentList().then((res)=>{
-    		this.kindList=res.data.pageList
+    		this.kindList=res.data
     	})
     },
       getZhanneixinStationList(){
     	this.$api.message.getZhanneixinStationList().then((res)=>{
-    		this.stationList=res.data.pageList
+    		this.stationList=res.data
     	})
     }
     //分页end

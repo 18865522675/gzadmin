@@ -18,6 +18,44 @@ export default {
   courseCourseware_disable: params =>
     $.put("resource/ware/disable", params, { lock: true }),
 
+
+    // 习题启用禁用
+    courseCourseExercise_enable: params =>
+        $.put("/resource/exercise/enable", params, { lock: true }),
+
+    courseCourseExercise_disable: params =>
+        $.put("/resource/exercise/disable", params, { lock: true }),
+
+
+    /*
+课程图书
+ */
+    courseCourseBook_get_listCourse: params =>
+        $.get("resource/book/listCourse", params),
+    courseCourseBook_add: params =>
+        $.post("resource/book", params, { lock: true }),
+    courseCourseBook_edit: params =>
+        $.put("resource/book/" + params.id, params, { lock: true }),
+    courseCourseBook_get_list: params => $.get("resource/book/list", params),
+
+    courseCourseBook_enable: params =>
+        $.put("/resource/book/enable", params, { lock: true }),
+
+    courseCourseBook_disable: params =>
+        $.put("/resource/book/disable", params, { lock: true }),
+
+    // courseCourseware_get_listVersion: params =>
+    //     $.get("resource/ware/listVersion", params),
+    // courseCourseware_get_list: params => $.get("resource/ware/list", params),
+    // courseCourseware_add: params =>
+    //     $.post("resource/ware", params, { lock: true }),
+    // courseCourseware_edit: params =>
+    //     $.put("resource/ware/" + params.id, params, { lock: true }),
+    // courseCourseware_enable: params =>
+    //     $.put("resource/ware/enable", params, { lock: true }),
+    // courseCourseware_disable: params =>
+    //     $.put("resource/ware/disable", params, { lock: true }),
+
   /*
   课程习题
    */

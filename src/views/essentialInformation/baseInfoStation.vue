@@ -67,9 +67,9 @@
 			  					<div class="baseInfoLine flexItem" style="justify-content: flex-start;">
 			  						<span>操作</span>
 			  						<div style="margin-left: 20px;">
-									     <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="goEdit(item,index)" v-if="!item.isEdit" >编辑</el-button>
-									      <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="sureEdit(item,index)" v-else>保存</el-button>
-					           	 <baseDelBtn delUrl="baseInfo/major" :delId="item.id" :delOk="ready_ajax" />
+									     <!--<el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="goEdit(item,index)" v-if="!item.isEdit" >编辑</el-button>-->
+									      <!--<el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="sureEdit(item,index)" v-else>保存</el-button>-->
+					           	 <baseDelBtn delUrl="/baseinfo/station" :delId="item.id" :delOk="ready_ajax" />
 			  						</div>
 			  					</div>
 			  				</div>
@@ -221,7 +221,10 @@ export default {
           	remark:this.nowItem.remark,
           	ableStatus:this.nowItem.ableStatus
           }).then((res)=>{
-          	
+              this.ready_ajax();
+              this.$message.success("编辑成功")
+          }).catch((e)=>{
+              this.$message.error("编辑失败")
           })
 //      } else {
 //        console.log("error submit!!");
@@ -266,7 +269,7 @@ export default {
           });
       } else {
         this.$api.essentialInformation
-          .batch_edit(this.form)
+          .batch_edit(this.form.id,this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -296,7 +299,7 @@ export default {
           })
           console.log(this.List);
           //分页
-          this.total = res.data.total;
+          this.total = +res.data.total;
         })
         .catch(res => {
           this.loading = false;
@@ -327,11 +330,11 @@ export default {
       });
     },
     handleSizeChange(val) {
-      this.length = val;
+      this.pageSize = val;
       this.get_ajax();
     },
     handleCurrentChange(val) {
-      this.start = val;
+      this.pageNum = val;
       this.get_ajax();
     },
      dialogAdd_show() {

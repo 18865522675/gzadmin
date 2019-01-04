@@ -5,7 +5,7 @@ export default {
   //教学计划
   teachPlan_add: params => $.post("/teaching/plan", params, { lock: true }),
   get_TeachPlanDisciplineList: params => $.get("/teaching/plan/listDisciplines", params),
-  get_TeachPlanMajorList: params => $.get("/teaching/plan/listDisciplines", params),
+  get_TeachPlanMajorList: params => $.get("/teaching/plan/listMajors", params),
   get_TeachPlanList: params => $.get("/teaching/plan/list", params),
   teachPlan_edit: (id,params) => $.put("/teaching/plan/"+id, params, { lock: true }),
   

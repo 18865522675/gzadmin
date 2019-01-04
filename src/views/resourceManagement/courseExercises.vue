@@ -253,11 +253,13 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="200">
           <template slot-scope="scope">
             <exercisesInfo :id="scope.row.id" :courseName="scope.row.courseName" :type="'resourceManagement_courseExercises'" v-if="extra.indexOf('详情')>-1"/>
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small ml10" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+            <el-button type="text" size="small" class="kf-btn kf-btn-table small ml10 kf-orange-btn" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
             <baseDelBtn delUrl="resource/exercise" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,true)" v-if="scope.row.ableStatus==0">启用</el-button>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,false)" v-else>禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -474,6 +476,29 @@ export default {
     this.get_ajax();
   },
   methods: {
+      ableAction(id,type){
+          if(type){
+              console.log(id)
+              this.$api.resourceManagement.courseCourseExercise_enable({
+                  exerciseId:id
+              }).then((res)=>{
+                  this.$message.success("启用成功");
+                  this.ready_ajax()
+              }).catch(()=>{
+                  this.$message.error("启用失败")
+              })
+              return
+          }
+
+          this.$api.resourceManagement.courseCourseExercise_disable({
+              exerciseId:id
+          }).then((res)=>{
+              this.$message.success("禁用成功");
+              this.ready_ajax()
+          }).catch(()=>{
+              this.$message.error("禁用失败")
+          })
+      },
     //课程列表
     get_listCourse() {
       this.$api.resourceManagement

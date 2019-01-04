@@ -237,6 +237,9 @@
         <el-form-item label="院校编码" prop="code">
           <el-input v-model.trim="form.code" placeholder="请输入院校编码（不超过8个字）"></el-input>
         </el-form-item>
+		  <el-form-item label="域名前缀" prop="domain">
+			  <el-input v-model.trim="form.domain" placeholder="请输入域名前缀"></el-input>
+		  </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">
             <el-radio :label="1">启用</el-radio>
@@ -273,6 +276,7 @@ export default {
       dialogAddVisible: false,
       dialogType: 0,
       form: {
+          domain:"",  //域名前缀
         name: "", //课件名称
         code: "", //课件编码
         remark: "", //备注
@@ -297,6 +301,9 @@ export default {
             trigger: "change"
           }
         ],
+          domain: [
+              { required: true, message: "请输入域名前缀", trigger: "blur" },
+          ],
         remark: [
           {
             min: 1,
@@ -351,6 +358,7 @@ export default {
         name: "", //课件名称
         code: "", //课件编码
         remark: "", //备注
+          domain:"",
         ableStatus: 1 //启用状态(1启用0禁用)
       };
       this.$nextTick(() => {
@@ -363,6 +371,7 @@ export default {
       this.dialogAddVisible = true;
       this.form = {
         id: row.id,
+		  domain:row.domain,
         name: row.name, //课件名称
         code: row.code, //课件编码
         remark: row.remark, //备注

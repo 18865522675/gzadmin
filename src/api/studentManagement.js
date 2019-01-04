@@ -14,8 +14,13 @@ export default {
   //考钱学生添加
 	studentPre_add: params =>
 	$.post("/student/before", params, { lock: true }),
-	
-	//	编辑靠钱学生
+	//	编辑考前学生
   studentPre_edit: (id,params) =>
     $.put("/notice/kind" + params.id, params, { lock: true }),
+    //考钱学生补录
+    studentPre_saveAppend: params =>
+        $.post("/student/before/saveAppend", params, { lock: true }),
+    //考钱学生转出
+    studentPre_saveOut: params =>
+        $.post("/student/before/saveOut", params, { lock: true }),
 };

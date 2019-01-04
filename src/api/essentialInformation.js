@@ -9,7 +9,7 @@ export default {
   essentialInformation_get_listSimpleMajor: params =>
     $.get("basicinfo/major/listSimpleMajor", params, { lock: true }),
   essentialInformation_edit: (id,params) =>
-    $.put("baseInfo/major" + params.id, params, { lock: true }),
+    $.put("baseInfo/major/" + id, params, { lock: true }),
   essentialInformation_add: params => $.post("baseInfo/major", params),
   essentialInformation_get_listCourse: params =>
     $.get("basicinfo/major/listCourse", params),
@@ -40,7 +40,7 @@ export default {
   subjectManagement_add: params =>
     $.post("baseInfo/discipline", params, { lock: true }),
   subjectManagement_edit: (id,params) =>
-    $.put("baseInfo/discipline" + params.id, params, { lock: true }),
+    $.put("baseInfo/discipline/" + id, params, { lock: true }),
 
   /*
   站点管理

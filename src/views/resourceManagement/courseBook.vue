@@ -277,42 +277,25 @@
           label="所属课程">
         </el-table-column>
         <el-table-column
-          prop="teacher"
-          label="讲师">
-        </el-table-column>
-        <el-table-column
-          prop="teacherSummary"
+          prop="author"
           label="作者">
         </el-table-column>
+        <!--<el-table-column-->
+          <!--prop="teacherSummary"-->
+          <!--label="类别">-->
+        <!--</el-table-column>-->
         <el-table-column
-          prop="teacherSummary"
-          label="类别">
-        </el-table-column>
-        <el-table-column
-          prop="playUrl"
+          prop="url"
           :show-overflow-tooltip="true"
           label="阅读地址">
         </el-table-column>
         <el-table-column
-          prop="coverUrl"
+          prop="logo"
           label="封面地址"
           width="120">
           <template slot-scope="scope">
             <tableCover :url="scope.row.coverUrl"/>
           </template>
-        </el-table-column>
-        <el-table-column
-          prop="duration"
-          label="时长（秒）"
-          width="100">
-        </el-table-column>
-        <el-table-column
-          prop="sort"
-          label="顺序号">
-        </el-table-column>
-        <el-table-column
-          prop="sort"
-          label="页数">
         </el-table-column>
         <el-table-column
           prop="updateTime"
@@ -325,6 +308,11 @@
           :show-overflow-tooltip="true"
           label="备注">
         </el-table-column>
+           <!--<el-table-column-->
+                   <!--prop="price"-->
+                   <!--:show-overflow-tooltip="true"-->
+                   <!--label="价格">-->
+           <!--</el-table-column>-->
         <el-table-column
           label="预览">
           <template slot-scope="scope">
@@ -340,10 +328,12 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="220">
           <template slot-scope="scope">
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
-            <baseDelBtn delUrl="resource/ware" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
+            <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('更新')>-1">编辑</el-button>
+            <baseDelBtn delUrl="resource/book" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,true)" v-if="scope.row.ableStatus==0">启用</el-button>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,false)" v-else>禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -368,11 +358,11 @@
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-        <el-form-item label="课件名称" prop="name">
-          <el-input v-model.trim="form.name" placeholder="请输入课件名称（不超过50个字）"></el-input>
+        <el-form-item label="图书名称" prop="name">
+          <el-input v-model.trim="form.name" placeholder="请输入图书名称（不超过50个字）"></el-input>
         </el-form-item>
-        <el-form-item label="课件编码" prop="code">
-          <el-input v-model.trim="form.code" placeholder="请输入课件编码（不超过8个字）"></el-input>
+        <el-form-item label="图书编码" prop="code">
+          <el-input v-model.trim="form.code" placeholder="请输入图书编码（不超过8个字）"></el-input>
         </el-form-item>
         <el-form-item label="课程" prop="courseId">
           <el-select v-model.trim="form.courseId" filterable placeholder="请选择课程" class="kf-form-item form-sel" style="width: 100%">
@@ -387,24 +377,21 @@
         <!--<el-form-item label="课件版本" prop="version">
           <el-input v-model.trim="form.version" placeholder="请输入课件版本（不超过8个字）"></el-input>
         </el-form-item>-->
-        <el-form-item label="讲师" prop="teacher">
-          <el-input v-model.trim="form.teacher" placeholder="请输入讲师名称（不超过20个字）"></el-input>
+        <el-form-item label="作者" prop="author">
+          <el-input v-model.trim="form.author" placeholder="请输入作者"></el-input>
         </el-form-item>
-        <el-form-item label="讲师简介" prop="teacherSummary">
-          <el-input v-model.trim="form.teacherSummary" placeholder="请输入讲师简介（不超过50个字）"></el-input>
+        <el-form-item label="简介" prop="intro">
+          <el-input v-model.trim="form.intro" placeholder="请输入简介"></el-input>
         </el-form-item>
-        <el-form-item label="播放地址" prop="url">
-          <el-input v-model.trim="form.url" placeholder="请输入播放地址（不超过255个字）"></el-input>
+        <el-form-item label="地址" prop="url">
+          <el-input v-model.trim="form.url" placeholder="请输入播放地址"></el-input>
         </el-form-item>
         <el-form-item label="封面地址" prop="logo">
           <el-input v-model.trim="form.logo" placeholder="请输入封面地址（不超过255个字）"></el-input>
         </el-form-item>
-        <el-form-item label="时长" prop="times">
-          <el-input v-model.trim="form.times" placeholder="请输入时长（不超过100个字）"></el-input>
-        </el-form-item>
-        <el-form-item label="顺序号" prop="sorting">
-          <el-input v-model.trim="form.sorting" placeholder="请输入顺序号"></el-input>
-        </el-form-item>
+        <!--<el-form-item label="价格" prop="price">-->
+          <!--<el-input v-model.trim="form.price" placeholder="请输入价格"></el-input>-->
+        <!--</el-form-item>-->
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">
             <el-radio :label="1">启用</el-radio>
@@ -434,7 +421,7 @@ export default {
       tableLoading: true,
       tableForm: {
         courseId: "",
-        version: ""
+        // version: ""
       },
       tableData: [],
       //分页——start
@@ -449,18 +436,17 @@ export default {
         code: "", //课件编码
         courseId: "", //课程id
 //      version: "", //课件版本号
-        teacher: "", //课程讲师
-        teacherSummary: "", //讲师简介
+          author: "", //课程讲师
+          intro: "", //讲师简介
         url: "", //播放地址
         logo: "", //封面地址
-        times: "", //时长
-        sorting: "", //顺序号
+          price: "", //时长
         remark: "", //备注
         ableStatus: 1 //启用状态(1启用0禁用)
       },
       rulesForm: {
         name: [
-          { required: true, message: "请输入课件名称", trigger: "change" },
+          { required: true, message: "请输入图书名称", trigger: "change" },
           {
             min: 1,
             max: 50,
@@ -469,7 +455,7 @@ export default {
           }
         ],
         code: [
-          { required: true, message: "请输入课件编码", trigger: "change" },
+          { required: true, message: "请输入图书编码", trigger: "change" },
           {
             min: 1,
             max: 8,
@@ -487,15 +473,10 @@ export default {
 //          trigger: "change"
 //        }
 //      ],
-        teacher: [
-          {
-            min: 1,
-            max: 20,
-            message: "最长 20 个字符",
-            trigger: "change"
-          }
+          author: [
+              { required: true, message: "请输入作者名称", trigger: "change" }
         ],
-        teacherSummary: [
+          intro: [
           {
             min: 1,
             max: 50,
@@ -521,16 +502,10 @@ export default {
             trigger: "change"
           }
         ],
-        times: [
-          { required: true, message: "请输入时长", trigger: "blur" },
-          {
-            min: 1,
-            max: 100,
-            message: "最长 100 个字符",
-            trigger: "change"
-          }
+          price: [
+          { required: true, message: "请输入价格", trigger: "blur" },
         ],
-        sorting: [{ required: true, message: "请输入顺序号", trigger: "blur" }],
+        // sorting: [{ required: true, message: "请输入顺序号", trigger: "blur" }],
         remark: [
           {
             min: 1,
@@ -577,9 +552,32 @@ export default {
   },
   methods: {
     //课程列表
+      ableAction(id,type){
+          if(type){
+              console.log(id)
+              this.$api.resourceManagement.courseCourseBook_enable({
+                  bookId:id
+              }).then((res)=>{
+                  this.$message.success("启用成功");
+                  this.ready_ajax()
+              }).catch(()=>{
+                  this.$message.error("启用失败")
+              })
+              return
+          }
+
+          this.$api.resourceManagement.courseCourseBook_disable({
+              bookId:id
+          }).then((res)=>{
+              this.$message.success("禁用成功");
+              this.ready_ajax()
+          }).catch(()=>{
+              this.$message.error("禁用失败")
+          })
+      },
     get_listCourse() {
       this.$api.resourceManagement
-        .courseCourseware_get_listCourse()
+        .courseCourseBook_get_listCourse()
         .then(res => {
           this.listCourse = res.data;
         });
@@ -599,7 +597,7 @@ export default {
     get_ajax() {
       this.tableLoading = true;
       this.$api.resourceManagement
-        .courseCourseware_get_list({
+        .courseCourseBook_get_list({
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           ...this.tableForm
@@ -622,7 +620,7 @@ export default {
           if (this.tableForm.courseId) {
             this.get_listVersion();
           } else {
-            this.tableForm.version = "";
+            // this.tableForm.version = "";
           }
           break;
       }
@@ -637,12 +635,11 @@ export default {
         code: "", //课件编码
         courseId: "", //课程id
 //      version: "", //课件版本号
-        teacher: "", //课程讲师
-        teacherSummary: "", //讲师简介
+          author: "", //课程讲师
+          intro	: "", //讲师简介
        	url: "", //播放地址
         logo: "", //封面地址
-       	times: "", //时长
-        sorting: "", //顺序号
+          price: "", //顺序号
         remark: "", //备注
         ableStatus: 1 //启用状态(1启用0禁用)
       };
@@ -660,12 +657,11 @@ export default {
         code: row.code, //课件编码
         courseId: row.courseId, //课程id
 //      version: row.version, //课件版本号
-        teacher: row.teacher, //课程讲师
-        teacherSummary: row.teacherSummary, //讲师简介
-        url: row.playUrl, //播放地址
-        logo: row.coverUrl, //封面地址
-        times: row.duration, //时长
-        sorting: row.sort, //顺序号
+          author: row.author, //课程讲师
+          intro	: row.intro	, //讲师简介
+        url: row.url, //播放地址
+        logo: row.logo, //封面地址
+          price: row.price, //顺序号
         remark: row.remark, //备注
         ableStatus: row.ableStatus //启用状态(1启用0禁用)
       };
@@ -677,7 +673,7 @@ export default {
     add_ajax() {
       if (this.dialogType === 0) {
         this.$api.resourceManagement
-          .courseCourseware_add(this.form)
+          .courseCourseBook_add(this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -688,7 +684,7 @@ export default {
           });
       } else {
         this.$api.resourceManagement
-          .courseCourseware_edit(this.form)
+          .courseCourseBook_edit(this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -730,7 +726,7 @@ export default {
       this.$api.resourceManagement
         .courseCourseware_enable({
           courseId: this.tableForm.courseId,
-          version: this.tableForm.version
+          // version: this.tableForm.version
         })
         .then(() => {
           this.$message({
@@ -753,7 +749,7 @@ export default {
       this.$api.resourceManagement
         .courseCourseware_disable({
           courseId: this.tableForm.courseId,
-          version: this.tableForm.version
+          // version: this.tableForm.version
         })
         .then(() => {
           this.$message({

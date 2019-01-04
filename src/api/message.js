@@ -36,4 +36,11 @@ export default {
     getZhanneixinStationList: params => $.get("notice/msg/listStations", params),
     getStudentList: params => $.get("notice/msg/listStudents", params),
 
+    stationMsg_add: params =>
+        $.post("/notice/msg", params, { lock: true }),
+
+    stationMsg_eidt: (id,params) =>
+        $.put("/notice/msg/"+id, params, { lock: true })
+
+
 };

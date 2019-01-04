@@ -483,23 +483,35 @@ export default {
     },
     //显示编辑框
     dialogEdit_show(row) {
-      this.get_listVer(row.id, () => {
+      // this.get_listVer(row.id, () => {
+      //   this.dialogType = 1;
+      //   this.dialogAddVisible = true;
+      //   this.form = {
+      //     id: row.id,
+      //     name: row.name, //课件名称
+      //     code: row.code, //课件编码
+      //     coverUrl: row.coverUrl, //封面地址
+		// 			used:row.used,
+		// 			wareFrom:row.wareFrom,
+      //     remark: row.remark, //备注
+      //     ableStatus: row.ableStatus //启用状态(1启用0禁用)
+      //   };
+      //   this.$nextTick(() => {
+      //     this.$refs["form"].clearValidate();
+      //   });
+      // });
         this.dialogType = 1;
         this.dialogAddVisible = true;
         this.form = {
-          id: row.id,
-          name: row.name, //课件名称
-          code: row.code, //课件编码
-          coverUrl: row.coverUrl, //封面地址
-					used:row.used,
-					wareFrom:row.wareFrom,
-          remark: row.remark, //备注
-          ableStatus: row.ableStatus //启用状态(1启用0禁用)
+            id: row.id,
+            name: row.name, //课件名称
+            code: row.code, //课件编码
+            coverUrl: row.coverUrl, //封面地址
+            used:row.used,
+            wareFrom:row.wareFrom,
+            remark: row.remark, //备注
+            ableStatus: row.ableStatus //启用状态(1启用0禁用)
         };
-        this.$nextTick(() => {
-          this.$refs["form"].clearValidate();
-        });
-      });
     },
     //添加编辑数据
     add_ajax() {

@@ -42,9 +42,9 @@
  				</div>-->
   		</div>
   		
-  		<div class="flexItem pageHead">
+  		<div class="flexItem pageHead" style="flex-wrap: wrap">
 
-			<span class='label marL10'>专业</span>
+			<span class='label marL10' style="word-spacing:1.7em">专 业</span>
 			<div class="marL10">
 				<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 					<el-option label="所有" value=""/>
@@ -77,7 +77,16 @@
 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 					添加
 				</div>
+
+				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveOutDialogVisible=true' >-->
+						<!--转出-->
+				<!--</div>-->
+
+				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
+					<!--补录-->
+				<!--</div>-->
 				 <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
+		      	<upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
   		</div>
   		<div class="pageCon">
   			 <el-table
@@ -141,7 +150,8 @@
 		          fixed="right"
 		          label="操作">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="extra.indexOf('发布')>-1">发布</el-button>
+					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveOut(scope.row.id)">转出</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/student/before" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
@@ -213,6 +223,57 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
+
+
+		<el-dialog
+				title="转出"
+				:visible.sync="saveOutDialogVisible"
+				width="660px"
+				center
+				:append-to-body="true"
+				class="kf-dialog-add">
+			<el-form ref="saveOutForm" :rules="saveOutRules" :model="saveOutForm" label-width="120px" class="kf-form-add">
+				<el-form-item label="转出信息" prop="content">
+					<el-input v-model.trim="saveOutForm.content" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+				</el-form-item>
+				<!--<el-form-item label="状态">-->
+					<!--<el-radio-group v-model.trim="form.ableStatus">-->
+						<!--<el-radio :label="1">启用</el-radio>-->
+						<!--<el-radio :label="0">禁用</el-radio>-->
+					<!--</el-radio-group>-->
+				<!--</el-form-item>-->
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="sureSaveOut('saveOutForm')">保 存</el-button>
+			</div>
+		</el-dialog>
+
+
+		<el-dialog
+				title="补录"
+				:visible.sync="saveAppendDialogVisible"
+				width="660px"
+				center
+
+				:append-to-body="true"
+				class="kf-dialog-add">
+			<el-form ref="saveAppendForm" :rules="saveAppendRules" :model="saveAppendForm" label-width="120px" class="kf-form-add">
+				<el-form-item label="补录信息" prop="content">
+					<el-input v-model.trim="saveAppendForm.content" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+				</el-form-item>
+				<!--<el-form-item label="状态">-->
+				<!--<el-radio-group v-model.trim="form.ableStatus">-->
+				<!--<el-radio :label="1">启用</el-radio>-->
+				<!--<el-radio :label="0">禁用</el-radio>-->
+				<!--</el-radio-group>-->
+				<!--</el-form-item>-->
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button type="primary" @click="sureSaveAppend('saveAppendForm')">保 存</el-button>
+			</div>
+		</el-dialog>
+
+
   	</el-card>
   </div>
 </template>
@@ -239,6 +300,10 @@ export default {
       total: 0,
       //分页——end
       dialogAddVisible: false,
+
+		// 转出visible
+		saveOutDialogVisible:false,
+		saveAppendDialogVisible:false,
       dialogType: 0,
       form: {
       	name:"",
@@ -266,28 +331,34 @@ export default {
         content: [
           { required: true, message: "请输入内容", trigger: "blur" },
         ],
-//      code: [
-//        { required: true, message: "请输入院校编码", trigger: "blur" },
-//        {
-//          min: 1,
-//          max: 8,
-//          message: "最长 8 个字符",
-//          trigger: "change"
-//        }
-//      ],
-//      remark: [
-//        {
-//          min: 1,
-//          max: 255,
-//          message: "最长 50 个字符",
-//          trigger: "change"
-//        }
-//      ]
      },
+
+
+        saveOutRules: {
+            content: [
+                { required: true, message: "请输入转出信息 ", trigger: "blur" },
+            ],
+        },
+
+        saveAppendRules: {
+            content: [
+                { required: true, message: "请输入补录信息 ", trigger: "blur" },
+            ],
+        },
+        saveOutForm:{
+          content:""
+		},
+
+        saveAppendForm:{
+            content:""
+		},
+
+
      disciplineList:[],
      majorList:[],
      stationList:[],
-     yearList:[]
+     yearList:[],
+		actionId:""
     };
   },
   components: {},
@@ -313,19 +384,61 @@ export default {
   },
   methods: {
     //获取数据
+      sureSaveOut(formName){
+          this.$refs[formName].validate(valid => {
+              if (valid) {
+                	this.$api.studentManagement.studentPre_saveAppend({
+                        studentId:this.actionId,
+						...this.saveOutForm
+					}).then((res)=>{
+						this.$message.success("转出成功")
+					}).catch((e)=>{
+                        this.$message.success("转出失败")
+					})
+              } else {
+                  console.log("error submit!!");
+                  return false;
+              }
+          });
+	  },
+      sureSaveAppend(formName){
+          this.$refs[formName].validate(valid => {
+              if (valid) {
+                  this.$api.studentManagement.studentPre_saveAppend({
+                      studentId:this.actionId,
+					  ...this.saveAppendForm
+                  }).then((res)=>{
+                      this.$message.success("补录成功")
+                  }).catch((e)=>{
+                      this.$message.success("失败")
+				  })
+              } else {
+                  console.log("error submit!!");
+                  return false;
+              }
+          });
+      },
+      showSaveOut(id){
+		  this.actionId=id;
+		  this.saveOutDialogVisible=true;
+	  },
+      showSaveAppend(id){
+          this.actionId=id;
+          this.saveOutDialogVisible=true;
+      },
    getStudentPreSimpleDisplines(){
    	this.$api.studentManagement.getStudentPreSimpleDisplines().then((res)=>{
-   		this.disciplineList=res.data.pageList
+   		this.disciplineList=res.data
    	})
    },
     getStudentPreSimpleMajors(){
    	this.$api.studentManagement.getStudentPreSimpleMajors().then((res)=>{
-   		this.majorList=res.data.pageList
+   		this.majorList=res.data
    	})
    },
    getStudentPreSimpleStations(){
    	this.$api.studentManagement.getStudentPreSimpleStations().then((res)=>{
-   		this.stationList=res.data.pageList
+   		this.stationList=res.data
    	})
    },
     get_ajax() {

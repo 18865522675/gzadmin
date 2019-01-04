@@ -221,7 +221,10 @@ export default {
           	remark:this.nowItem.remark,
           	ableStatus:this.nowItem.ableStatus
           }).then((res)=>{
-          	
+              this.ready_ajax();
+              this.$message.success("编辑成功")
+          }).catch(()=>{
+              this.$message.error("编辑失败")
           })
 //      } else {
 //        console.log("error submit!!");
@@ -259,7 +262,7 @@ export default {
           });
       } else {
         this.$api.essentialInformation
-          .batch_edit(this.form)
+          .batch_edit(this.form.id,this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -289,7 +292,7 @@ export default {
           })
           console.log(this.List);
           //分页
-          this.total = res.data.total;
+          this.total = +res.data.total;
         })
         .catch(res => {
           this.loading = false;
@@ -320,11 +323,11 @@ export default {
       });
     },
     handleSizeChange(val) {
-      this.length = val;
+      this.pageSize = val;
       this.get_ajax();
     },
     handleCurrentChange(val) {
-      this.start = val;
+      this.pageNum = val;
       this.get_ajax();
     },
      dialogAdd_show() {
