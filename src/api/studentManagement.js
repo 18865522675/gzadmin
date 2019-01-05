@@ -10,7 +10,7 @@ export default {
   getStudentPreSimpleMajors: params => $.get("student/before/listMajors", params),
    //	考前学生函授站
   getStudentPreSimpleStations: params => $.get("student/before/listStations", params),
-  
+
   //考钱学生添加
 	studentPre_add: params =>
 	$.post("/student/before", params, { lock: true }),
@@ -23,4 +23,7 @@ export default {
     //考钱学生转出
     studentPre_saveOut: params =>
         $.post("/student/before/saveOut", params, { lock: true }),
+
+    //查看学生详情
+    getStudentPreDetail: params => $.get("/student/before/details/"+params, params),
 };

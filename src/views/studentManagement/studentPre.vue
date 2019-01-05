@@ -2,14 +2,14 @@
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem" style="flex-wrap:pre-wrap">
-		 	
+
 		 	<span class='label marL10'>报考年份</span>
   		<div class="marL10">
 				 <el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 				 		<el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
 	        </el-select>
 		 	</div>
-		 	
+
 		 	<span class='label marL10'>层次</span>
   		<div class="marL10">
 				 <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -19,7 +19,7 @@
           	<el-option label="高起本" :value="3"></el-option>
 	        </el-select>
 		 	</div>
-		 	
+
 		 	<span class='label marL10'>科类</span>
   		<div class="marL10">
 				 <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -32,8 +32,8 @@
 	          	  </el-select>
 		 	</div>
 
-		 	
- 				
+
+
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
  					重置
  				</div>-->
@@ -41,7 +41,7 @@
  					关联函授站
  				</div>-->
   		</div>
-  		
+
   		<div class="flexItem pageHead" style="flex-wrap: wrap">
 
 			<span class='label marL10' style="word-spacing:1.7em">专 业</span>
@@ -55,7 +55,7 @@
 							:value="item.id"/>
 				</el-select>
 			</div>
-  					 	
+
 		 	<span class='label marL10'>函授站</span>
 			 	<div class="marL10">
 					 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -166,7 +166,7 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
+
   		<el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -180,9 +180,9 @@
         </el-form-item>
          <el-form-item label="证件类型" prop="cardType">
           <el-select  style="width:100%" v-model="form.cardType" placeholder="请选择证件类型">
-          	<el-option label="身份证" :value="0"></el-option>
-          	<el-option label="军官证/士兵证" :value="1"></el-option>
-          	<el-option label="港澳通行证" :value="2"></el-option>
+          	<el-option label="身份证" :value="1"></el-option>
+          	<el-option label="军官证/士兵证" :value="2"></el-option>
+          	<el-option label="港澳通行证" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="证件号码" prop="cardNo">
@@ -200,8 +200,9 @@
         </el-form-item>
         <el-form-item label="层次" prop="level">
           <el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">
-		       	<el-option label="军官证/士兵证" :value="1"></el-option>
-          	<el-option label="港澳通行证" :value="2"></el-option>
+		       	<el-option label="高起专" :value="1"></el-option>
+			    <el-option label="专升本" :value="2"></el-option>
+			    <el-option label="高起本" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="报考年份" prop="enrollYear">
@@ -304,7 +305,7 @@ export default {
       dialogType: 0,
       form: {
       	name:"",
-      	cardType:0,
+      	cardType:1,
       	cardNo:"",
       	disciplineId:"",
       	majorId:"",
@@ -436,7 +437,7 @@ export default {
 	  },
       showSaveAppend(id){
           this.actionId=id;
-          this.saveOutDialogVisible=true;
+          this.saveAppendDialogVisible=true;
       },
    getStudentPreSimpleDisplines(){
    	this.$api.studentManagement.getStudentPreSimpleDisplines().then((res)=>{
@@ -481,7 +482,7 @@ export default {
       this.dialogAddVisible = true;
       this.form = {
         name:"",
-      	cardType:0,
+      	cardType:1,
       	cardNo:"",
       	disciplineId:"",
       	majorId:"",

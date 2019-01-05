@@ -51,14 +51,14 @@ const router_module = {
       ]
     },
     {
-      path: "/studentManagement/applicationEvaluation",
+      path: "/studentManagement/enrollStudent",
       meta: {
-        title: "申请测评",
+        title: "录取名单",
         show: true
       },
       component: resolve =>
         require([
-          "../views/studentManagement/applicationEvaluation.vue"
+          "../views/studentManagement/enrollStudent.vue"
         ], resolve)
     },
     {
