@@ -85,8 +85,8 @@
 				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
 					<!--补录-->
 				<!--</div>-->
-				 <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-		      	<upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+				 <download url="student/enrolled/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
+		      	<upload class="marL10" url="/student/enrolled/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
   		</div>
   		<div class="pageCon">
   			 <el-table
@@ -465,7 +465,7 @@ export default {
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
         });
     },

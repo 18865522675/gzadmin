@@ -61,6 +61,39 @@ const router_module = {
           "../views/studentManagement/enrollStudent.vue"
         ], resolve)
     },
+      {
+          path: "/studentManagement/studentInfo",
+          meta: {
+              title: "学生信息",
+              show: true
+          },
+          component: resolve =>
+              require([
+                  "../views/studentManagement/studentInfo.vue"
+              ], resolve)
+      },
+      {
+          path: "/studentManagement/studentTrans",
+          meta: {
+              title: "学籍异动",
+              show: true
+          },
+          component: resolve =>
+              require([
+                  "../views/studentManagement/studentTrans.vue"
+              ], resolve)
+      },
+      {
+          path: "/studentManagement/studentrp",
+          meta: {
+              title: "奖惩管理",
+              show: true
+          },
+          component: resolve =>
+              require([
+                  "../views/studentManagement/studentrp.vue"
+              ], resolve)
+      },
     {
       path: "/studentManagement/qualificationExamination",
       meta: {

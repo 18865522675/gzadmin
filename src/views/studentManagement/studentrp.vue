@@ -20,17 +20,30 @@
                     </el-select>
                 </div>
 
-                <span class='label marL10'>科类</span>
+                <!--<span class='label marL10'>科类</span>-->
+                <!--<div class="marL10">-->
+                    <!--<el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
+                        <!--<el-option label="所有" value=""/>-->
+                        <!--<el-option-->
+                                <!--v-for="(item,index) in disciplineList"-->
+                                <!--:key="index"-->
+                                <!--:label="item.name"-->
+                                <!--:value="item.id"/>-->
+                    <!--</el-select>-->
+                <!--</div>-->
+
+                <span class='label marL10' style="word-spacing:1.7em">专 业</span>
                 <div class="marL10">
-                    <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in disciplineList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+                <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                <el-option label="所有" value=""/>
+                <el-option
+                v-for="(item,index) in majorList"
+                :key="index"
+                :label="item.name"
+                :value="item.id"/>
+                </el-select>
                 </div>
+
 
 
 
@@ -44,17 +57,17 @@
 
             <div class="flexItem pageHead" style="flex-wrap: wrap">
 
-                <span class='label marL10' style="word-spacing:1.7em">专 业</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in majorList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
-                </div>
+                <!--<span class='label marL10' style="word-spacing:1.7em">专 业</span>-->
+                <!--<div class="marL10">-->
+                    <!--<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
+                        <!--<el-option label="所有" value=""/>-->
+                        <!--<el-option-->
+                                <!--v-for="(item,index) in majorList"-->
+                                <!--:key="index"-->
+                                <!--:label="item.name"-->
+                                <!--:value="item.id"/>-->
+                    <!--</el-select>-->
+                <!--</div>-->
 
                 <span class='label marL10'>函授站</span>
                 <div class="marL10">
@@ -102,9 +115,8 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="batchName"
-                            label="年级"
-                            width="200">
+                            prop="enrollYear"
+                            label="报名年份">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
@@ -134,15 +146,15 @@
                             label="专业">
                     </el-table-column>
                     <el-table-column
-                            prop="batchName"
-                            label="函授站">
+                            prop="stationName"
+                            label="录取状态">
                     </el-table-column>
                     <!--<el-table-column-->
-                            <!--label="状态"-->
-                            <!--width="80">-->
-                        <!--<template slot-scope="scope">-->
-                            <!--{{scope.row.ableStatus?"启用":"禁用"}}-->
-                        <!--</template>-->
+                    <!--label="状态"-->
+                    <!--width="80">-->
+                    <!--<template slot-scope="scope">-->
+                    <!--{{scope.row.ableStatus?"启用":"禁用"}}-->
+                    <!--</template>-->
                     <!--</el-table-column>-->
                     <el-table-column
                             fixed="right"
@@ -152,7 +164,7 @@
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                            <baseDelBtn delUrl="/student/transf" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+                            <baseDelBtn delUrl="/student/rp" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -169,58 +181,58 @@
             </div>
 
             <!--<el-dialog-->
-                    <!--:title="dialogType===0?'添加':'编辑'"-->
-                    <!--:visible.sync="dialogAddVisible"-->
-                    <!--width="660px"-->
-                    <!--center-->
-                    <!--:append-to-body="true"-->
-                    <!--class="kf-dialog-add">-->
-                <!--<el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">-->
-                    <!--<el-form-item label="学生名称" prop="name">-->
-                        <!--<el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="证件类型" prop="cardType">-->
-                        <!--<el-select  style="width:100%" v-model="form.cardType" placeholder="请选择证件类型">-->
-                            <!--<el-option label="身份证" :value="0"></el-option>-->
-                            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
-                            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="证件号码" prop="cardNo">-->
-                        <!--<el-input v-model.trim="form.cardNo" placeholder="请输入证件号码"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="科类" prop="disciplineId">-->
-                        <!--<el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">-->
-                            <!--<el-option v-for="(item,index) in disciplineList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="专业" prop="majorId">-->
-                        <!--<el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">-->
-                            <!--<el-option v-for="(item,index) in majorList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="层次" prop="level">-->
-                        <!--<el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">-->
-                            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
-                            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="报考年份" prop="enrollYear">-->
-                        <!--<el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="状态">-->
-                        <!--<el-radio-group v-model="form.ableStatus">-->
-                            <!--<el-radio :label="1">启用</el-radio>-->
-                            <!--<el-radio :label="0">禁用</el-radio>-->
-                        <!--</el-radio-group>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="备注" prop="remark">-->
-                        <!--<el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>-->
-                    <!--</el-form-item>-->
-                <!--</el-form>-->
-                <!--<div slot="footer" class="dialog-footer">-->
-                    <!--<el-button type="primary" @click="submitForm">保 存</el-button>-->
-                <!--</div>-->
+            <!--:title="dialogType===0?'添加':'编辑'"-->
+            <!--:visible.sync="dialogAddVisible"-->
+            <!--width="660px"-->
+            <!--center-->
+            <!--:append-to-body="true"-->
+            <!--class="kf-dialog-add">-->
+            <!--<el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">-->
+            <!--<el-form-item label="学生名称" prop="name">-->
+            <!--<el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="证件类型" prop="cardType">-->
+            <!--<el-select  style="width:100%" v-model="form.cardType" placeholder="请选择证件类型">-->
+            <!--<el-option label="身份证" :value="0"></el-option>-->
+            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
+            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
+            <!--</el-select>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="证件号码" prop="cardNo">-->
+            <!--<el-input v-model.trim="form.cardNo" placeholder="请输入证件号码"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="科类" prop="disciplineId">-->
+            <!--<el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">-->
+            <!--<el-option v-for="(item,index) in disciplineList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
+            <!--</el-select>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="专业" prop="majorId">-->
+            <!--<el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">-->
+            <!--<el-option v-for="(item,index) in majorList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
+            <!--</el-select>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="层次" prop="level">-->
+            <!--<el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">-->
+            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
+            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
+            <!--</el-select>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="报考年份" prop="enrollYear">-->
+            <!--<el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="状态">-->
+            <!--<el-radio-group v-model="form.ableStatus">-->
+            <!--<el-radio :label="1">启用</el-radio>-->
+            <!--<el-radio :label="0">禁用</el-radio>-->
+            <!--</el-radio-group>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="备注" prop="remark">-->
+            <!--<el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>-->
+            <!--</el-form-item>-->
+            <!--</el-form>-->
+            <!--<div slot="footer" class="dialog-footer">-->
+            <!--<el-button type="primary" @click="submitForm">保 存</el-button>-->
+            <!--</div>-->
             <!--</el-dialog>-->
 
 
@@ -355,7 +367,7 @@
                 this.yearList.push(i)
             }
             this.tableForm.batchId=now;
-            this.getStudentPreSimpleDisplines();
+            // this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getStudentPreSimpleStations();
             this.get_ajax();
@@ -419,24 +431,24 @@
                 this.saveAppendDialogVisible=true;
             },
             getStudentPreSimpleDisplines(){
-                this.$api.studentManagement.getStudentEnrollSimpleDisplines().then((res)=>{
+                this.$api.studentManagement.getStudentTransSimpleDisplines().then((res)=>{
                     this.disciplineList=res.data
                 })
             },
             getStudentPreSimpleMajors(){
-                this.$api.studentManagement.getStudentEnrollSimpleMajors().then((res)=>{
+                this.$api.studentManagement.getStudentrpSimpleMajors().then((res)=>{
                     this.majorList=res.data
                 })
             },
             getStudentPreSimpleStations(){
-                this.$api.studentManagement.getStudentEnrollSimpleStations().then((res)=>{
+                this.$api.studentManagement.getStudentrpSimpleStations().then((res)=>{
                     this.stationList=res.data
                 })
             },
             get_ajax() {
                 this.tableLoading = true;
                 this.$api.studentManagement
-                    .getStudentEnrollList({
+                    .getStudentrpList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         ...this.tableForm
@@ -502,7 +514,7 @@
             add_ajax() {
                 if (this.dialogType === 0) {
                     this.$api.studentManagement
-                        .studentPre_add(this.form)
+                        .studentrp_add(this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -513,7 +525,7 @@
                         });
                 } else {
                     this.$api.studentManagement
-                        .studentPre_edit(this.form.id,this.form)
+                        .studentrp_edit(this.form.id,this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
