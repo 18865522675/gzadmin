@@ -31,6 +31,14 @@ const router_module = {
       },
       component: resolve => require(["@/views/teachManage/discuss.vue"], resolve)
     },
+     {
+      path: "/teachManage/courseWorks",
+      meta: {
+        show: true,
+        title: "课程作业"
+      },
+      component: resolve => require(["@/views/teachManage/courseWorks.vue"], resolve)
+    },
     {
       path: "/teachManage/discusslook",
       meta: {

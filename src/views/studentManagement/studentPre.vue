@@ -2,18 +2,13 @@
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem" style="flex-wrap:wrap">
-
-			<div class="flexItem" style="width: 310px">
 				<span class='label marL10'>报考年份</span>
 				<div class="marL10">
 					<el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 						<el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
 					</el-select>
 				</div>
-			</div>
 
-
-		 <div class="flexItem" style="width: 310px">
 			 <span class='label marL10'>层次</span>
 			 <div class="marL10">
 				 <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -23,9 +18,8 @@
 					 <el-option label="高起本" :value="3"></el-option>
 				 </el-select>
 			 </div>
-		 </div>
+		 
 
-		 <div class="flexItem" style="width: 310px">
 			 <span class='label marL10'>科类</span>
 			 <div class="marL10">
 				 <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -37,9 +31,7 @@
 							 :value="item.id"/>
 				 </el-select>
 			 </div>
-		 </div>
-
-			<div class="flexItem" style="width: 310px">
+		
 				<span class='label marL10' style="word-spacing:1.7em">专 业</span>
 				<div class="marL10">
 					<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -51,11 +43,17 @@
 								:value="item.id"/>
 					</el-select>
 				</div>
-			</div>
+			
 
 
-			<div class="flexItem" style="width: 310px">
-				<span class='label marL10'>函授站</span>
+
+
+  		</div>
+
+  		<div class="flexItem pageHead" style="flex-wrap: wrap">
+		
+		
+			<span class='label marL10'>函授站</span>
 				<div class="marL10">
 					<el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 						<el-option label="所有" value=""/>
@@ -66,13 +64,6 @@
 								:value="item.id"/>
 					</el-select>
 				</div>
-			</div>
-
-
-  		</div>
-
-  		<div class="flexItem pageHead" style="flex-wrap: wrap">
-
 			<!--<span class='label marL10' style="word-spacing:1.7em">专 业</span>-->
 			<!--<div class="marL10">-->
 				<!--<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->

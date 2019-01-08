@@ -17,4 +17,9 @@ export default {
 
     //获取专业列表
     teachPlanMajor_getList: params => $.get("/teaching/siteMajor/list", params, { lock: true }),
+    
+    
+//  课程作业
+		courseWork_add: params => $.post("/teaching/work", params, { lock: true }),
+		courseWork_edit: (id,params) => $.put("/teaching/work/"+id, params, { lock: true }),
 };
