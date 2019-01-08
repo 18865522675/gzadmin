@@ -5,7 +5,7 @@
             <div class="kf-screen">
                 <el-form class="kf-form">
                     <div class="kf-row">
-                        <el-form-item label="学生名称" class="kf-form-item form-search">
+                        <el-form-item label="学生姓名" class="kf-form-item form-search">
                             <el-input :value="$route.params.studentName" disabled></el-input>
                         </el-form-item>
                     </div>

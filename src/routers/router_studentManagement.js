@@ -50,6 +50,17 @@ const router_module = {
         // }
       ]
     },
+      {
+          path: "/studentManagement/selfHelp",
+          meta: {
+              title: "自主报名",
+              show: true
+          },
+          component: resolve =>
+              require([
+                  "../views/studentManagement/selfHelp.vue"
+              ], resolve)
+      },
     {
       path: "/studentManagement/enrollStudent",
       meta: {
@@ -94,55 +105,55 @@ const router_module = {
                   "../views/studentManagement/studentrp.vue"
               ], resolve)
       },
-    {
-      path: "/studentManagement/qualificationExamination",
-      meta: {
-        title: "资格审核",
-        show: true
-      },
-      component: resolve =>
-        require([
-          "../views/studentManagement/qualificationExamination.vue"
-        ], resolve)
-    },
-    {
-      path: "/studentManagement/studentArchives",
-      meta: {
-        title: "助学档案",
-        show: true
-      },
-      component: resolve =>
-        require(["../views/studentManagement/studentArchives.vue"], resolve)
-    },
-    {
-      path: "/studentManagement/comprehensiveEvaluation",
-      meta: {
-        title: "综合评价",
-        show: true
-      },
-      component: resolve =>
-        require([
-          "../views/studentManagement/comprehensiveEvaluation.vue"
-        ], resolve)
-    },
-    {
-      path: "/studentManagement/ordinaryPerformance",
-      meta: {
-        title: "平时成绩",
-        show: true
-      },
-      component: resolve =>
-        require(["../views/studentManagement/ordinaryPerformance.vue"], resolve)
-    },
-    {
-      path: "/studentManagement/examResults",
-      meta: {
-        title: "考试成绩",
-        show: true
-      },
-      component: resolve =>
-        require(["../views/studentManagement/examResults.vue"], resolve)
-    }
+    // {
+    //   path: "/studentManagement/qualificationExamination",
+    //   meta: {
+    //     title: "资格审核",
+    //     show: true
+    //   },
+    //   component: resolve =>
+    //     require([
+    //       "../views/studentManagement/qualificationExamination.vue"
+    //     ], resolve)
+    // },
+    // {
+    //   path: "/studentManagement/studentArchives",
+    //   meta: {
+    //     title: "助学档案",
+    //     show: true
+    //   },
+    //   component: resolve =>
+    //     require(["../views/studentManagement/studentArchives.vue"], resolve)
+    // },
+    // {
+    //   path: "/studentManagement/comprehensiveEvaluation",
+    //   meta: {
+    //     title: "综合评价",
+    //     show: true
+    //   },
+    //   component: resolve =>
+    //     require([
+    //       "../views/studentManagement/comprehensiveEvaluation.vue"
+    //     ], resolve)
+    // },
+    // {
+    //   path: "/studentManagement/ordinaryPerformance",
+    //   meta: {
+    //     title: "平时成绩",
+    //     show: true
+    //   },
+    //   component: resolve =>
+    //     require(["../views/studentManagement/ordinaryPerformance.vue"], resolve)
+    // },
+    // {
+    //   path: "/studentManagement/examResults",
+    //   meta: {
+    //     title: "考试成绩",
+    //     show: true
+    //   },
+    //   component: resolve =>
+    //     require(["../views/studentManagement/examResults.vue"], resolve)
+    // }
   ]
 };
 

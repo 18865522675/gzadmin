@@ -2,7 +2,7 @@
   <div class="g-module">
  		<div class="yearWrap">
 			  <el-card style="height: 100%;box-sizing: border-box;padding: 20px;">
-			  		<div class="baseInfoTitle flexItem" style="align-items: center;"> 
+			  		<div class="baseInfoTitle flexItem" style="align-items: center;">
 			  				<div class="baseInfoTitleItem">
 			  					 <span>函授站列表</span>
 			  				</div>
@@ -11,13 +11,13 @@
 				 					 <el-button slot="append" icon="el-icon-search"></el-button>
 				 					</el-input>
 				 				</div>-->
-			  				<div class="comTopSaveBtn1 comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'> 
+			  				<div class="comTopSaveBtn1 comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('关联函授站')>-1">
 			 					关联
 			 				</div>
 			  				<!--@click='dialogAdd_show'-->
 			  		</div>
-			  		
-			  		
+
+
 			  		<div class="baseInfoList flexItem" style="flex-wrap: wrap;justify-content: space-between;">
 			  			<div class="baseInfoItem flexItem" style="justify-content: space-between;" v-for="(item,index) in List" :key="index">
 			  				<div class="baseInfoLeft">
@@ -25,7 +25,7 @@
 			  						<span class="twoWord">函授站</span>
 			  						<!--{{item}}-->
 			  						<span v-if="!item.isEdit">{{item.name}}</span>
-			  						
+
 			  						<el-input v-model="item.name" class="baseInfoInp" v-else></el-input>
 			  					</div>
 			  					<div class="baseInfoLine">
@@ -50,7 +50,7 @@
 										  type="textarea"
 										  :rows="2"
 										  placeholder="请输入内容"
-										  resize="none"				
+										  resize="none"
 										  :disabled="!item.isEdit"
 										  v-model="item.remark" style="display: inline-block;width:70%;float: right;margin-left: 20px" >
 										</el-input>
@@ -69,7 +69,7 @@
 			  						<div style="margin-left: 20px;">
 									     <!--<el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="goEdit(item,index)" v-if="!item.isEdit" >编辑</el-button>-->
 									      <!--<el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="sureEdit(item,index)" v-else>保存</el-button>-->
-					           	 <baseDelBtn delUrl="/baseinfo/station" :delId="item.id" :delOk="ready_ajax" />
+					           	 <baseDelBtn delUrl="/baseinfo/station" :delId="item.id" :delOk="ready_ajax"  v-if="extra.indexOf('删除')>-1"/>
 			  						</div>
 			  					</div>
 			  				</div>
@@ -85,8 +85,8 @@
 			        :total="total"
 			        class="kf-pagination">
 			      </el-pagination>
-			      
-			      
+
+
 			      	 <el-dialog
       title="关联"
       :visible.sync="dialogAddVisible"
@@ -111,10 +111,10 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
-    
-    
+
+
    	 		</el-card>
-   	 		
+
 		</div>
   </div>
 </template>
@@ -127,6 +127,7 @@ export default {
 		pageSize:10,
 		name:"",
 		List:[],
+		extra:[],
 		stationList:[],
 		form:{
 			stationIds:[]
@@ -165,7 +166,7 @@ export default {
   components: {},
   mounted() {
     this.get_ajax();
-    
+
     this.get_List();
 //  this.$api.essentialInformation
 //    .get_gradeList({ limitNum: 100000 })
@@ -297,6 +298,7 @@ export default {
           this.List.map((item,index)=>{
           	item.isEdit=false
           })
+            this.extra=res.data.extra;
           console.log(this.List);
           //分页
           this.total = +res.data.total;
@@ -376,7 +378,7 @@ export default {
 					&>span{
 						font-size: 14px;
 						color: #333333;
-						
+
 					}
 					&>span:last-child{
 						display: inline-block;
@@ -394,6 +396,6 @@ export default {
 				width: 50%;
 			}
 		}
-		
+
 	}
 </style>

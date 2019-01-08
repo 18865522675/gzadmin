@@ -189,8 +189,8 @@
     </el-dialog>
 
   </div>-->
-  
-  	
+
+
   	 <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
@@ -201,7 +201,7 @@
  					 <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
  					</el-input>
  				</div>
- 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+ 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'  v-if="extra.indexOf('添加')>-1">
  					添加
  				</div>
  				  <download url="resource/course/downloadMould" v-if="extra.indexOf('下载模板')>-1"/>
@@ -284,8 +284,8 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
-  		
+
+
   		 <el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -327,11 +327,11 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
-    
-    
+
+
   	</el-card>
   </div>
-  
+
 </template>
 
 <script>
@@ -561,7 +561,7 @@ export default {
     test(row,col){
     	console.log(col);
     	if(col.label=="习题"||col.label=="课件"||col.label=="图书"){
-    		this.$router.push(`/resourceManagement/courseManagement_look/${row.id}/${row.name}/1`)			
+    		this.$router.push(`/resourceManagement/courseManagement_look/${row.id}/${row.name}/1`)
     	}
     }
     //分页end

@@ -156,7 +156,7 @@
         :total="total"
         class="kf-pagination">
       </el-pagination>
- 
+
 
     </div>
     <el-dialog
@@ -220,11 +220,11 @@
     </el-dialog>
 
 
-		
+
   </div>-->
-  
-  
-  	
+
+
+
   	 <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
@@ -243,14 +243,14 @@
                 :value="item.id"/>
             </el-select>
  				</div>
- 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+ 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'  v-if="extra.indexOf('添加')>-1">
  					添加
  				</div>
- 	      <download url="resource/ware/downloadMould" />
+ 	      <download url="resource/ware/downloadMould" v-if="extra.indexOf('下载模板')>-1"/>
           <upload url="resource/ware/upload" class="ml20" :ok="ready_ajax" v-if="extra.indexOf('批量上传')>-1"/>
   		</div>
-  		
-  		
+
+
   		<div class="pageCon">
   			       <el-table
         v-loading="tableLoading"
@@ -337,8 +337,8 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
             <baseDelBtn delUrl="resource/ware" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
-              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,true)" v-if="scope.row.ableStatus==0">启用</el-button>
-              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,false)" v-else>禁用</el-button>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,true)" v-if="scope.row.ableStatus==0&&extra.indexOf('启用')>-1">启用</el-button>
+              <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn" style="margin-left: 10px;" @click="ableAction(scope.row.id,false)" v-else-if="extra.indexOf('禁用')>-1">禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -353,8 +353,8 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
-  		
+
+
   		  <el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -413,12 +413,12 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
-    </el-dialog>	
-    
+    </el-dialog>
+
   	</el-card>
   </div>
-  
-  
+
+
 </template>
 
 <script>

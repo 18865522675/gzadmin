@@ -7,6 +7,14 @@ const router_module = {
     listHide: true // 是否子菜单
   },
   children: [
+      {
+          path: "/teachManage/majorInfo",
+          meta: {
+              show: true,
+              title: "专业信息"
+          },
+          component: resolve => require(["@/views/teachManage/majorInfo.vue"], resolve)
+      },
     {
       path: "/teachManage/teachPlan",
       meta: {

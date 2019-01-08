@@ -3,10 +3,10 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
 
-                <span class='label marL10'>报考年份</span>
+                <span class='label marL10'>年级</span>
                 <div class="marL10">
-                    <el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                    <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </div>
 
@@ -33,17 +33,6 @@
                 </div>
 
 
-
-                <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
-                    重置
-                </div>-->
-                <!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
-                    关联函授站
-                </div>-->
-            </div>
-
-            <div class="flexItem pageHead" style="flex-wrap: wrap">
-
                 <span class='label marL10' style="word-spacing:1.7em">专 业</span>
                 <div class="marL10">
                     <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -55,6 +44,19 @@
                                 :value="item.id"/>
                     </el-select>
                 </div>
+
+
+                <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
+                    重置
+                </div>-->
+                <!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
+                    关联函授站
+                </div>-->
+            </div>
+
+            <div class="flexItem pageHead" style="flex-wrap: wrap">
+
+
 
                 <span class='label marL10'>函授站</span>
                 <div class="marL10">
@@ -78,12 +80,6 @@
                                 :value="item.id"/>
                     </el-select>
                 </div>
-            </div>
-
-
-            <div class="flexItem pageHead" style="flex-wrap: wrap">
-
-
 
 
                 <span class='label marL10'>审核状态</span>
@@ -97,6 +93,16 @@
                                 :value="item.id"/>
                     </el-select>
                 </div>
+
+
+            </div>
+
+
+            <div class="flexItem pageHead" style="flex-wrap: wrap">
+
+
+
+
 
 
                 <span class='label marL10'>学生</span>
@@ -129,42 +135,42 @@
                     </el-table-column>
                     <el-table-column
                             prop="enrollYear"
-                            label="报名年份">
+                            label="报名年份" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
-                            label="姓名">
+                            label="姓名" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            label="证件类型">
-                        <template slot-scope="scope">
+                            label="证件类型" :show-overflow-tooltip="true">
+                        <template slot-scope="scope" >
                             {{scope.row.cardType==0?'身份证':scope.row.cardType==1?'军官证/士兵证':'港澳通行证'}}
                         </template>
                     </el-table-column>
                     <el-table-column
                             prop="cardNo"
-                            label="证件号码">
+                            label="证件号码" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="majorName"
                             label="层次"
-                            width="200">
+                            :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
-                            label="科类">
+                            label="科类" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="majorName"
-                            label="专业">
+                            label="专业" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="stationName"
-                            label="函授站">
+                            label="函授站" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             label="状态"
-                            width="80">
+                            width="80" :show-overflow-tooltip="true">
                         <template slot-scope="scope">
                             {{scope.row.ableStatus?"启用":"禁用"}}
                         </template>
@@ -173,7 +179,7 @@
                             fixed="right"
                             label="操作" width="350">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row.id)">变更学籍</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row)">变更学籍</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/student/normal" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
@@ -213,8 +219,10 @@
                     <el-form-item label="证件号码" prop="cardNo">
                         <el-input v-model.trim="form.cardNo" placeholder="请输入证件号码"></el-input>
                     </el-form-item>
-                    <el-form-item label="批次" prop="batchId">
-                        <el-input v-model.trim="form.batchId" placeholder="请输入报考年份"></el-input>
+                    <el-form-item label="年级" prop="batchId">
+                        <el-select  style="width:100%" v-model="form.batchId" placeholder="请选择年级">
+                            <el-option v-for="(item,index) in batchList" :key="index"  :label="item.name" :value="item.id"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="科类" prop="disciplineId">
                         <el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">
@@ -231,6 +239,15 @@
                             <el-option label="高起专" :value="1"></el-option>
                             <el-option label="专升本" :value="2"></el-option>
                             <el-option label="高起本" :value="3"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="学期" prop="term">
+                        <el-select  style="width:100%" v-model="form.term" placeholder="请选择学期">
+                            <el-option label="考前辅导" :value="0"></el-option>
+                            <el-option label="第一学期" :value="1"></el-option>
+                            <el-option label="第二学期" :value="2"></el-option>
+                            <el-option label="第三学期" :value="3"></el-option>
+                            <el-option label="第四学期" :value="4"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="函授站" prop="stationId">
@@ -295,17 +312,22 @@
                         <el-input v-model.trim="actionRow.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
                     </el-form-item>
                     <el-form-item label="类型" prop="kindId">
-                        <el-select  style="width:100%" v-model="form.kindId"  placeholder="请选择操作类型">
+                        <el-select  style="width:100%" v-model="allotForm.kindId"  placeholder="请选择操作类型">
                             <el-option v-for="(item,index) in kindIdList" :key="index" :value="item.id" :label="item.name">
 
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="函授站" prop="stationId">
+                        <el-select  style="width:100%" v-model="allotForm.stationId" placeholder="请选择函授站">
+                            <el-option v-for="(item,index) in stationList" :key="index"  :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item label="新值" prop="newValue">
-                        <el-input v-model.trim="form.newValue"  placeholder="请输入新值"></el-input>
+                        <el-input v-model.trim="allotForm.newValue"  placeholder="请输入新值"></el-input>
                     </el-form-item>
                     <el-form-item label="备注" prop="remark">
-                        <el-input v-model.trim="form.remark"  placeholder="备注..." type="textarea" :row="2"></el-input>
+                        <el-input v-model.trim="allotForm.remark"  placeholder="备注..." type="textarea" :row="2"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -379,8 +401,14 @@
                     level: [
                         { required: true, message: "请选择层次", trigger: "blur" },
                     ],
+                    term: [
+                        { required: true, message: "请选择学期", trigger: "blur" },
+                    ],
                     majorId: [
                         { required: true, message: "请选择专业", trigger: "blur" },
+                    ],
+                    batchId: [
+                        { required: true, message: "请选择年级", trigger: "blur" },
                     ],
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },
@@ -401,6 +429,10 @@
                     newValue: [
                         { required: true, message: "请输入新值 ", trigger: "blur" },
                     ],
+                    stationId: [
+                        { required: true, message: "请选择函授站 ", trigger: "blur" },
+                    ],
+
                 },
                 saveOutForm:{
                     content:""
@@ -437,16 +469,18 @@
 
 
 
-                schoolStatusList:[{
-                    name:'补录',
-                    id:-2
-                },{
-                    name:'转出',
-                    id:-1
-                },{
-                    name:'考前',
-                    id:0
-                },{
+                schoolStatusList:[
+                    // {
+                //     name:'补录',
+                //     id:-2
+                // },{
+                //     name:'转出',
+                //     id:-1
+                // },{
+                //     name:'考前',
+                //     id:0
+                // },
+                    {
                     name:'正常',
                     id:1
                 },{
@@ -477,6 +511,7 @@
                     name:'变更函授站',
                     id:3
                 }],
+                batchList:[]
             };
         },
         components: {},
@@ -491,6 +526,7 @@
             this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getStudentPreSimpleStations();
+            this.getBatchList()
             this.get_ajax();
         },
         watch:{
@@ -502,9 +538,15 @@
         },
         methods: {
             //获取数据
+            getBatchList(){
+              this.$api.essentialInformation.batch_get_list().then((res)=>{
+                  this.batchList=res.data.pageList
+              })
+            },
             showChange(item){
                 this.actionRow={...item};
                 this.allotDialogVisible=true;
+                console.log(this.actionRow)
             },
             sureChange(formName){
                 this.$refs[formName].validate(valid => {

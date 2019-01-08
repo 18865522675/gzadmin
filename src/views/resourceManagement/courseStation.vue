@@ -9,7 +9,7 @@
  					 <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
  					</el-input>
  				</div>
- 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+ 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
  					添加
  				</div>
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
@@ -95,7 +95,7 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
+
   		<el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"

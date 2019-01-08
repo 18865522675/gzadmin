@@ -16,7 +16,7 @@ export default {
 	$.post("/student/before", params, { lock: true }),
 	//	编辑考前学生
   studentPre_edit: (id,params) =>
-    $.put("/notice/kind" + params.id, params, { lock: true }),
+    $.put("/student/before/" + id, params, { lock: true }),
     //考钱学生补录
     studentPre_saveAppend: params =>
         $.post("/student/before/saveAppend", params, { lock: true }),
@@ -91,4 +91,12 @@ export default {
     //	奖惩管理信息
     studentrp_edit: (id,params) =>
         $.put("/student/rp" + id, params, { lock: true }),
+
+
+    //	获取自主报名列表
+    getStudentSelfHelpList: params => $.get("student/enrolledSelf/list", params),
+
+    studentSelfHelp_allot: params =>
+        $.post("/student/enrolledSelf/allotStation", params, { lock: true }),
+
 };

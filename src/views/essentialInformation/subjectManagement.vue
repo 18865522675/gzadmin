@@ -2,7 +2,7 @@
   <div class="g-module">
  		<div class="yearWrap">
 			  <el-card style="height: 100%;box-sizing: border-box;padding: 20px;">
-			  		<div class="baseInfoTitle flexItem" style="align-items: center;"> 
+			  		<div class="baseInfoTitle flexItem" style="align-items: center;">
 			  				<div class="baseInfoTitleItem">
 			  					 <span>科类列表</span>
 			  				</div>
@@ -11,13 +11,13 @@
 				 					 <el-button slot="append" icon="el-icon-search"></el-button>
 				 					</el-input>
 				 				</div>-->
-			  				<div class="comTopSaveBtn1 comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'> 
+			  				<div class="comTopSaveBtn1 comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'  v-if="extra.indexOf('添加')>-1">
 			 					添加
 			 				</div>
 			  				<!--@click='dialogAdd_show'-->
 			  		</div>
-			  		
-			  		
+
+
 			  		<div class="baseInfoList flexItem" style="flex-wrap: wrap;justify-content: space-between;">
 			  			<div class="baseInfoItem flexItem" style="justify-content: space-between;" v-for="(item,index) in List" :key="index">
 			  				<div class="baseInfoLeft">
@@ -25,7 +25,7 @@
 			  						<span class="twoWord">科 类</span>
 			  						<!--{{item}}-->
 			  						<span v-if="!item.isEdit">{{item.name}}</span>
-			  						
+
 			  						<el-input v-model="item.name" class="baseInfoInp" v-else></el-input>
 			  					</div>
 			  					<div class="baseInfoLine">
@@ -50,7 +50,7 @@
 										  type="textarea"
 										  :rows="2"
 										  placeholder="请输入内容"
-										  resize="none"				
+										  resize="none"
 										  :disabled="!item.isEdit"
 										  v-model="item.remark" style="display: inline-block;width:70%;float: right;margin-left: 20px" >
 										</el-input>
@@ -67,9 +67,9 @@
 			  					<div class="baseInfoLine flexItem" style="justify-content: flex-start;">
 			  						<span>操作</span>
 			  						<div style="margin-left: 20px;">
-									     <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="goEdit(item,index)" v-if="!item.isEdit" >编辑</el-button>
+									     <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="goEdit(item,index)" v-if="!item.isEdit&&extra.indexOf('编辑')>-1" >编辑</el-button>
 									      <el-button type="text" size="small" class="kf-btn kf-btn-table small kf-orange-btn"  @click="sureEdit(item,index)" v-else>保存</el-button>
-					           	 <baseDelBtn delUrl="baseInfo/discipline" :delId="item.id" :delOk="ready_ajax" />
+					           	 <baseDelBtn delUrl="baseInfo/discipline" :delId="item.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"  />
 			  						</div>
 			  					</div>
 			  				</div>
@@ -85,8 +85,8 @@
 			        :total="total"
 			        class="kf-pagination">
 			      </el-pagination>
-			      
-			      
+
+
 			      	 <el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -115,10 +115,10 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
-    
-    
+
+
    	 		</el-card>
-   	 		
+
 		</div>
   </div>
 </template>
@@ -133,6 +133,7 @@ export default {
 		List:[],
 		form:{},
 		nowItem:{},
+        extra:[],
 		rulesForm: {
         name: [
           { required: true, message: "请输入年级名称", trigger: "change" },
@@ -289,7 +290,8 @@ export default {
           this.List = res.data.pageList;
           this.List.map((item,index)=>{
           	item.isEdit=false
-          })
+          });
+            this.extra=res.data.extra;
           console.log(this.List);
           //分页
           this.total = +res.data.total;
@@ -372,7 +374,7 @@ export default {
 					&>span{
 						font-size: 14px;
 						color: #333333;
-						
+
 					}
 					&>span:last-child{
 						display: inline-block;
@@ -390,6 +392,6 @@ export default {
 				width: 50%;
 			}
 		}
-		
+
 	}
 </style>

@@ -119,7 +119,7 @@
       </div>
     </el-dialog>
   </div>-->
-  
+
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
@@ -139,7 +139,7 @@
 		        v-loading="tableLoading"
 		        :data="tableData"
 		        border
-		        ref="multipleTable"
+					ref="multipleTable"
 		        tooltip-effect="dark"
 		        @selection-change="handleSelectionChange"
 		        class="kf-table"
@@ -294,10 +294,21 @@ export default {
           siteId:this.siteId
         })
         .then(res => {
+            this.stationIds=[];
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
           this.total = res.data.total;
           this.tableLoading = false;
+          res.data.pageList.map((item)=>{
+              if(item.selected==1){
+                  // this.multipleSelection.push(item);
+                  // this.stationIds.push(item.id)
+                  this.$nextTick(()=>{
+                      this.$refs.multipleTable.toggleRowSelection(item);
+                      this.multipleSelection.push(item);
+				  })
+			  }
+		  })
         });
     },
     ready_ajax() {
@@ -322,9 +333,9 @@ export default {
     	 this.multipleSelection = val;
     	 console.log(val)
     	 this.multipleSelection.map((item,index)=>{
-    	 	this.stationIds.push(item.id)	
+    	 	this.stationIds.push(item.id)
     	 })
-    	 
+
     },
     save(){
     	if(!this.stationIds.length){
@@ -338,7 +349,7 @@ export default {
     	}).catch((e)=>{
     		this.$message.wanring(e)
     	})
-    	
+
     }
     //分页end
   }

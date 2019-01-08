@@ -1,7 +1,7 @@
 <template>
   <div :class="$route.fullPath=='/home'?'home-main':'g-main'" class="moduleWrap flexItem flexDir-r">
     <!--<div class="m-make" @click="checkStatus=false" v-show="checkStatus"></div>
-    
+
     <div class="m-crumbs">
       <div class="m-crumbs-ico"></div>
       <div class="m-crumbs-item" v-for="(item, index) in crumbs" :key="index">{{item.title}}</div>
@@ -26,10 +26,10 @@
 						        <span slot="title" style="padding-left: 18px;">首页</span>
 						      </el-menu-item>
 						      <el-submenu  :index="index*3-12"  :key="index" v-else>
-						      	
+
 					          <template slot="title">
 					          		 <!--<div class="li-listItem-img" :style="{backgroundImage: 'url('+require('../../assets/img/textbook.png')+')'}" v-if="!item.logo"></div>-->
-					          		 
+
 					          		<!--<img :src="require('../assets/img/'+item.meta.icon+'.png')," alt="" />-->
 					          		<!--<div class="menu-icon" :style="{backgroundImage: 'url('+require('../assets/img/'+item.meta.icon+'.png')+')'}"></div>-->
 					          		<span>{{item.meta.title}}</span>
@@ -59,22 +59,22 @@
 	        </div>
 	        <div  class="header-item flexItem hasOut" >
 	        	<img src="../assets/img/geren.png" alt="" />
-	        	<span>管理员· {{user.name}}</span>
+	        	<span>管理员· {{JSON.parse(userInfo).name}}</span>
 	        	<span> | </span>
 	        	<span style="cursor: pointer;" @click="logout">退出登录</span>
 	        </div>
 	      </div>
    	 </header>
-   	 <div class="routerContent">
-   	 		 		<router-view></router-view>	
+   	 <div class="routerContent" style="overflow:auto;">
+   	 		 		<router-view></router-view>
    	 </div>
    </div>
   </div>
 </template>
- 
+
 <script>
 import { mapState } from "vuex";
-
+import Cookies from "js-cookie"
 export default {
   name: "g-main",
   data() {
@@ -99,7 +99,8 @@ export default {
   computed: mapState(["crumbs", "routesArr", "userInfo"]),
   components: {},
   mounted() {
-//	this.user=JSON.parse(this.userInfo)
+	  this.$store.commit("save_userInfo", Cookies.get("userInfo"));
+	  console.log(this.userInfo)
   	this.routesList=this.$router.options.routes[3].children.slice(1);
   },
   methods: {
@@ -125,7 +126,7 @@ export default {
     },
     //获取学校列表
     get_schoolList() {
-      this.$api.systemManagement	
+      this.$api.systemManagement
         .get_schoolList()
         .then(res => {
           if (res.data.extResult) this.extResult = res.data.extResult;

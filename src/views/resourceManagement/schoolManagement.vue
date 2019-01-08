@@ -119,7 +119,7 @@
       </div>
     </el-dialog>
   </div>-->
-  
+
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
@@ -130,15 +130,15 @@
  					 <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
  					</el-input>
  				</div>
- 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+ 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
  					添加
  				</div>
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
  					重置
  				</div>-->
- 				<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
- 					关联函授站
- 				</div>
+ 				<!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">-->
+ 					<!--关联函授站-->
+ 				<!--</div>-->
   		</div>
   		<div class="pageCon">
   			 <el-table
@@ -206,7 +206,7 @@
 		          <template slot-scope="scope">
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn  small" >查看</el-button>-->
-		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn  small" @click="$router.push('/resourceManagement/siteReleteStation/'+scope.row.id)" >关联函授站</el-button>
+		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn  small" @click="$router.push('/resourceManagement/siteReleteStation/'+scope.row.id)" v-if="extra.indexOf('关联函授站')>-1">关联函授站</el-button>
 		            <baseDelBtn delUrl="resource/site" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
@@ -222,7 +222,7 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
+
   		<el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"

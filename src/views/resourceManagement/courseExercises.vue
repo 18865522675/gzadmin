@@ -171,8 +171,8 @@
     </el-dialog>
 
   </div>-->
-  
-  
+
+
   	 <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
@@ -190,14 +190,14 @@
                 :value="item.id"/>
             </el-select>
  				</div>
- 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+ 				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'  v-if="extra.indexOf('添加')>-1">
  					添加
  				</div>
- 	    	  <download url="resource/exercise/downloadMould"/>
+ 	    	  <download url="resource/exercise/downloadMould"  v-if="extra.indexOf('下载模板')>-1"/>
           <upload url="resource/exercise/upload" class="ml20" :ok="ready_ajax" v-if="extra.indexOf('批量上传')>-1"/>
   		</div>
-  		
-  		
+
+
   		<div class="pageCon">
   			<el-table
         v-loading="tableLoading"
@@ -274,9 +274,9 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
-  		
-  		  
+
+
+
     <el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -338,11 +338,11 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
-    
+
   	</el-card>
   </div>
-  
-  
+
+
 </template>
 
 <script>

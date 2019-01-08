@@ -3,10 +3,11 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
 
-                <span class='label marL10'>年纪</span>
+                <span class='label marL10'>年级</span>
                 <div class="marL10">
                     <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                        <el-option label="所有" value=""/>
+                        <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </div>
 
@@ -20,31 +21,8 @@
                     </el-select>
                 </div>
 
-                <span class='label marL10'>科类</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in disciplineList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
-                </div>
 
-
-
-                <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
-                    重置
-                </div>-->
-                <!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
-                    关联函授站
-                </div>-->
-            </div>
-
-            <div class="flexItem pageHead" style="flex-wrap: wrap">
-
-                <span class='label marL10' style="word-spacing:1.7em">专 业</span>
+                <span class='label marL10' style="word-spacing:1.7em">专业</span>
                 <div class="marL10">
                     <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
                         <el-option label="所有" value=""/>
@@ -67,6 +45,29 @@
                                 :value="item.id"/>
                     </el-select>
                 </div>
+
+
+                <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
+                    重置
+                </div>-->
+                <!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
+                    关联函授站
+                </div>-->
+            </div>
+
+            <div class="flexItem pageHead" style="flex-wrap: wrap">
+                <span class='label marL10'>类型</span>
+                <div class="marL10">
+                    <el-select v-model="tableForm.kindId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        <el-option label="所有" value=""/>
+                        <el-option
+                                v-for="(item, index) in transKindList"
+                                :key="index"
+                                :label="item.name"
+                                :value="item.id"/>
+                    </el-select>
+                </div>
+
                 <span class='label marL10'>学生</span>
                 <div class="marL10">
                     <!--searchInp-->
@@ -268,9 +269,22 @@
                     stationId:"",
                     majorId:"",
                     level:"",
-                    disciplineId:"",
-                    enrollYear:"",
+                    kindId:"",
+                    batchId:"",
+
+                    // disciplineId:"",
+                    // enrollYear:"",
                 },
+                transKindList:[{
+                    name:'变更学籍状态',
+                    id:1
+                },{
+                    name:'变更专业',
+                    id:2
+                },{
+                    name:'变更函授站',
+                    id:3
+                }],
                 tableData: [{}],
                 //分页——start
                 pageNum: 1,
@@ -287,8 +301,9 @@
                     name:"",
                     cardType:0,
                     cardNo:"",
-                    disciplineId:"",
+                    // disciplineId:"",
                     majorId:"",
+                    batchId:"",
                     level:"",
                     enrollYear:"",
                     remark:"",
@@ -341,7 +356,8 @@
                 stationList:[],
                 yearList:[],
                 actionId:"",
-                actionRow:{}
+                actionRow:{},
+                batchList:[]
             };
         },
         components: {},
@@ -353,9 +369,10 @@
             for(let i=now;i<now+5;i++){
                 this.yearList.push(i)
             }
-            this.tableForm.batchId=now;
-            this.getStudentPreSimpleDisplines();
+            // this.tableForm.batchId=now;
+            // this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
+            this.getBatchList()
             this.getStudentPreSimpleStations();
             this.get_ajax();
         },
@@ -368,6 +385,11 @@
         },
         methods: {
             //获取数据
+            getBatchList(){
+                this.$api.essentialInformation.batch_get_list().then((res)=>{
+                    this.batchList=res.data.pageList
+                })
+            },
             showAllot(item){
                 this.actionRow={...item};
                 this.allotDialogVisible=true;
@@ -409,6 +431,7 @@
                     }
                 });
             },
+
             showSaveOut(id){
                 this.actionId=id;
                 this.saveOutDialogVisible=true;

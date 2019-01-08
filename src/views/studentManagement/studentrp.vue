@@ -3,10 +3,11 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
 
-                <span class='label marL10'>年纪</span>
+                <span class='label marL10'>年级</span>
                 <div class="marL10">
                     <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                        <el-option label="所有" value=""/>
+                        <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </div>
 
@@ -45,6 +46,17 @@
                 </div>
 
 
+                <span class='label marL10'>函授站</span>
+                <div class="marL10">
+                    <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        <el-option label="所有" value=""/>
+                        <el-option
+                                v-for="(item, index) in stationList"
+                                :key="index"
+                                :label="item.name"
+                                :value="item.id"/>
+                    </el-select>
+                </div>
 
 
                 <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
@@ -57,29 +69,16 @@
 
             <div class="flexItem pageHead" style="flex-wrap: wrap">
 
-                <!--<span class='label marL10' style="word-spacing:1.7em">专 业</span>-->
-                <!--<div class="marL10">-->
-                    <!--<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
-                        <!--<el-option label="所有" value=""/>-->
-                        <!--<el-option-->
-                                <!--v-for="(item,index) in majorList"-->
-                                <!--:key="index"-->
-                                <!--:label="item.name"-->
-                                <!--:value="item.id"/>-->
-                    <!--</el-select>-->
-                <!--</div>-->
-
-                <span class='label marL10'>函授站</span>
+                <span class='label marL10' style="word-spacing:1.7em">类型</span>
                 <div class="marL10">
-                    <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                    <el-select v-model="tableForm.kind" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
                         <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item, index) in stationList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
+                        <el-option label="奖励" :value="1"></el-option>
+                        <el-option label="惩罚" :value="2"></el-option>
                     </el-select>
                 </div>
+
+
                 <span class='label marL10'>学生</span>
                 <div class="marL10">
                     <!--searchInp-->
@@ -98,6 +97,7 @@
                 <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
                 <!--补录-->
                 <!--</div>-->
+
                 <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
                 <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
             </div>
@@ -116,34 +116,34 @@
                     </el-table-column>
                     <el-table-column
                             prop="enrollYear"
-                            label="报名年份">
+                            label="报名年份" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
-                            label="姓名">
+                            label="姓名"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            label="证件类型">
+                            label="证件类型"  :show-overflow-tooltip="true">
                         <template slot-scope="scope">
                             {{scope.row.cardType==0?'身份证':scope.row.cardType==1?'军官证/士兵证':'港澳通行证'}}
                         </template>
                     </el-table-column>
                     <el-table-column
                             prop="cardNo"
-                            label="证件号码">
+                            label="证件号码"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="majorName"
                             label="层次"
-                            width="200">
+                            :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
-                            label="科类">
+                            label="科类"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="majorName"
-                            label="专业">
+                            label="专业"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="stationName"
@@ -160,11 +160,13 @@
                             fixed="right"
                             label="操作" width="200">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)">分配</el-button>
+                            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)">分配</el-button>-->
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
+
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
+
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                            <baseDelBtn delUrl="/student/rp" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+                            <!--<baseDelBtn delUrl="/student/rp" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>-->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -180,60 +182,42 @@
                 </el-pagination>
             </div>
 
-            <!--<el-dialog-->
-            <!--:title="dialogType===0?'添加':'编辑'"-->
-            <!--:visible.sync="dialogAddVisible"-->
-            <!--width="660px"-->
-            <!--center-->
-            <!--:append-to-body="true"-->
-            <!--class="kf-dialog-add">-->
-            <!--<el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">-->
-            <!--<el-form-item label="学生名称" prop="name">-->
-            <!--<el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="证件类型" prop="cardType">-->
-            <!--<el-select  style="width:100%" v-model="form.cardType" placeholder="请选择证件类型">-->
-            <!--<el-option label="身份证" :value="0"></el-option>-->
-            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
-            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="证件号码" prop="cardNo">-->
-            <!--<el-input v-model.trim="form.cardNo" placeholder="请输入证件号码"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="科类" prop="disciplineId">-->
-            <!--<el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">-->
-            <!--<el-option v-for="(item,index) in disciplineList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="专业" prop="majorId">-->
-            <!--<el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">-->
-            <!--<el-option v-for="(item,index) in majorList" :key="index"  :label="item.name" :value="item.id"></el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="层次" prop="level">-->
-            <!--<el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">-->
-            <!--<el-option label="军官证/士兵证" :value="1"></el-option>-->
-            <!--<el-option label="港澳通行证" :value="2"></el-option>-->
-            <!--</el-select>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="报考年份" prop="enrollYear">-->
-            <!--<el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="状态">-->
-            <!--<el-radio-group v-model="form.ableStatus">-->
-            <!--<el-radio :label="1">启用</el-radio>-->
-            <!--<el-radio :label="0">禁用</el-radio>-->
-            <!--</el-radio-group>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="备注" prop="remark">-->
-            <!--<el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>-->
-            <!--</el-form-item>-->
-            <!--</el-form>-->
-            <!--<div slot="footer" class="dialog-footer">-->
-            <!--<el-button type="primary" @click="submitForm">保 存</el-button>-->
-            <!--</div>-->
-            <!--</el-dialog>-->
+            <el-dialog
+            title="添加奖惩信息"
+            :visible.sync="dialogAddVisible"
+            width="660px"
+            center
+            :append-to-body="true"
+            class="kf-dialog-add">
+            <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
+            <el-form-item label="学生姓名" prop="name">
+            <el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+            </el-form-item>
+
+                <el-form-item label="证件号码" v-if="form.cardNo">
+                    <el-input v-model.trim="form.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
+                </el-form-item>
+
+
+                <el-form-item label="类型" prop="kind">
+                    <el-select  style="width:100%" v-model="form.kind" placeholder="请选择证件类型">
+                        <!--<el-option label="身份证" :value="0"></el-option>-->
+                        <el-option label="奖励" :value="1"></el-option>
+                        <el-option label="惩罚" :value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                    <el-form-item label="内容" prop="content">
+                        <el-input v-model.trim="form.content" placeholder="请输入内容" type="textarea" :rows="2"></el-input>
+                    </el-form-item>
+
+                <el-form-item label="备注" prop="remark">
+                 <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
+                </el-form-item>
+                </el-form>
+            <div slot="footer" class="dialog-footer">
+             <el-button type="primary" @click="submitForm">保 存</el-button>
+            </div>
+            </el-dialog>
 
 
 
@@ -246,6 +230,12 @@
                     :append-to-body="true"
                     class="kf-dialog-add">
                 <el-form ref="allotForm" :rules="allotRules" :model="allotForm" label-width="120px" class="kf-form-add">
+                    <el-form-item label="学生">
+                        <el-input v-model.trim="actionRow.name" :disabled="true" placeholder="请输入学生姓名"></el-input>
+                    </el-form-item>
+                    <el-form-item label="学生">
+                        <el-input v-model.trim="actionRow.name" :disabled="true" placeholder="请输入学生姓名"></el-input>
+                    </el-form-item>
                     <el-form-item label="学生">
                         <el-input v-model.trim="actionRow.name" :disabled="true" placeholder="请输入学生姓名"></el-input>
                     </el-form-item>
@@ -273,6 +263,28 @@
 <script>
     export default {
         data() {
+            var checkStudent = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入学生姓名'));
+                } else {
+                    this.$api.studentManagement.getStudentInfoList({
+                        name:this.form.name,
+                        pageNum:1,
+                        pageSize:10
+                    }).then((res)=>{
+                        if(!res.data.pageList.length){
+                            return callback(new Error('学生不存在'));
+                        }else{
+                            this.form.studentId=res.data.pageList[0].id;
+                            this.$set(this.form,'cardNo',res.data.pageList[0].cardNo)
+                            // this.form.cardNo=res.data.pageList[0].cardNo;
+                            return callback();
+                        }
+                    }).catch((e)=>{
+                        return callback(new Error('学生不存在'));
+                    })
+                }
+            };
             return {
                 extra: [],
                 tableLoading: false,
@@ -281,8 +293,8 @@
                     stationId:"",
                     majorId:"",
                     level:"",
-                    disciplineId:"",
-                    enrollYear:"",
+                    batchId:"",
+                    kind:"",
                 },
                 tableData: [{}],
                 //分页——start
@@ -297,31 +309,20 @@
                 saveAppendDialogVisible:false,
                 dialogType: 0,
                 form: {
-                    name:"",
-                    cardType:0,
-                    cardNo:"",
-                    disciplineId:"",
-                    majorId:"",
-                    level:"",
-                    enrollYear:"",
+                    studentId:"",
+                    content:"",
                     remark:"",
-                    ableStatus:1,
+                    kind:""
                 },
                 rulesForm: {
                     name: [
-                        { required: true, message: "请输入学生姓名", trigger: "blur" },
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "最长 20 个字符",
-                            trigger: "change"
-                        }
+                        { required: true, validator: checkStudent, trigger: "blur" },
                     ],
-                    cardType: [
-                        { required: true, message: "请选择证件类型", trigger: "blur" },
+                    kind: [
+                        { required: true, message: "请选择操作类型", trigger: "blur" },
                     ],
-                    cardNo: [
-                        { required: true, message: "请输入证件号码", trigger: "blur" },
+                    content: [
+                        { required: true, message: "请输入内容", trigger: "blur" },
                     ],
                     disciplineId: [
                         { required: true, message: "请选择科类", trigger: "blur" },
@@ -354,7 +355,8 @@
                 stationList:[],
                 yearList:[],
                 actionId:"",
-                actionRow:{}
+                actionRow:{},
+                batchList:[]
             };
         },
         components: {},
@@ -366,10 +368,11 @@
             for(let i=now;i<now+5;i++){
                 this.yearList.push(i)
             }
-            this.tableForm.batchId=now;
+            // this.tableForm.batchId=now;
             // this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getStudentPreSimpleStations();
+            this.getBatchList()
             this.get_ajax();
         },
         watch:{
@@ -381,6 +384,11 @@
         },
         methods: {
             //获取数据
+            getBatchList(){
+                this.$api.essentialInformation.batch_get_list().then((res)=>{
+                    this.batchList=res.data.pageList
+                })
+            },
             showAllot(item){
                 this.actionRow={...item};
                 this.allotDialogVisible=true;
@@ -472,15 +480,10 @@
                 this.dialogType = 0;
                 this.dialogAddVisible = true;
                 this.form = {
-                    name:"",
-                    cardType:0,
-                    cardNo:"",
-                    disciplineId:"",
-                    majorId:"",
-                    level:"",
-                    enrollYear:"",
+                    studentId:"",
+                    content:"",
                     remark:"",
-                    ableStatus:1
+                    kind:""
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();

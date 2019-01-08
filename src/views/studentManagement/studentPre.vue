@@ -1,82 +1,111 @@
 <template>
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
-  		<div class="pageHead flexItem" style="flex-wrap:pre-wrap">
+  		<div class="pageHead flexItem" style="flex-wrap:wrap">
 
-		 	<span class='label marL10'>报考年份</span>
-  		<div class="marL10">
-				 <el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-				 		<el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
-	        </el-select>
-		 	</div>
+			<div class="flexItem" style="width: 310px">
+				<span class='label marL10'>报考年份</span>
+				<div class="marL10">
+					<el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+						<el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+					</el-select>
+				</div>
+			</div>
 
-		 	<span class='label marL10'>层次</span>
-  		<div class="marL10">
+
+		 <div class="flexItem" style="width: 310px">
+			 <span class='label marL10'>层次</span>
+			 <div class="marL10">
 				 <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-				 	  <el-option label="所有" value=""/>
-		        <el-option label="高起专" :value="1"></el-option>
-          	<el-option label="专升本" :value="2"></el-option>
-          	<el-option label="高起本" :value="3"></el-option>
-	        </el-select>
-		 	</div>
+					 <el-option label="所有" value=""/>
+					 <el-option label="高起专" :value="1"></el-option>
+					 <el-option label="专升本" :value="2"></el-option>
+					 <el-option label="高起本" :value="3"></el-option>
+				 </el-select>
+			 </div>
+		 </div>
 
-		 	<span class='label marL10'>科类</span>
-  		<div class="marL10">
+		 <div class="flexItem" style="width: 310px">
+			 <span class='label marL10'>科类</span>
+			 <div class="marL10">
 				 <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-		              <el-option label="所有" value=""/>
-		              <el-option
-		                v-for="(item,index) in disciplineList"
-		                :key="index"
-		                :label="item.name"
-		                :value="item.id"/>
-	          	  </el-select>
-		 	</div>
+					 <el-option label="所有" value=""/>
+					 <el-option
+							 v-for="(item,index) in disciplineList"
+							 :key="index"
+							 :label="item.name"
+							 :value="item.id"/>
+				 </el-select>
+			 </div>
+		 </div>
+
+			<div class="flexItem" style="width: 310px">
+				<span class='label marL10' style="word-spacing:1.7em">专 业</span>
+				<div class="marL10">
+					<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+						<el-option label="所有" value=""/>
+						<el-option
+								v-for="(item,index) in majorList"
+								:key="index"
+								:label="item.name"
+								:value="item.id"/>
+					</el-select>
+				</div>
+			</div>
 
 
+			<div class="flexItem" style="width: 310px">
+				<span class='label marL10'>函授站</span>
+				<div class="marL10">
+					<el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+						<el-option label="所有" value=""/>
+						<el-option
+								v-for="(item, index) in stationList"
+								:key="index"
+								:label="item.name"
+								:value="item.id"/>
+					</el-select>
+				</div>
+			</div>
 
- 				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
- 					重置
- 				</div>-->
- 				<!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
- 					关联函授站
- 				</div>-->
+
   		</div>
 
   		<div class="flexItem pageHead" style="flex-wrap: wrap">
 
-			<span class='label marL10' style="word-spacing:1.7em">专 业</span>
-			<div class="marL10">
-				<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-					<el-option label="所有" value=""/>
-					<el-option
-							v-for="(item,index) in majorList"
-							:key="index"
-							:label="item.name"
-							:value="item.id"/>
-				</el-select>
-			</div>
+			<!--<span class='label marL10' style="word-spacing:1.7em">专 业</span>-->
+			<!--<div class="marL10">-->
+				<!--<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
+					<!--<el-option label="所有" value=""/>-->
+					<!--<el-option-->
+							<!--v-for="(item,index) in majorList"-->
+							<!--:key="index"-->
+							<!--:label="item.name"-->
+							<!--:value="item.id"/>-->
+				<!--</el-select>-->
+			<!--</div>-->
 
-		 	<span class='label marL10'>函授站</span>
-			 	<div class="marL10">
-					 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-			              <el-option label="所有" value=""/>
-			              <el-option
-			                v-for="(item, index) in stationList"
-			                :key="index"
-			                :label="item.name"
-			                :value="item.id"/>
-		            </el-select>
-			 	</div>
-			 	<span class='label marL10'>学生</span>
-			 	<div class="marL10">
-	 					<!--searchInp-->
-					<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">
-					 	<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
-					</el-input>
-	 			</div>
-				<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
-					添加
-				</div>
+		 	<!--<span class='label marL10'>函授站</span>-->
+			 	<!--<div class="marL10">-->
+					 <!--<el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
+			              <!--<el-option label="所有" value=""/>-->
+			              <!--<el-option-->
+			                <!--v-for="(item, index) in stationList"-->
+			                <!--:key="index"-->
+			                <!--:label="item.name"-->
+			                <!--:value="item.id"/>-->
+		            <!--</el-select>-->
+			 	<!--</div>-->
+			 	<!--<span class='label marL10'>学生</span>-->
+			 	<!--<div class="marL10">-->
+	 					<!--&lt;!&ndash;searchInp&ndash;&gt;-->
+					<!--<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">-->
+					 	<!--<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>-->
+					<!--</el-input>-->
+	 			<!--</div>-->
+				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">-->
+					<!--添加-->
+				<!--</div>-->
 
 				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveOutDialogVisible=true' >-->
 						<!--转出-->
@@ -85,6 +114,20 @@
 				<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
 					<!--补录-->
 				<!--</div>-->
+			<div class="flexItem" style="width:350px">
+				<span class='label marL10'>学生</span>
+				<div class="marL10">
+					<!--searchInp-->
+					<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">
+						<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
+					</el-input>
+				</div>
+			</div>
+
+
+			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+				添加
+			</div>
 				 <download url="student/enrolled/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
 		      	<upload class="marL10" url="/student/enrolled/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
   		</div>
@@ -120,9 +163,9 @@
 		          label="证件号码">
 		        </el-table-column>
 		        <el-table-column
-		          prop="majorName"
+		          prop="level"
 		          label="层次"
-		          width="200">
+		          width="200" :formatter="forLevel">
 		        </el-table-column>
 		        <el-table-column
 		          prop="disciplineName"
@@ -147,9 +190,9 @@
 		          fixed="right"
 		          label="操作" width="350">
 		          <template slot-scope="scope">
-					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveOut(scope.row.id)">转出</el-button>
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>
-					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
+					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveOut(scope.row.id)" v-if="extra.indexOf('添加转出')>-1">转出</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)" v-if="extra.indexOf('添加补录')>-1">补录</el-button>
+					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)"  v-if="extra.indexOf('学生详情')>-1">查看</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/student/before" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
@@ -233,7 +276,7 @@
 				class="kf-dialog-add">
 			<el-form ref="saveOutForm" :rules="saveOutRules" :model="saveOutForm" label-width="120px" class="kf-form-add">
 				<el-form-item label="转出信息" prop="content">
-					<el-input v-model.trim="saveOutForm.content" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+					<el-input v-model.trim="saveOutForm.content" placeholder="请输入转出信息（不超过20个字）"></el-input>
 				</el-form-item>
 				<!--<el-form-item label="状态">-->
 					<!--<el-radio-group v-model.trim="form.ableStatus">-->
@@ -398,11 +441,12 @@ export default {
       sureSaveOut(formName){
           this.$refs[formName].validate(valid => {
               if (valid) {
-                	this.$api.studentManagement.studentPre_saveAppend({
+                	this.$api.studentManagement.studentPre_saveOut({
                         studentId:this.actionId,
 						...this.saveOutForm
 					}).then((res)=>{
 						this.$message.success("转出成功");
+						this.saveOutDialogVisible=false;
 						this.ready_ajax()
 					}).catch((e)=>{
                         this.$message.success("转出失败")
@@ -421,6 +465,7 @@ export default {
 					  ...this.saveAppendForm
                   }).then((res)=>{
                       this.$message.success("补录成功");
+                      this.saveAppendDialogVisible=false;
                       this.ready_ajax()
                   }).catch((e)=>{
                       this.$message.success("失败")
@@ -506,13 +551,14 @@ export default {
 //      remark: row.remark, //备注
 //      ableStatus: row.ableStatus //启用状态(1启用0禁用)
         id:row.id,
-        name:row.name,
-      	cardType:row.cardType,
+        name:row.userName,
+          cardType:row.cardType,
       	cardNo:row.cardNo,
       	disciplineId:row.disciplineId,
       	majorId:row.majorId,
-      	level:row.level,
+      	level:+row.level,
       	enrollYear:row.enrollYear,
+          ableStatus:row.ableStatus,
       	remark:row.remark,
       };
       this.$nextTick(() => {
@@ -573,7 +619,15 @@ export default {
     	this.$api.message.getNoticeStationsList().then((res)=>{
     		this.stationList=res.data.list
     	})
-    }
+    },
+      forLevel(row){
+          switch(row.level){
+			  case "1":return "高起专";break;
+              case "2":return "专升本";break;
+              case "3":return "高起本";break;
+			  default:return "未知"
+		  }
+	  }
     //分页end
   }
 };

@@ -33,7 +33,7 @@
 			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 				添加
 			</div>
- 				
+
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
  					重置
  				</div>-->
@@ -95,7 +95,7 @@
 		          fixed="right"
 		          label="操作" width="200">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1" >发布</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发布')>-1" >发布</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/notice/notice" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
@@ -112,7 +112,7 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
+
   		<el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -127,7 +127,7 @@
          <el-form-item label="类别" prop="kindId">
           <el-select  style="width:100%" v-model="form.kindId" placeholder="请选择类别">
           	<el-option v-for="(item,index) in kindList" :key="index" :value="item.id" :label="item.name">
-          		
+
           	</el-option>
           </el-select>
         </el-form-item>
