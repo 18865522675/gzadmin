@@ -112,20 +112,23 @@ let path = to.matched[to.matched.length - 1].path;
 if (notAuthority.indexOf(path) === -1) {
     store.dispatch("route_change", to.matched);
     // 获取权限
+    if(Cookies.set("userInfo")){
+         	store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
+    }
 //  	store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
-    	next()
-//  permissionReady()
-//    .then(() => {
-//      // 读取本地信息
-//      store.dispatch("store_ready", () => {
-//        next();
-//      });
-//    })
-//    .catch(() => {
-//      ElementUI.Message("获取权限失败");
-//      Cookies.remove("userInfo");
-//      router.replace("/login");
-//    });
+ permissionReady()
+   .then(() => {
+     // 读取本地信息
+     store.dispatch("store_ready", () => {
+       next();
+     });
+   })
+   .catch((e) => {
+     console.log(e)
+     ElementUI.Message("获取权限失败");
+     Cookies.remove("userInfo");
+     router.replace("/login");
+   });
 } else {
     next();
 }

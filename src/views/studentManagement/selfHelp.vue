@@ -3,47 +3,78 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
 
-                <span class='label marL10'>年级</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
-                    </el-select>
+                <div class="headTopItem">
+                    <span class='label marL10'>年级</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </div>
                 </div>
 
-                <span class='label marL10'>层次</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option label="高起专" :value="1"></el-option>
-                        <el-option label="专升本" :value="2"></el-option>
-                        <el-option label="高起本" :value="3"></el-option>
-                    </el-select>
+                <div class="headTopItem">
+                    <span class='label marL10'>层次</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option label="高起专" :value="1"></el-option>
+                            <el-option label="专升本" :value="2"></el-option>
+                            <el-option label="高起本" :value="3"></el-option>
+                        </el-select>
+                    </div>
                 </div>
 
-                <span class='label marL10'>科类</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in disciplineList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+                <div class="headTopItem">
+                    <span class='label marL10'>科类</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option
+                                    v-for="(item,index) in disciplineList"
+                                    :key="index"
+                                    :label="item.name"
+                                    :value="item.id"/>
+                        </el-select>
+                    </div>
+                </div>
+
+                <div class="headTopItem">
+                    <span class='label marL10' style="word-spacing:1.7em">专业</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option
+                                    v-for="(item,index) in majorList"
+                                    :key="index"
+                                    :label="item.name"
+                                    :value="item.id"/>
+                        </el-select>
+                    </div>
                 </div>
 
 
-                <span class='label marL10' style="word-spacing:1.7em">专业</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in majorList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+                <div class="headTopItem" style="width: 400px">
+                    <span class='label marL10'>学生</span>
+                    <div class="marL10">
+                        <!--searchInp-->
+                        <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">
+                            <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
+                        </el-input>
+                    </div>
                 </div>
+
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+                    添加
+                </div>
+                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+
+
+
+
+
+
 
 
 
@@ -68,26 +99,19 @@
                                 <!--:value="item.id"/>-->
                     <!--</el-select>-->
                 <!--</div>-->
-                <span class='label marL10'>学生</span>
-                <div class="marL10">
-                    <!--searchInp-->
-                    <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">
-                        <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
-                    </el-input>
-                </div>
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
-                    添加
-                </div>
 
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveOutDialogVisible=true' >-->
-                <!--转出-->
+                <!--<span class='label marL10'>学生</span>-->
+                <!--<div class="marL10">-->
+                    <!--&lt;!&ndash;searchInp&ndash;&gt;-->
+                    <!--<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">-->
+                        <!--<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>-->
+                    <!--</el-input>-->
                 <!--</div>-->
-
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
-                <!--补录-->
+                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">-->
+                    <!--添加-->
                 <!--</div>-->
-                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <!--<download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />-->
+                <!--<upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>-->
             </div>
             <div class="pageCon">
                 <el-table
@@ -121,9 +145,12 @@
                             label="证件号码"  :show-overflow-tooltip="true" >
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
+                            prop="level"
                             label="层次"
                             width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
@@ -367,7 +394,7 @@
             this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getBatchList();
-            this.getStudentPreSimpleStati0ons();
+            this.getStudentPreSimpleStations();
             // this.get_ajax();
         },
         watch:{

@@ -13,8 +13,8 @@
 		                :value="item.id"/>
 	          	  </el-select>
 		 	</div>
-		 	<span class='label marL10'>函授站</span>
-		 	<div class="marL10">
+		 	<span class='label marL10' v-if="!userInfo.stationId">函授站</span>
+		 	<div class="marL10" v-if="!userInfo.stationId">
 				 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 		              <el-option label="所有" value=""/>
 		              <el-option
@@ -153,6 +153,7 @@
 </template>
 
 <script>
+    import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -217,6 +218,8 @@ export default {
     };
   },
   components: {},
+    computed: mapState(["userInfo"]),
+
   mounted() {
 	this.getKindList();
 	this.getStationList();

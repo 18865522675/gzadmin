@@ -3,39 +3,49 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
 
-                <span class='label marL10'>课程</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
-                    </el-select>
+                <div class="headTopItem">
+                    <span class='label marL10'>课程</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </div>
                 </div>
-				
-				
-				
-                <span class='label marL10'>函授站</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item, index) in stationList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+
+                <div class="headTopItem">
+                    <span class='label marL10'>函授站</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option
+                                    v-for="(item, index) in stationList"
+                                    :key="index"
+                                    :label="item.name"
+                                    :value="item.id"/>
+                        </el-select>
+                    </div>
                 </div>
-                
-                <span class='label marL10'>作业</span>
-                <div class="marL10">
-                    <!--searchInp-->
-                    <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入作业名称">
-                        <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
-                    </el-input>
+                <div class="headTopItem" style="width: 370px">
+                    <span class='label marL10'>作业</span>
+                    <div class="marL10">
+                        <!--searchInp-->
+                        <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入作业名称">
+                            <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
+                        </el-input>
+                    </div>
                 </div>
+
+
+
+
+
+
                 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' >
                     添加
                 </div>
 
-
+                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
                 <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
@@ -46,19 +56,6 @@
                 </div>-->
             </div>
 
-            <div class="flexItem pageHead" style="flex-wrap: wrap">
-
-
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveOutDialogVisible=true' >-->
-                <!--转出-->
-                <!--</div>-->
-
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='saveAppend_show' v-if="extra.indexOf('添加')>-1">-->
-                <!--补录-->
-                <!--</div>-->
-                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
-            </div>
             <div class="pageCon">
                 <el-table
                         v-loading="tableLoading"
@@ -149,7 +146,7 @@
 			      <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
 			        <el-form-item label="教学计划" prop="planId">
 			          <el-select  style="width:100%" v-model="form.cardType" placeholder="请选择教学计划">
-			          	
+
 			          </el-select>
 			        </el-form-item>
 			        <el-form-item label="作业名称" prop="name">

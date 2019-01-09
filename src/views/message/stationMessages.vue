@@ -2,8 +2,8 @@
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
-		 	<span class='label marL10'>函授站</span>
-		 	<div class="marL10">
+		 	<span class='label marL10' v-if="!userInfo.stationId">函授站</span>
+		 	<div class="marL10" v-if="!userInfo.stationId">
 				 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 		              <el-option label="所有" value=""/>
 		              <el-option
@@ -16,16 +16,16 @@
 		 	<span class='label marL10'>学生</span>
 		 	<div class="marL10">
  					<!--searchInp-->
- 				
+
 			<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入收件人姓名">
 			 	<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
 			</el-input>
-			
+
  			</div>
 			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 				添加
 			</div>
- 				
+
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
  					重置
  				</div>-->
@@ -114,7 +114,7 @@
 			        class="kf-pagination">
 			      </el-pagination>
   		</div>
-  		
+
   		<el-dialog
       :title="dialogType===0?'添加':'编辑'"
       :visible.sync="dialogAddVisible"
@@ -129,7 +129,7 @@
          <el-form-item label="收件人" prop="receivedIds">
           <el-select  style="width:100%" v-model="form.receivedIds" multiple placeholder="请选择收件人">
           	<el-option v-for="(item,index) in kindList" :key="index" :value="item.id" :label="item.userName">
-          		
+
           	</el-option>
           </el-select>
         </el-form-item>
@@ -149,6 +149,7 @@
 </template>
 
 <script>
+    import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -211,6 +212,7 @@ export default {
      stationList:[]
     };
   },
+    computed: mapState(["userInfo"]),
   components: {},
   mounted() {
 	this.getStudentList();
@@ -232,7 +234,7 @@ export default {
   		}).then((res)=>{
   			this.stationList=res.data.list;
   		}).catch((e)=>{
-  			
+
   		})
   	},
     //获取数据
@@ -241,7 +243,7 @@ export default {
       this.$api.message
         .getStationList({
           pageNum: this.pageNum,
-          pageSize: this.pageSize,	
+          pageSize: this.pageSize,
           ...this.tableForm
         })
         .then(res => {

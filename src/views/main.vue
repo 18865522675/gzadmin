@@ -59,7 +59,7 @@
 	        </div>
 	        <div  class="header-item flexItem hasOut" >
 	        	<img src="../assets/img/geren.png" alt="" />
-	        	<span>管理员· {{JSON.parse(userInfo).name}}</span>
+	        	<span>管理员· <span >{{userInfo.name}}</span></span>
 	        	<span> | </span>
 	        	<span style="cursor: pointer;" @click="logout">退出登录</span>
 	        </div>
@@ -100,7 +100,9 @@ export default {
   components: {},
   mounted() {
 	  this.$store.commit("save_userInfo", Cookies.get("userInfo"));
-	  console.log(this.userInfo)
+	  this.$nextTick(()=>{
+          console.log(this.userInfo)
+	  })
   	this.routesList=this.$router.options.routes[3].children.slice(1);
   },
   methods: {

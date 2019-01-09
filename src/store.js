@@ -71,6 +71,7 @@ export default new Vuex.Store({
       });
     },
     save_userInfo(state, res) {
+      console.log(res)
       return (state.userInfo = res);
     },
     save_extra(state, res) {
