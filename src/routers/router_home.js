@@ -12,7 +12,8 @@ const router_module = {
       path: "/home",
       component: resolve => require(["@/views/home/home.vue"], resolve),
       meta: {
-        show: false
+        show: true,
+        title:'首页'
       }
     },
     {

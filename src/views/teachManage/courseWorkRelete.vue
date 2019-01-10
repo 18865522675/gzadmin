@@ -1,34 +1,32 @@
 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
-            <div class="pageHead flexItem" style="flex-wrap:wrap">
-                <lebel>请先设置各项题目总分(总和100)</lebel>
-                <div class="headTopItem">
-                    <div>
-                        <el-form class="flexDir-r">
-                            <div class="learn-item">
-                                <el-form-item label="选择题">
-                                    <el-input v-model="choose">
+            <div class="pageHead">
+                <div>请先设置各项题目总分(总和100)</div>
+                <div style="margin-top: 30px;">
+  
+                        <el-form class="flexDir-r" label="80px" style="display: flex;justify-content: flex-start;">
+                                <el-form-item label="单选题" style="flex:1">
+                                    <el-input type="number" v-model.number="simpleScore" placeholder='请输入单选题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-                            </div>
-                            <div class="learn-item">
-                                <el-form-item label="单选题">
-                                    <el-input v-model="single">
+           
+                                <el-form-item label="多选题" style="margin-left: 20px;flex:1">
+                                    <el-input type="number"  v-model.number="multipleScore"  placeholder='请输入多选题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-                            </div>
-                            <div class="learn-item">
-                                <el-form-item label="判断题">
-                                    <el-input v-model="judge">
+                            
+                      
+                                <el-form-item label="判断题"  style="margin-left: 20px;flex:1">
+                                    <el-input type="number"  v-model.number="judgementScore"  placeholder='请输入判断题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-                            </div>
+                            
                         </el-form>
-                    </div>
+                   
 
                 </div>
 
@@ -38,9 +36,9 @@
 
 
 
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' >-->
-                    <!--添加-->
-                <!--</div>-->
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn" style="margin-left: 20px!important;" @click="savePager">
+                    	生成试卷
+                </div>
             </div>
 
             <div class="pageCon">
@@ -48,21 +46,22 @@
                         v-loading="tableLoading"
                         :data="tableData"
                         border
+                        tooltip-effect="dark"
+                        ref="multipleTable"
+                        @selection-change="handleSelectionChange"
                         class="kf-table"
                         style="width: 100%">
+                     <el-table-column
+				      type="selection"
+				      width="55">
+				    </el-table-column>
                     <el-table-column
-                            type="index"
-                            :index="(index) => (pageNum - 1) * pageSize + index + 1"
-                            label="序号"
-                            width="60">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
+                            prop="content"
                             label="题目" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="siteCourseName"
-                            label="题型" :show-overflow-tooltip="true">
+                            prop="type"
+                            label="题型" :show-overflow-tooltip="true" :formatter="forType">
                     </el-table-column>
                 </el-table>
                 <el-pagination
@@ -220,7 +219,15 @@
                 yearList:[],
                 actionId:"",
                 actionRow:{},
-                teachPlanList:[]
+                teachPlanList:[],
+                multipleSelection: [],
+                simpleScore:"",
+                multipleScore:"",
+                judgementScore:"",
+//              simpleCount:0,
+//              multipleCount:0,
+//              judgementCount:0
+              
             };
         },
         components: {},
@@ -248,6 +255,15 @@
         },
         methods: {
             //获取数据
+            handleSelectionChange(val) {
+            	if(this.simpleScore+this.multipleScore+this.judgementScore!=100){
+            		this.$nextTick(()=>{
+            			 this.$refs.multipleTable.clearSelection();
+            		})
+            		return this.$message.warning("请设置正确的总分");
+            	}
+	        	this.multipleSelection = val;
+	      	},
             get_discussTeachPlanList(){
                 this.$api.teachManage
                     .get_courseWorkTeachPlanList()
@@ -326,6 +342,9 @@
                     .then(res => {
                         this.extra = res.data.extra;
                         this.tableData = res.data.exercises;
+                        this.simpleScore=res.data.singleAllScore?res.data.singleAllScore:"";
+                        this.multipleScore=res.data.multipleAllScore?res.data.multipleAllScore:"";
+                        this.judgementScore=res.data.judgmentAllScore?res.data.judgmentAllScore:"";
                         this.total = +res.data.total;
                         this.tableLoading = false;
                     });
@@ -425,6 +444,45 @@
                 this.$api.message.getNoticeStationsList().then((res)=>{
                     this.stationList=res.data.list
                 })
+            },
+            forType(row){
+            	switch(row.type){
+            		case 1:return "判断";break;
+            		case 2:return "单选";break;
+            		case 3:return "多选";break;
+            	}
+            },
+            savePager(){
+            	if(!this.multipleSelection.length){
+            		return this.$message.warning("请先选择习题")
+            	}
+            	let  simpleCount=0;
+                let multipleCount=0;
+                let judgementCount=0;
+                let idarr=[];
+                this.multipleSelection.map((item)=>{
+                	idarr.push(item.id)
+                	switch(item.type){
+                		case 1:judgementCount+=1;break;
+                		case 2:simpleCount+=1;break;
+                		case 3:multipleCount+=1;break;
+                	}
+                })
+                this.$api.teachManage.courseWorkAddWork({
+                	courseWorkId:this.$route.params.workId,
+                	simpleCount,
+                	multipleCount,
+                	judgementCount,
+                	simpleScore:this.simpleScore,
+                	multipleScore:this.multipleScore,
+                	judgementScore:this.judgementScore,
+                	exerciseList:idarr.join(",")
+                }).then(()=>{
+                	this.$message.success("试卷生成成功")
+                }).catch((e)=>{
+                	this.$message.error("试卷生成失败")
+                })
+                
             }
             //分页end
         }

@@ -49,14 +49,14 @@ export default new Router({
       component: main,
       redirect: "/home",
       children: [
-        {
-          path: "/demo",
-          meta: {
-            title: "demo",
-            show: false
-          },
-          component: demo
-        },
+//      {
+//        path: "/demo",
+//        meta: {
+//          title: "demo",
+//          show: false
+//        },
+//        component: demo
+//      },
         router_home, //首页
 //      router_accountManagement, //账号管理
         router_essentialInformation, //基本信息
@@ -67,8 +67,8 @@ export default new Router({
 //         router_orderPay, //订单缴费
 //      router_payment, //缴费管理
         router_message, //公告邮件
+        router_teachManage,
         router_systemManagement, //系统管理
-        router_teachManage
       ]
     }
   ]

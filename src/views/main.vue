@@ -20,12 +20,12 @@
 			      text-color="#fff"
 			      router
 			      active-text-color="#ffd04b">
-							<template v-for="(item,index) in routesList">
+							<template v-for="(item,index) in routesArr">
 									<el-menu-item :index="item.path" v-if="!item.children">
 										<!--<img :src=`../assets/img/${item.meta.icon}.png` alt="" />-->
 						        <span slot="title" style="padding-left: 18px;">首页</span>
 						      </el-menu-item>
-						      <el-submenu  :index="index*3-12"  :key="index" v-else>
+						      <el-submenu  :index="index*3-12"  :key="index" v-else-if="item.meta.routerStatus">
 
 					          <template slot="title">
 					          		 <!--<div class="li-listItem-img" :style="{backgroundImage: 'url('+require('../../assets/img/textbook.png')+')'}" v-if="!item.logo"></div>-->
@@ -34,7 +34,7 @@
 					          		<!--<div class="menu-icon" :style="{backgroundImage: 'url('+require('../assets/img/'+item.meta.icon+'.png')+')'}"></div>-->
 					          		<span>{{item.meta.title}}</span>
 					          	</template>
-					          <div v-for="(cItem,cIndex) in item.children"   :key="cIndex"  v-if="cItem.meta.show">
+					          <div v-for="(cItem,cIndex) in item.children"   :key="cIndex"  v-if="cItem.meta.show&&item.meta.routerStatus">
 					          		<el-menu-item :index="cItem.path">{{cItem.meta.title}}</el-menu-item>
 					          </div>
 					        </el-submenu>
@@ -100,9 +100,9 @@ export default {
   components: {},
   mounted() {
 	  this.$store.commit("save_userInfo", Cookies.get("userInfo"));
-	  this.$nextTick(()=>{
-          console.log(this.userInfo)
-	  })
+	 setTimeout(()=>{
+	 	 console.log(this.routesArr)
+	 },1500)
   	this.routesList=this.$router.options.routes[3].children.slice(1);
   },
   methods: {

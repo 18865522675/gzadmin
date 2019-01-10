@@ -28,6 +28,7 @@ let permissionMenu = () => {
       .get_homeList()
       .then(res => {
         store.commit("save_extra", res.data.extra);
+        console.log(res.data.extra)
         resolve(res.data.extra);
       })
       .catch(res => {
@@ -120,6 +121,8 @@ if (notAuthority.indexOf(path) === -1) {
    .then(() => {
      // 读取本地信息
      store.dispatch("store_ready", () => {
+     	console.log(123)
+     	
        next();
      });
    })
