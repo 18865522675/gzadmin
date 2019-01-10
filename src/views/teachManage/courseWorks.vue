@@ -1,13 +1,14 @@
 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
-            <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
+            <div class="pageHead flexItem" style="flex-wrap:wrap">
 
                 <div class="headTopItem">
                     <span class='label marL10'>课程</span>
                     <div class="marL10">
-                        <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                            <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                        <el-select v-model="tableForm.planId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="全部" value=""></el-option>
+                            <el-option v-for="(item,index) in teachPlanList" :key="index" :label="item.siteCourseName" :value="item.planId"></el-option>
                         </el-select>
                     </div>
                 </div>
@@ -40,12 +41,12 @@
 
 
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' >
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' >
                     添加
                 </div>
 
-                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
                 <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
@@ -70,47 +71,39 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="batchName"
-                            label="年级">
+                            prop="name"
+                            label="作业" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="userName"
-                            label="姓名">
-                    </el-table-column>
-                    <el-table-column
-                            label="证件类型">
-                        <template slot-scope="scope">
-                            {{scope.row.cardType==0?'身份证':scope.row.cardType==1?'军官证/士兵证':'港澳通行证'}}
-                        </template>
+                            prop="siteCourseName"
+                            label="课程" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="cardNo" :show-overflow-tooltip="true"
-                             label="证件号码">
+                             label="适用">
+                        <template slot-scope="scope">
+                            {{scope.row.stationName?scope.row.stationName:'全部'}}
+                        </template>
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
-                            label="层次"
-                            width="200">
+                            prop="createTime" :show-overflow-tooltip="true"
+                            label="创建时间" :formatter="$fun.table.time">
                     </el-table-column>
                     <el-table-column
-                            prop="disciplineName"
-                            label="科类">
+                            prop="updateTime" :show-overflow-tooltip="true"
+                            label="更新时间"  :formatter="$fun.table.time">
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
-                            label="专业">
+                            prop="remark"
+                            label="备注" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="batchName"
-                            label="函授站">
+                            label="状态"
+                            width="80">
+                        <template slot-scope="scope">
+                            {{scope.row.ableStatus?"启用":"禁用"}}
+                        </template>
                     </el-table-column>
-                    <!--<el-table-column-->
-                            <!--label="状态"-->
-                            <!--width="80">-->
-                        <!--<template slot-scope="scope">-->
-                            <!--{{scope.row.ableStatus?"启用":"禁用"}}-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
                     <el-table-column
                             fixed="right"
                             label="操作" width="200">
@@ -118,7 +111,7 @@
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)" v-if="extra.indexOf('分配函授站')>-1">分配</el-button>-->
 
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" >编辑</el-button>
                             <baseDelBtn delUrl="/teaching/work" :delId="scope.row.id" :delOk="get_ajax" />
                         </template>
@@ -145,9 +138,9 @@
 			      class="kf-dialog-add">
 			      <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
 			        <el-form-item label="教学计划" prop="planId">
-			          <el-select  style="width:100%" v-model="form.cardType" placeholder="请选择教学计划">
-
-			          </el-select>
+                        <el-select v-model="form.planId" class="kf-select" placeholder="请选择" filterable  @change="searchChange" style="width: 100%">
+                            <el-option v-for="(item,index) in teachPlanList" :key="index" :label="item.siteCourseName" :value="item.planId"></el-option>
+                        </el-select>
 			        </el-form-item>
 			        <el-form-item label="作业名称" prop="name">
 			          <el-input v-model.trim="form.name" placeholder="请输入作业名称"></el-input>
@@ -209,12 +202,9 @@
                 extra: [],
                 tableLoading: false,
                 tableForm: {
-                    name: "",
+                    planId:"",
                     stationId:"",
-                    majorId:"",
-                    level:"",
-                    disciplineId:"",
-                    enrollYear:"",
+                    name:''
                 },
                 tableData: [{}],
                 //分页——start
@@ -281,7 +271,8 @@
                 stationList:[],
                 yearList:[],
                 actionId:"",
-                actionRow:{}
+                actionRow:{},
+                teachPlanList:[]
             };
         },
         components: {},
@@ -293,10 +284,11 @@
             for(let i=now;i<now+5;i++){
                 this.yearList.push(i)
             }
-            this.tableForm.batchId=now;
+            // this.tableForm.batchId=now;
             this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getStudentPreSimpleStations();
+            this.get_discussTeachPlanList()
             this.get_ajax();
         },
         watch:{
@@ -308,6 +300,13 @@
         },
         methods: {
             //获取数据
+            get_discussTeachPlanList(){
+                this.$api.teachManage
+                    .get_courseWorkTeachPlanList()
+                    .then(res => {
+                        this.teachPlanList=res.data
+                    });
+            },
             showAllot(item){
                 this.actionRow={...item};
                 this.allotDialogVisible=true;
@@ -374,8 +373,8 @@
             },
             get_ajax() {
                 this.tableLoading = true;
-                this.$api.studentManagement
-                    .getStudentEnrollList({
+                this.$api.teachManage
+                    .get_courseWorkList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         ...this.tableForm

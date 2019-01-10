@@ -3,15 +3,15 @@
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
 			<div class="headTopItem">
-				<span class='label'>年级</span>
+				<span class='label'>课程</span>
 				<div class="marL10">
-					<el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+					<el-select v-model="tableForm.planId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 						<el-option label="所有" value=""/>
 						<el-option
-								v-for="(item,index) in yearList"
+								v-for="(item,index) in teachPlanList"
 								:key="index"
-								:label="item"
-								:value="item"/>
+								:label="item.siteCourseName"
+								:value="item.planId"/>
 					</el-select>
 				</div>
 			</div>
@@ -27,7 +27,7 @@
 			</div>
 
 
-		 	 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+		 	 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show'>
 				添加
 			</div>
   		</div>
@@ -45,36 +45,40 @@
 		          width="60">
 		        </el-table-column>
 		        <el-table-column
-		          prop="batchName"
+		          prop="name"
 		          label="主题">
 		        </el-table-column>
 		        <el-table-column
-		          prop="level"
+		          prop="siteCourseName"
 		          label="课程">
 		        </el-table-column>
 		         <el-table-column
-		          prop="majorName"
-		          label="创建时间">
+		          prop="createTime"
+		          label="创建时间" :formatter="$fun.table.time">
 		        </el-table-column>
 		         <el-table-column
-		          prop="term"
-		          label="更新时间">
+		          prop="updateTime"
+		          label="更新时间" :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
-		          prop="siteCourseName"
+		          prop="remark"
 		          label="备注">
 		        </el-table-column>
-		        <el-table-column
-		          label="状态">
-		        </el-table-column>
-
+				 <el-table-column
+                   label="状态"
+                   width="80">
+                   <template slot-scope="scope">
+                     {{scope.row.ableStatus?"启用":"禁用"}}
+                   </template>
+                 </el-table-column>
 		        <el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="200">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="extra.indexOf('发布')>-1">发布</el-button>
+		          	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="extra.indexOf('发布')>-1">发布</el-button>-->
+					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/discusslook/${scope.row.id}/${scope.row.name}`)" v-if="extra.indexOf('查看主题内容')>-1" >查看</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
-		            <baseDelBtn delUrl="teaching/discuss" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+		            <baseDelBtn delUrl="/teaching/discuss" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
 		      </el-table>
@@ -98,75 +102,22 @@
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-        <el-form-item label="年级" prop="batchId">
-          <el-select  style="width:100%" v-model="form.batchId" placeholder="请选择年级">
-          	<el-option v-for="(item,index) in yearList" :key="index" :value="item" :label="item">
+        <el-form-item label="课程" prop="planId">
+          <el-select  style="width:100%" v-model="form.planId" :disabled="dialogType==1" placeholder="请选择课程">
+          	<el-option v-for="(item,index) in teachPlanList" :key="index" :value="item.planId" :label="item.siteCourseName">
 
           	</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="科类" prop="disciplineId">
-          <el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">
-          	<el-option v-for="(item,index) in disciplineList" :key="index" :value="item.id" :label="item.name">
-
-          	</el-option>
-          </el-select>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model.trim="form.name"  :disabled="dialogType==1" placeholder="请输入主题名称" ></el-input>
         </el-form-item>
-        <el-form-item label="层次" prop="level">
-          <el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">
-          	<el-option label="所有" value=""/>
-            <el-option value="1" label="高起专"></el-option>
-            <el-option value="2" label="专升本"></el-option>
-            <el-option value="3" label="高起本"></el-option>
-          </el-select>
-        </el-form-item>
-         <el-form-item label="专业" prop="majorId">
-          <el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">
-          	<el-option v-for="(item,index) in majorList" :key="index" :value="item.id" :label="item.name">
-
-          	</el-option>
-          </el-select>
-        </el-form-item>
-          <el-form-item label="课程" prop="courseId">
-          <el-select  style="width:100%" v-model="form.courseId" placeholder="请选择课程">
-          	<el-option v-for="(item,index) in majorList" :key="index" :value="item.id" :label="item.name">
-
-          	</el-option>
-          </el-select>
-        </el-form-item>
-        <!--<el-form-item label="课程名称" prop="siteCourseName">
-          <el-input v-model.trim="form.siteCourseName" placeholder="请输入课程名称" ></el-input>
-        </el-form-item>-->
-        <el-form-item label="课程学分" prop="courseCredit">
-          <el-input v-model.trim="form.courseCredit" placeholder="请输入课程学分" ></el-input>
-        </el-form-item>
-        <el-form-item label="课时" prop="courseClassHour">
-          <el-input v-model.trim="form.courseClassHour" placeholder="请输入课时" ></el-input>
-        </el-form-item>
-        <el-form-item label="考试形式" prop="levexamKindel">
-          <el-select  style="width:100%" v-model="form.examKind" placeholder="请选择考试形式">
-          	<el-option label="所有" value=""/>
-          	<el-option :value="0" label="线下"></el-option>
-            <el-option :value="1" label="线上"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="考试性质" prop="examNature">
-          <el-select  style="width:100%" v-model="form.examNature" placeholder="请选择考试性质">
-          	<el-option label="所有" value=""/>
-            <el-option :value="0" label="考试"></el-option>
-            <el-option :value="1" label="考查 "></el-option>
-            <el-option :value="2" label="统考"></el-option>
-          </el-select>
-        </el-form-item>
-         <el-form-item label="学期(0-5)" prop="term">
-          <el-input v-model.trim="form.term" placeholder="请输入学期"></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model.trim="form.ableStatus">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
-          </el-radio-group>
-        </el-form-item>
+		  <el-form-item label="状态">
+			  <el-radio-group v-model.trim="form.ableStatus">
+				  <el-radio :label="1">启用</el-radio>
+				  <el-radio :label="0">禁用</el-radio>
+			  </el-radio-group>
+		  </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
         </el-form-item>
@@ -186,10 +137,11 @@ export default {
       extra: [],
       tableLoading: true,
       tableForm: {
-        batchId:"",
-        level:"",
-        majorId:"",
-        disciplineId:""
+        // batchId:"",
+        // level:"",
+        // majorId:"",
+        // disciplineId:""
+		  planId:""
       },
       tableData: [],
       //分页——start
@@ -200,65 +152,17 @@ export default {
       dialogAddVisible: false,
       dialogType: 0,
       form: {
-        batchId: "", //课件名称
-        disciplineId: "", //课件编码
-        level: "", //备注
-        majorId: "",
-        courseId: "",
-        siteCourseName: "",
-        courseType: "",
-        courseCredit: "",
-        courseClassHour: "",
-        examKind: "",
-        examNature: "",
-        term: "",
+          planId:"",
+		  name:"",
+          ableStatus:1,
         remark: "",
       },
       rulesForm: {
         name: [
-          { required: true, message: "请输入名称", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "最长 20 个字符",
-            trigger: "change"
-          }
+          { required: true, message: "请输入主题名称", trigger: "blur" },
         ],
-        batchId: [
-          { required: true, message: "请选择年级", trigger: "blur" },
-        ],
-        disciplineId: [
-          { required: true, message: "请选择科类", trigger: "blur" },
-        ],
-        level: [
-          { required: true, message: "请选择层次", trigger: "blur" },
-        ],
-        majorId: [
-          { required: true, message: "请选择专业", trigger: "blur" },
-        ],
-        courseId: [
-          { required: true, message: "请选择资源课程", trigger: "blur" },
-        ],
-        siteCourseName: [
-          { required: true, message: "请输入课程名", trigger: "blur" },
-        ],
-        courseType: [
-          { required: true, message: "请输入课程类别", trigger: "blur" },
-        ],
-         courseCredit: [
-          { required: true, message: "请输入学分", trigger: "blur" },
-        ],
-         courseClassHour: [
-          { required: true, message: "请输入课时", trigger: "blur" },
-        ],
-        examKind: [
-          { required: true, message: "请选择考试形式", trigger: "blur" },
-        ],
-        examNature: [
-          { required: true, message: "请选择考试性质", trigger: "blur" },
-        ],
-        term: [
-          { required: true, message: "请输入学期数", trigger: "blur" },
+        planId: [
+          { required: true, message: "请选择课程", trigger: "blur" },
         ],
 //      code: [
 //        { required: true, message: "请输入院校编码", trigger: "blur" },
@@ -282,11 +186,13 @@ export default {
      stationList:[],
      yearList:[],
      disciplineList:[],
-     majorList:[]
+     majorList:[],
+		teachPlanList:[]
     };
   },
   components: {},
   mounted() {
+      this.get_discussTeachPlanList();
     this.get_ajax();
   },
   watch:{
@@ -298,6 +204,13 @@ export default {
   },
   methods: {
     //获取数据
+      get_discussTeachPlanList(){
+          this.$api.teachManage
+              .get_discussTeachPlanList()
+              .then(res => {
+                  this.teachPlanList=res.data
+              });
+	  },
     publish(id){
     	this.$alert('确认发布此公告？', '发布', {
           confirmButtonText: '确定',
@@ -338,19 +251,10 @@ export default {
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
-         batchId: "", //课件名称
-        disciplineId: "", //课件编码
-        level: "", //备注
-        majorId: "",
-        courseId: "",
-        siteCourseName: "",
-        courseType: "",
-        courseCredit: "",
-        courseClassHour: "",
-        examKind: "",
-        examNature: "",
-        term: "",
-        remark: "",
+          planId:"",
+          name:"",
+          ableStatus:1,
+          remark: "",
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -361,19 +265,11 @@ export default {
       this.dialogType = 1;
       this.dialogAddVisible = true;
       this.form = {
-         batchId: row.batchId, //课件名称
-        disciplineId: row.disciplineId, //课件编码
-        level:  row.level, //备注
-        majorId: row.majorId,
-        courseId: row.courseId,
-        siteCourseName: row.siteCourseName,
-        courseType:  row.courseType,
-        courseCredit:  row.courseCredit,
-        courseClassHour:  row.courseClassHour,
-        examKind:  row.examKind,
-        examNature:   row.examNature,
-        term:   row.term,
-        remark:  row.remark,
+          id:row.id,
+          planId:row.planId,
+          name:row.name,
+          ableStatus:row.ableStatus,
+          remark: row.remark,
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();

@@ -64,7 +64,7 @@ export default new Router({
 //      router_guideManage, //辅导管理
         router_studentManagement, //学生管理
 //      router_studyManage, //学习管理
-        router_orderPay, //订单缴费
+//         router_orderPay, //订单缴费
 //      router_payment, //缴费管理
         router_message, //公告邮件
         router_systemManagement, //系统管理

@@ -9,10 +9,10 @@
 					<el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
 						<el-option label="所有" value=""/>
 						<el-option
-								v-for="(item,index) in yearList"
+								v-for="(item,index) in batchList"
 								:key="index"
-								:label="item"
-								:value="item"/>
+								:label="item.name"
+								:value="item.id"/>
 					</el-select>
 				</div>
 			</div>
@@ -57,11 +57,11 @@
 				</div>
 			</div>
 
-			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 				添加
 			</div>
-			<download url="teaching/plan/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1"  />
-			<upload class="mr10" url="/order/payment/upload"  :ok="get_ajax" v-if="extra.indexOf('批量导入')>-1" ></upload>
+			<download url="teaching/plan/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1"/>
+			<upload class="mr10 marT20" url="/teaching/plan/upload"  :ok="get_ajax" v-if="extra.indexOf('批量导入')>-1" ></upload>
 
 
   		</div>
@@ -85,6 +85,9 @@
 		        <el-table-column
 		          prop="level"
 		          label="层次">
+					<template slot-scope="scope">
+						{{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
+					</template>
 		        </el-table-column>
 		         <el-table-column
 		          prop="majorName"
@@ -111,7 +114,7 @@
 		          </template>
 		        </el-table-column>
 		         <el-table-column
-		          prop="publishTime"
+		          prop="courseCredit"
 		          label="学分">
 		        </el-table-column>
 		         <el-table-column
@@ -119,12 +122,12 @@
 		          label="课时">
 		        </el-table-column>
 		        <el-table-column
-		          prop="courseType "
+		          prop="courseType"
 		          label="课程类别">
 		        </el-table-column>
 		        <el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="200">
 		          <template slot-scope="scope">
 		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="extra.indexOf('发布')>-1">发布</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
@@ -154,7 +157,7 @@
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="年级" prop="batchId">
           <el-select  style="width:100%" v-model="form.batchId" placeholder="请选择年级">
-          	<el-option v-for="(item,index) in yearList" :key="index" :value="item" :label="item">
+          	<el-option v-for="(item,index) in batchList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
           </el-select>
@@ -168,7 +171,6 @@
         </el-form-item>
         <el-form-item label="层次" prop="level">
           <el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">
-          	<el-option label="所有" value=""/>
             <el-option value="1" label="高起专"></el-option>
             <el-option value="2" label="专升本"></el-option>
             <el-option value="3" label="高起本"></el-option>
@@ -183,7 +185,7 @@
         </el-form-item>
           <el-form-item label="课程" prop="courseId">
           <el-select  style="width:100%" v-model="form.courseId" placeholder="请选择课程">
-          	<el-option v-for="(item,index) in majorList" :key="index" :value="item.id" :label="item.name">
+          	<el-option v-for="(item,index) in courseList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
           </el-select>
@@ -197,16 +199,19 @@
         <el-form-item label="课时" prop="courseClassHour">
           <el-input v-model.trim="form.courseClassHour" placeholder="请输入课时" ></el-input>
         </el-form-item>
-        <el-form-item label="考试形式" prop="levexamKindel">
+		  <el-form-item label="学制" prop="studyYears">
+			  <el-input v-model.trim.number="form.studyYears" placeholder="请输入学制" ></el-input>
+		  </el-form-item>
+        <el-form-item label="考试形式" prop="examKinde">
           <el-select  style="width:100%" v-model="form.examKind" placeholder="请选择考试形式">
-          	<el-option label="所有" value=""/>
+          	<!--<el-option label="所有" value=""/>-->
           	<el-option :value="0" label="线下"></el-option>
             <el-option :value="1" label="线上"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="考试性质" prop="examNature">
           <el-select  style="width:100%" v-model="form.examNature" placeholder="请选择考试性质">
-          	<el-option label="所有" value=""/>
+          	<!--<el-option label="所有" value=""/>-->
             <el-option :value="0" label="考试"></el-option>
             <el-option :value="1" label="考查 "></el-option>
             <el-option :value="2" label="统考"></el-option>
@@ -262,11 +267,13 @@ export default {
         siteCourseName: "",
         courseType: "",
         courseCredit: "",
+          studyYears:"",
         courseClassHour: "",
         examKind: "",
         examNature: "",
         term: "",
         remark: "",
+          ableStatus:1,
       },
       rulesForm: {
         name: [
@@ -284,15 +291,18 @@ export default {
         disciplineId: [
           { required: true, message: "请选择科类", trigger: "blur" },
         ],
+          studyYears: [
+              { required: true, message: "请输入学制", trigger: "blur" },
+          ],
         level: [
           { required: true, message: "请选择层次", trigger: "blur" },
         ],
         majorId: [
           { required: true, message: "请选择专业", trigger: "blur" },
         ],
-        courseId: [
-          { required: true, message: "请选择资源课程", trigger: "blur" },
-        ],
+        // courseId: [
+        //   { required: true, message: "请选择资源课程", trigger: "blur" },
+        // ],
         siteCourseName: [
           { required: true, message: "请输入课程名", trigger: "blur" },
         ],
@@ -336,7 +346,9 @@ export default {
      stationList:[],
      yearList:[],
      disciplineList:[],
-     majorList:[]
+     majorList:[],
+		batchList:[],
+		courseList:[]
     };
   },
   components: {},
@@ -345,10 +357,12 @@ export default {
 	for(let i=now;i<now+5;i++){
 		this.yearList.push(i)
 	}
-	this.tableForm.batchId=+now;
+	// this.tableForm.batchId=+now;
+	  this.getBatchList();
 	this.get_TeachPlanDisciplineList();
-	this.get_TeachPlanMajorList()
-    this.get_ajax();
+	this.get_TeachPlanMajorList();
+	this.get_TeachPlanCourseList()
+    // this.get_ajax();
   },
   watch:{
   	"tableForm.name":function(n,o){
@@ -359,6 +373,13 @@ export default {
   },
   methods: {
     //获取数据
+      getBatchList(){
+          this.$api.essentialInformation.batch_get_list().then((res)=>{
+              this.batchList=res.data.pageList;
+              this.tableForm.batchId=res.data.pageList[0].id;
+              this.get_ajax();
+          })
+      },
     publish(id){
     	this.$alert('确认发布此公告？', '发布', {
           confirmButtonText: '确定',
@@ -412,6 +433,8 @@ export default {
         examNature: "",
         term: "",
         remark: "",
+          ableStatus:1,
+          studyYears:""
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -422,9 +445,10 @@ export default {
       this.dialogType = 1;
       this.dialogAddVisible = true;
       this.form = {
+          id:row.id,
          batchId: row.batchId, //课件名称
         disciplineId: row.disciplineId, //课件编码
-        level:  row.level, //备注
+        level:  String(row.level), //备注
         majorId: row.majorId,
         courseId: row.courseId,
         siteCourseName: row.siteCourseName,
@@ -435,6 +459,8 @@ export default {
         examNature:   row.examNature,
         term:   row.term,
         remark:  row.remark,
+          ableStatus:row.ableStatus,
+          studyYears:row.studyYears
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -494,7 +520,12 @@ export default {
     	this.$api.teachManage.get_TeachPlanMajorList().then((res)=>{
     		this.majorList=res.data
     	})
-    }
+    },
+	  get_TeachPlanCourseList(){
+          this.$api.teachManage.get_TeachPlanCourses().then((res)=>{
+              this.courseList=res.data
+          })
+	  }
     //分页end
   }
 };

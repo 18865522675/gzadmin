@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="headTopItem">
-                    <span class='label marL10' style="word-spacing:1.7em">专 业</span>
+                    <span class='label marL10' style="word-spacing:1.7em">专业</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
                             <el-option label="所有" value=""/>
@@ -74,13 +74,13 @@
                     </div>
                 </div>
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
 
 
-                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
                 <!--<span class='label marL10'>科类</span>-->

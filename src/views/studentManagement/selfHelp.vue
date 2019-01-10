@@ -1,7 +1,7 @@
 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
-            <div class="pageHead flexItem" style="flex-wrap:pre-wrap">
+            <div class="pageHead flexItem" style="flex-wrap:wrap">
 
                 <div class="headTopItem">
                     <span class='label marL10'>年级</span>
@@ -64,11 +64,11 @@
                     </div>
                 </div>
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
-                <download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
 
@@ -84,34 +84,6 @@
                 <!--<div  class="comTopReleteBtn  comTopOrangeBtn topBtn marL10">
                     关联函授站
                 </div>-->
-            </div>
-
-            <div class="flexItem pageHead" style="flex-wrap: wrap">
-
-                <!--<span class='label marL10'>函授站</span>-->
-                <!--<div class="marL10">-->
-                    <!--<el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">-->
-                        <!--<el-option label="所有" value=""/>-->
-                        <!--<el-option-->
-                                <!--v-for="(item, index) in stationList"-->
-                                <!--:key="index"-->
-                                <!--:label="item.name"-->
-                                <!--:value="item.id"/>-->
-                    <!--</el-select>-->
-                <!--</div>-->
-
-                <!--<span class='label marL10'>学生</span>-->
-                <!--<div class="marL10">-->
-                    <!--&lt;!&ndash;searchInp&ndash;&gt;-->
-                    <!--<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">-->
-                        <!--<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>-->
-                    <!--</el-input>-->
-                <!--</div>-->
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">-->
-                    <!--添加-->
-                <!--</div>-->
-                <!--<download url="student/before/downloadMould" class="marL10"  v-if="extra.indexOf('下载模板')>-1" />-->
-                <!--<upload class="marL10" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>-->
             </div>
             <div class="pageCon">
                 <el-table

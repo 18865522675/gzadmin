@@ -39,8 +39,16 @@ const router_module = {
       },
       component: resolve => require(["@/views/teachManage/courseWorks.vue"], resolve)
     },
+      {
+          path: "/teachManage/courseWorkRelete/:workId/:workName",
+          meta: {
+              show: false,
+              title: "课程作业-关联习题"
+          },
+          component: resolve => require(["@/views/teachManage/courseWorkRelete.vue"], resolve)
+      },
     {
-      path: "/teachManage/discusslook",
+      path: "/teachManage/discusslook/:id/:name",
       meta: {
         show: false,
         title: "主题讨论-查看"
