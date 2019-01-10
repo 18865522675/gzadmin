@@ -29,4 +29,6 @@ export default {
 		courseWork_edit: (id,params) => $.put("/teaching/work/"+id, params, { lock: true }),
         get_courseWorkList: params => $.get("/teaching/work/list", params),
         get_courseWorkTeachPlanList: params => $.get("/teaching/discuss/listCourses", params),
+
+    get_courseWorkExerciseList: params => $.get("/teaching/work/workExercise/"+params, {})
 };
