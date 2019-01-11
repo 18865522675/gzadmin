@@ -55,7 +55,7 @@ const ajax_main = (method, url = "", params, conf = {}) => {
     axios(configObj)
       .then(res => {
         if (res.status === 200) {
-          if (res.data.code === 0) {
+          if (res.data.code == 0) {
             //成功
             resolve(res.data);
           } else if (res.data.code === 100000004) {

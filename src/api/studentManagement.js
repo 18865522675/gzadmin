@@ -27,6 +27,9 @@ export default {
     //查看学生详情
     getStudentPreDetail: params => $.get("/student/before/details/"+params, params),
 
+    //查看学生详情
+    getApplyForm: params => $.get("/student/enrolled/netEnroll/"+params, params),
+
 
 
     //	录取学生列表
