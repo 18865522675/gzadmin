@@ -8,6 +8,7 @@ import demo from "./views/demo";
 import router_home from "./routers/router_home"; //首页
 import router_essentialInformation from "./routers/router_essentialInformation"; //基本信息
 import router_accountManagement from "./routers/router_accountManagement"; //账号管理
+import router_preGuide from "./routers/router_preGuide"; //学生管理
 import router_studentManagement from "./routers/router_studentManagement"; //学生管理
 import router_resourceManagement from "./routers/router_resourceManagement"; //资源管理
 //import router_guideManage from "./routers/router_guideManage"; //辅导管理
@@ -47,7 +48,7 @@ export default new Router({
     {
       path: "/",
       component: main,
-      redirect: "/home",
+      redirect: "/login",
       children: [
 //      {
 //        path: "/demo",
@@ -62,6 +63,7 @@ export default new Router({
         router_essentialInformation, //基本信息
         router_resourceManagement, //资源管理
 //      router_guideManage, //辅导管理
+          router_preGuide,
         router_studentManagement, //学生管理
 //      router_studyManage, //学习管理
 //         router_orderPay, //订单缴费
