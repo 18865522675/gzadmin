@@ -191,7 +191,9 @@
                             fixed="right"
                             label="操作" width="350">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row)">变更学籍</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showTrail(scope.row)" v-if="extra.indexOf('审核')>-1">审核</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" v-if="extra.indexOf('申请')>-1">申请</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row)" v-if="extra.indexOf('变更学籍')>-1">变更学籍</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/student/normal" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
@@ -303,6 +305,30 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="sureSaveOut('saveOutForm')">保 存</el-button>
+                </div>
+            </el-dialog>
+            
+            <!---->
+             <el-dialog
+                    title="审核"
+                    :visible.sync="trailDialogVisible"
+                    width="660px"
+                    center
+                    :append-to-body="true"
+                    class="kf-dialog-add">
+                <el-form ref="trailForm" :rules="agreeStatus" :model="trailForm" label-width="120px" class="kf-form-add">
+                    <!--<el-form-item label="转出信息" prop="content">
+                        <el-input v-model.trim="saveOutForm.content" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+                    </el-form-item>-->
+                    <el-form-item label="审核状态">
+	                    <el-radio-group v-model.trim="trailForm.agreeStatus">
+	                    <el-radio :label="3">通过</el-radio>
+	                    <el-radio :label="4">拒绝</el-radio>
+	                    </el-radio-group>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="sureTrial('trailForm')">保 存</el-button>
                 </div>
             </el-dialog>
 
@@ -428,7 +454,10 @@
                         { required: true, message: "请输入年份", trigger: "blur" },
                     ]
                 },
-
+				
+				trailForm:{
+					agreeStatus:3
+				},
 
                 saveOutRules: {
                     content: [
@@ -525,7 +554,9 @@
                     name:'变更函授站',
                     id:3
                 }],
-                batchList:[]
+                batchList:[],
+                trailDialogVisible:false,
+                trailRow:{}
             };
         },
         components: {},
@@ -553,6 +584,35 @@
         },
         methods: {
             //获取数据
+            showTrail(row){
+            	this.trailDialogVisible=true;
+            	this.trailRow={...row}
+            },
+            sureTrial(){
+            	this.$api.studentManagement.studentInfo_trail(this.trailRow.id,this.trailForm).then((res)=>{
+            		
+            	}).catch((e)=>{
+            		this.$message.error("审核失败")
+            	})
+            },
+            showApply(row){
+            	this.$confirm( `确认要对${row.userName}进行申请操作吗?`,'提示', {
+		          distinguishCancelAndClose: true,
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消'
+		        })
+		          .then(() => {
+		           	this.$api.studentManagement.studentInfo_apply(row.id).then((res)=>{
+		           		this.$message.error("申请成功");
+		           		this.ready_ajax();
+		           	}).catch((e)=>{
+		           		this.$message.error("申请失败")
+		           	})
+		          })
+		          .catch(action => {
+//		            this.$message.info("取消申请")
+		          });
+            },
             getBatchList(){
               this.$api.essentialInformation.batch_get_list().then((res)=>{
                   this.batchList=res.data.pageList
@@ -747,3 +807,14 @@
         }
     };
 </script>
+<style lang="less">
+	.el-message-box{
+		.el-message-box__btns{
+			.el-button{
+				span{
+					color:white!important
+				}
+			}
+		}
+	}
+</style>

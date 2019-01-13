@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="headTopItem">
+                <div class="headTopItem" v-if="!userInfo.stationId"> 
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -264,6 +264,7 @@
 </template>
 
 <script>
+	 import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -388,6 +389,7 @@
                 }
             }
         },
+          computed: mapState(["userInfo"]),
         methods: {
             //获取数据
             getBatchList(){

@@ -55,7 +55,16 @@ export default {
     getStudentInfoSimpleMajors: params => $.get("student/normal/listMajors", params),
     //	学生信息函授站
     getStudentInfoSimpleStations: params => $.get("student/normal/listStations", params),
-
+    
+    
+		//学生信息申请
+    studentInfo_apply: params =>
+        $.post("/student/normal/apply/"+params, {}, { lock: true }),
+        
+        //学生信息审核
+    studentInfo_trail: (id,params) =>
+        $.post("/student/normal/agree/"+id, params, { lock: true }),
+        
     //学生信息变更学籍
     studentInfo_allot: params =>
         $.post("/student/normal/changeSchoolRoll/"+params, {}, { lock: true }),

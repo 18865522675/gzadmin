@@ -22,9 +22,9 @@
 			  			<div class="baseInfoItem flexItem" style="justify-content: space-between;" v-for="(item,index) in List" :key="index">
 			  				<div class="baseInfoLeft">
 			  					<div class="baseInfoLine">
-			  						<span class="twoWord">函授站</span>
+			  						<span class="twoWord" style="letter-spacing: 8px;">函授站</span>
 			  						<!--{{item}}-->
-			  						<span v-if="!item.isEdit">{{item.name}}</span>
+			  						<span v-if="!item.isEdit" style="margin-left: 10px;">{{item.name}}</span>
 
 			  						<el-input v-model="item.name" class="baseInfoInp" v-else></el-input>
 			  					</div>
@@ -35,11 +35,11 @@
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>创建时间</span>
-			  						<span>{{$fun.table.time(null,null,item.createTime)}}</span>
+			  						<span>{{$fun.notAlltime(item.createTime,false)}}</span>
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>更新时间</span>
-			  						<span>{{$fun.table.time(null,null,item.updateTime)}}</span>
+			  						<span>{{$fun.notAlltime(item.updateTime,false)}}</span>
 			  					</div>
 			  				</div>
 			  				<div class="baseInfoRight">
@@ -372,6 +372,7 @@ export default {
 			padding: 25px;
 			border-radius: 10px;
 			width: 45%;
+			/*color:re!important;*/
 			margin-top: 20px;
 			.baseInfoLine{
 					line-height: 35px;
@@ -398,4 +399,5 @@ export default {
 		}
 
 	}
+	
 </style>
