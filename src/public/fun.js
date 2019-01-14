@@ -4,7 +4,7 @@
 import { stringify } from "qs";
 import { MessageBox } from "element-ui";
 import config from "../../config";
-let timeFormat = timeStr => {
+let timeFormat = (timeStr,isAll=true) => {
   let timeObj = new Date(timeStr);
   let year = timeObj.getFullYear(); //年
   let month = timeObj.getMonth() + 1; //月
@@ -20,9 +20,16 @@ let timeFormat = timeStr => {
   if (minutes < 10) minutes = "0" + minutes;
   if (seconds < 10) seconds = "0" + seconds;
 
-  return (
-    year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
-  );
+  if(isAll){
+	 return (
+	    year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+	  );  	
+  }else{
+  	return (
+  		year + "-" + month + "-" + day 
+  	)
+  }
+
 };
 
 let obj = {
@@ -36,6 +43,13 @@ let obj = {
   time(val) {
     if (val) {
       return timeFormat(val);
+    } else {
+      return "";
+    }
+  },
+   notAlltime(val) {
+    if (val) {
+      return timeFormat(val,false);
     } else {
       return "";
     }

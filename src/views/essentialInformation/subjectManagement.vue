@@ -35,11 +35,11 @@
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>创建时间</span>
-			  						<span>{{$fun.table.time(null,null,item.createTime)}}</span>
+			  						<span>{{$fun.notAlltime(item.createTime,false)}}</span>
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>更新时间</span>
-			  						<span>{{$fun.table.time(null,null,item.updateTime)}}</span>
+			  						<span>{{$fun.notAlltime(item.updateTime,false)}}</span>
 			  					</div>
 			  				</div>
 			  				<div class="baseInfoRight">

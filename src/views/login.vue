@@ -18,7 +18,7 @@
       </el-form>
     </div>
     <div class="login-cent">
-      <img src="../assets/img/logo.png" alt="" class="login-logo">
+      <!--<img src="../assets/img/logo.png" alt="" class="login-logo">-->
       <div class="login-cap">Welcome back</div>
       <div class="login-text">
         Wether you are an expert or a beginner. Hust university<br> is going to become the first platform which will faster all<br> your needs in a simple, easy and intuotive way
@@ -97,7 +97,7 @@ export default {
                 if (this.query.from) {
                   this.$router.replace(decodeURIComponent(this.query.from));
                 } else {
-                  this.$router.replace("/home");
+                  this.$router.replace("/systemManagement/myMessage");
                 }
               }, 500);
             });
@@ -120,10 +120,10 @@ export default {
 <style lang="less">
 body {
   .login {
-    background-image: url("../assets/img/background_2.jpg");
+    background-image: url("../assets/img/background_2.png");
     background-repeat: no-repeat;
-    background-position: right center;
-    background-size: contain;
+    /*background-position: right center;*/
+    background-size: 100% 100%;
     height: 100%;
     width: 100%;
     min-height: 666px;
@@ -132,7 +132,7 @@ body {
       margin-bottom: 0;
     }
     .section {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0);
       border-radius: 4px;
       width: 32%;
       box-sizing: border-box;
@@ -189,6 +189,7 @@ body {
   background-position: 20px center;
   height: 66px;
   border: 1px solid #d4dee7;
+  background-color: white;
   border-radius: 2px;
   margin-bottom: 0;
   position: relative;
