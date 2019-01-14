@@ -230,16 +230,22 @@
                                 <el-input v-model="applyForm.enrollNo"  placeholder="请输入报名号"></el-input>
                             </el-form-item>
                             <el-form-item label="成考确认点">
-                                <el-input v-model="applyForm.confirmAddress"  placeholder="请输入成考确认点"></el-input>
+                                <el-input v-model="applyForm.confirmScoreArea"  placeholder="请输入成考确认点"></el-input>
                             </el-form-item>
                             <el-form-item label="确认时间">
-                                <el-input v-model="applyForm.confirmTime"  placeholder="请输入确认时间"></el-input>
+                                <el-date-picker
+                                        v-model="applyForm.confirmTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择日期时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="applyForm.confirmTime"  placeholder="请输入确认时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="考区">
                                 <el-input v-model="applyForm.examArea"  placeholder="请输入考区"></el-input>
                             </el-form-item>
                             <el-form-item label="确认地址">
-                                <el-input v-model="applyForm.type"  placeholder="请输入确认地址"></el-input>
+                                <el-input v-model="applyForm.confirmAddress"  placeholder="请输入确认地址"></el-input>
                             </el-form-item>
                             <el-form-item label="确认情况">
                                 <el-radio-group v-model="applyForm.confirmed">
@@ -267,10 +273,22 @@
                                 <el-input v-model="stuTicketInfo.obj1Area" placeholder="请输入考试地点"></el-input>
                             </el-form-item>
                             <el-form-item label="开始时间">
-                                <el-input v-model="stuTicketInfo.obj1StartTime" placeholder="请输入开始时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj1StartTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择开始时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj1StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
-                                <el-input v-model="stuTicketInfo.obj1EndTime" placeholder="请输入结束时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj1EndTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择结束时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj1EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj2" placeholder="请输入科目"></el-input>
@@ -279,10 +297,22 @@
                                 <el-input v-model="stuTicketInfo.obj2Area" placeholder="请输入考试地点"></el-input>
                             </el-form-item>
                             <el-form-item label="开始时间">
-                                <el-input v-model="stuTicketInfo.obj2StartTime" placeholder="请输入开始时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj2StartTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择开始时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj2StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
-                                <el-input v-model="stuTicketInfo.obj2EndTime" placeholder="请输入结束时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj2EndTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择结束时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj2EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj3" placeholder="请输入科目"></el-input>
@@ -291,10 +321,22 @@
                                 <el-input v-model="stuTicketInfo.obj3Area" placeholder="请输入考试地点"></el-input>
                             </el-form-item>
                             <el-form-item label="开始时间">
-                                <el-input v-model="stuTicketInfo.obj3StartTime" placeholder="请输入开始时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj3StartTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择开始时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj3StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
-                                <el-input v-model="stuTicketInfo.obj3EndTime" placeholder="请输入结束时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj3EndTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择结束时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj3EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj4" placeholder="请输入科目"></el-input>
@@ -303,10 +345,22 @@
                                 <el-input v-model="stuTicketInfo.obj4Area" placeholder="请输入考试地点"></el-input>
                             </el-form-item>
                             <el-form-item label="开始时间">
-                                <el-input v-model="stuTicketInfo.obj4StartTime" placeholder="请输入开始时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj4StartTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择开始时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj4StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
-                                <el-input v-model="stuTicketInfo.obj4EndTime" placeholder="请输入结束时间"></el-input>
+                                <el-date-picker
+                                        v-model="stuTicketInfo.obj4EndTime"
+                                        style="width: 100%"
+                                        type="datetime"
+                                        placeholder="选择结束时间">
+                                </el-date-picker>
+                                <!--<el-input v-model="stuTicketInfo.obj4EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="是否领取准考证">
                                 <el-radio-group v-model="stuTicketInfo.getTicket">
@@ -395,7 +449,9 @@
                 stuExamInfo:{},
                 stuTicketInfo:{},
                 stuNetInfo:{},
-                applyForm:{},
+                applyForm:{
+                    confirmed:1
+                },
                 disciplineList:[],
                 majorList:[]
             }
@@ -431,22 +487,22 @@
                 this.$api.studentManagement.saveTicketForm({
                     studentId:this.stuTicketInfo.studentId,
                     get_ticket:this.stuTicketInfo.getTicket,
-                    obj1:this.stuExamInfo.obj1,
-                    obj1_score:this.stuExamInfo.obj1Score,
-                    obj1_start_time:this.stuExamInfo.obj1StartTime,
-                    obj1_ned_time:this.stuExamInfo.obj1EndTime,
-                    obj2:this.stuExamInfo.obj2,
-                    obj2_score:this.stuExamInfo.obj2Score,
-                    obj2_start_time:this.stuExamInfo.obj2StartTime,
-                    obj2_ned_time:this.stuExamInfo.obj2EndTime,
-                    obj3:this.stuExamInfo.obj3,
-                    obj3_score:this.stuExamInfo.obj3Score,
-                    obj3_start_time:this.stuExamInfo.obj3StartTime,
-                    obj3_ned_time:this.stuExamInfo.obj3EndTime,
-                    obj4:this.stuExamInfo.obj4,
-                    obj4_score:this.stuExamInfo.obj4Score,
-                    obj4_start_time:this.stuExamInfo.obj4StartTime,
-                    obj4_ned_time:this.stuExamInfo.obj4EndTime,
+                    obj1:this.stuTicketInfo.obj1,
+                    obj1_area:this.stuTicketInfo.obj1Area,
+                    obj1_start_time:this.$fun.time(this.stuTicketInfo.obj1StartTime),
+                    obj1_end_time:this.$fun.time(this.stuTicketInfo.obj1EndTime),
+                    obj2:this.stuTicketInfo.obj2,
+                    obj2_area:this.stuTicketInfo.obj2Area,
+                    obj2_start_time:this.$fun.time(this.stuTicketInfo.obj2StartTime),
+                    obj2_end_time:this.$fun.time(this.stuTicketInfo.obj2EndTime),
+                    obj3:this.stuTicketInfo.obj3,
+                    obj3_area:this.stuTicketInfo.obj3Area,
+                    obj3_start_time:this.$fun.time(this.stuTicketInfo.obj3StartTime),
+                    obj3_end_time:this.$fun.time(this.stuTicketInfo.obj3EndTime),
+                    obj4:this.stuTicketInfo.obj4,
+                    obj4_area:this.stuTicketInfo.obj4Area,
+                    obj4_start_time:this.$fun.time(this.stuTicketInfo.obj4StartTime),
+                    obj4_end_time:this.$fun.time(this.stuTicketInfo.obj4EndTime),
                 }).then((res)=>{
                     this.$message.success("准考证信息保存成功")
                 }).catch((e)=>{
@@ -455,14 +511,15 @@
                 })
             },
             saveApplyNet(){
+                console.log(this.applyForm.confirmTime)
                 this.$api.studentManagement.saveApplyForm({
-                    studentId:this.stuExamInfo.studentId,
-                    enroll_no:this.stuNetInfo.enrollNo,
-                    confirm_score_area:this.stuNetInfo.confirmScoreArea,
-                    exam_area:this.stuNetInfo.examArea,
-                    confirm_address:this.stuNetInfo.confirmAddress,
-                    confirm_time:this.stuNetInfo.confirmTime,
-                    confirm:this.stuNetInfo.confirmed,
+                    studentId:this.applyForm.studentId,
+                    enroll_no:this.applyForm.enrollNo,
+                    confirm_score_area:this.applyForm.confirmScoreArea,
+                    exam_area:this.applyForm.examArea,
+                    confirm_address:this.applyForm.confirmAddress,
+                    confirm_time:this.$fun.time(this.applyForm.confirmTime),
+                    confirm:this.applyForm.confirmed,
                 }).then((res)=>{
                     this.$message.success("考试信息保存成功")
                 }).catch((e)=>{
@@ -486,7 +543,7 @@
             getApplyForm(id){
                 this.$api.studentManagement.getApplyForm(id).then((res)=>{
                     if(res.data&&Object.keys(res.data).length){
-                        this.stuNetInfo=res.data;
+                        this.applyForm=res.data;
                     }
                 }).catch((e)=>{
                     // console.log(e)

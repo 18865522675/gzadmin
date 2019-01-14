@@ -25,7 +25,9 @@ const ajax_main = (method, url = "", params, conf = {}) => {
     let configObj = {
       method,
       url: PREFIX_URL + url,
-      headers: {},
+      headers: {
+        token:1111
+      },
       withCredentials: true //跨域携带凭证
     };
 
