@@ -27,9 +27,23 @@ export default {
     //查看学生详情
     getStudentPreDetail: params => $.get("/student/before/details/"+params, params),
 
-    //查看学生详情
+    //获取网上报名信息
     getApplyForm: params => $.get("/student/enrolled/netEnroll/"+params, params),
 
+    //获取准考证信息
+    getTickeyForm: params => $.get("/student/before/ticket/"+params, params),
+
+    //获取考试信息
+    getExamForm: params => $.get("/student/before/examInfo/"+params, params),
+
+    //保存考试信息
+    saveExamForm: params => $.post("/student/before/saveExamInfo",params),
+
+    //保存准考证信息
+    saveTicketForm: params => $.post("/student/before/saveTicket",params),
+
+    //保存准考证信息
+    saveApplyForm: params => $.post("/student/normal/saveNetEnroll",params),
 
 
     //	录取学生列表
