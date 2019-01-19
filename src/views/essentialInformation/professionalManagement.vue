@@ -31,7 +31,7 @@
 			  					<div class="baseInfoLine">
 			  						<span class="twoWord">编 码</span>
 			  						<span v-if="!item.isEdit">{{item.code}}</span>
-			  						<el-input v-model="item.name" class="baseInfoInp" v-else></el-input>
+			  						<el-input v-model="item.code" class="baseInfoInp" v-else></el-input>
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>创建时间</span>
@@ -92,7 +92,8 @@
       :visible.sync="dialogAddVisible"
       width="760px"
       center
-      :append-to-body="true"
+      :before-close="closeAction"
+      :show-close="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="专业" prop="name">
@@ -133,6 +134,7 @@ export default {
 		List:[],
 		form:{},
 		nowItem:{},
+		dialogAddVisible:false,
 		extra:[],
 		rulesForm: {
         name: [

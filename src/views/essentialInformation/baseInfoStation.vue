@@ -31,7 +31,7 @@
 			  					<div class="baseInfoLine">
 			  						<span class="twoWord">编 码</span>
 			  						<span v-if="!item.isEdit">{{item.code}}</span>
-			  						<el-input v-model="item.name" class="baseInfoInp" v-else></el-input>
+			  						<el-input v-model="item.code" class="baseInfoInp" v-else></el-input>
 			  					</div>
 			  					<div class="baseInfoLine">
 			  						<span>创建时间</span>
@@ -128,6 +128,7 @@ export default {
 		name:"",
 		List:[],
 		extra:[],
+		dialogAddVisible:false,
 		stationList:[],
 		form:{
 			stationIds:[]

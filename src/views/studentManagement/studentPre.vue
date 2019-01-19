@@ -146,7 +146,7 @@
 		          label="操作" width="350">
 		          <template slot-scope="scope">
 					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveOut(scope.row.id)" v-if="extra.indexOf('添加转出')>-1">转出</el-button>
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)" v-if="extra.indexOf('添加补录')>-1">补录</el-button>
+		          	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)" v-if="extra.indexOf('添加补录')>-1">补录</el-button>-->
 					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)"  v-if="extra.indexOf('学生详情')>-1">查看</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/student/before" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>

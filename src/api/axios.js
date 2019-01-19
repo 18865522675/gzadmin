@@ -66,7 +66,7 @@ const ajax_main = (method, url = "", params, conf = {}) => {
           } else if (res.data.code === 100000002) {
             //无权限
 //          router.replace("/notAuthority");
-            // Message.error(res.data.msg);
+               Message.error(res.data.msg);
             reject(res.data);
           } else if (res.data.code === 100050005) {
             reject(res.data);
