@@ -228,7 +228,7 @@
 		        <el-table-column
 		          prop="logo"
 		          label="课程封面"
-		          width="100">
+		          :show-overflow-tooltip="true" width="200">
 		        </el-table-column>
 		        <!--<el-table-column
 		          prop="code"
@@ -247,12 +247,12 @@
 		          width="160">
 		        </el-table-column>
 		        <el-table-column
-		          prop="remark"
+		          prop="exerciseCount"
 		          :show-overflow-tooltip="true"
 		          label="习题">
 		        </el-table-column>
 		        <el-table-column
-		          prop="remark"
+		          prop="bookCount"
 		          :show-overflow-tooltip="true"
 		          label="图书">
 		        </el-table-column>
@@ -304,7 +304,7 @@
           <el-input v-model.trim="form.logo" placeholder="请输入封面地址"></el-input>
         </el-form-item>
         <el-form-item label="课件来源" prop="wareFrom">
-          <el-input v-model.trim="form.wareFrom" placeholder="请输入封面地址"></el-input>
+          <el-input v-model.trim="form.wareFrom" placeholder="请输入课件来源"></el-input>
         </el-form-item>
         <el-form-item label="适用" prop="used">
           <el-select v-model="form.used" placeholder="请选择适用" style="width:100%">
@@ -346,7 +346,7 @@ export default {
       tableData: [],
       //分页——start
       pageNum: 1,
-      pageSize: 100,
+      pageSize: 10,
       total: 0,
       //分页——end
       dialogAddVisible: false,
@@ -442,7 +442,7 @@ export default {
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
         });
     },
@@ -506,7 +506,7 @@ export default {
             id: row.id,
             name: row.name, //课件名称
             code: row.code, //课件编码
-            coverUrl: row.coverUrl, //封面地址
+            logo: row.logo, //封面地址
             used:row.used,
             wareFrom:row.wareFrom,
             remark: row.remark, //备注

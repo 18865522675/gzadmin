@@ -105,10 +105,10 @@
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="函授站名称" prop="name">
-          <el-input v-model.trim="form.name" placeholder="请输入院校名称（不超过20个字）"></el-input>
+          <el-input v-model.trim="form.name" placeholder="请输入函授站名称（不超过20个字）"></el-input>
         </el-form-item>
         <el-form-item label="函授站编码" prop="code">
-          <el-input v-model.trim="form.code" placeholder="请输入院校编码（不超过8个字）"></el-input>
+          <el-input v-model.trim="form.code" placeholder="请输入函授站编码（不超过8个字）"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">
@@ -153,7 +153,7 @@ export default {
       },
       rulesForm: {
         name: [
-          { required: true, message: "请输入院校名称", trigger: "blur" },
+          { required: true, message: "请输入函授站名称", trigger: "blur" },
           {
             min: 1,
             max: 20,
@@ -162,7 +162,7 @@ export default {
           }
         ],
         code: [
-          { required: true, message: "请输入院校编码", trigger: "blur" },
+          { required: true, message: "请输入函授站编码", trigger: "blur" },
           {
             min: 1,
             max: 8,

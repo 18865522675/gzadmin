@@ -91,7 +91,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="playUrl"
-                            label="播放地址">
+                            label="播放地址" :show-overflow-tooltip="true" width="200">
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
@@ -99,7 +99,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
-                            label="创建时间">
+                            label="创建时间" :formatter="$fun.table.time" width="160">
                     </el-table-column>
                     <el-table-column
                             prop="logo"
@@ -140,7 +140,7 @@
                     </el-table-column>-->
                     <el-table-column
                             fixed="right"
-                            label="操作">
+                            label="操作" width="200">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/tutor/ware" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
@@ -180,7 +180,7 @@
                         <el-input v-model.trim="form.playUrl" placeholder="请输入播放地址"></el-input>
                     </el-form-item>
                     <el-form-item label="顺序号" prop="sort">
-                        <el-input v-model.trim="form.sort" placeholder="请输入顺序号"></el-input>
+                        <el-input v-model.trim="form.sort" type="number" placeholder="请输入顺序号"></el-input>
                     </el-form-item>
                     <el-form-item label="备注" prop="remark">
                         <el-input v-model.trim="form.remark" :row="2" type="textarea" placeholder="请输入备注"></el-input>
@@ -245,7 +245,7 @@
                 },
                 rulesForm: {
                     name: [
-                        { required: true, message: "请输入科类名称", trigger: "blur" },
+                        { required: true, message: "请输入课件名称", trigger: "blur" },
                         {
                             min: 1,
                             max: 20,

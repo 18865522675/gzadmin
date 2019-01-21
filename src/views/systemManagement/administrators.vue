@@ -114,7 +114,7 @@
   		<div class="pageHead flexItem">
   			<span class='label'>管理员</span>
  				<div class="marL10">
- 					<el-input v-model="tableForm.phone" class='searchInp' placeholder="请输入内容">
+ 					<el-input v-model="tableForm.phone" class='searchInp' placeholder="请输入账号">
  					 <el-button slot="append" icon="el-icon-search" @click="searchChange()"></el-button>
  					</el-input>
  				</div>
@@ -206,10 +206,10 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="320">
           <template slot-scope="scope">
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small" @click="reset_btn(scope.row)" v-if="extra.indexOf('重置管理员密码')>-1">重置</el-button>
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small ml10" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="reset_btn(scope.row)" v-if="extra.indexOf('重置管理员密码')>-1">重置</el-button>
+            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small ml10" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
             <baseDelBtn delUrl="system/admin" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
           </template>
         </el-table-column>
@@ -277,6 +277,31 @@
 <script>
 export default {
   data() {
+  	   var validatePhone = (rule, value, callback) => {
+//	   	alert(2)
+//      if (value === '') {
+//      	 	alert(3)
+//        callback(new Error('请输入手机号'));
+//      } else {
+//      	let reg=/^1[34578]\d{9}$/;
+//        if (!(reg.test(val))) {
+//        	alert(1)
+//         return   callback(new Error('手机号格式不对'));
+//        }
+//        alert(4)
+//        callback();
+//      }
+        let reg=/^1[34578]\d{9}$/;
+          if (value === '') {
+          callback(new Error('请输入手机号'));
+        } else if (!(reg.test(value))) {
+        	
+          callback(new Error('手机号格式不对!'));
+        } else {
+          callback();
+        }
+      };
+  
     return {
       extra: [],
       tableLoading: true,
@@ -310,7 +335,7 @@ export default {
           }
         ],
         roleId: [{ required: true, message: "请选择角色", trigger: "change" }],
-        phone: [{ required: true, message: "请输入手机", trigger: "change" }]
+        phone: [{ required: true,  validator: validatePhone, trigger: "blur" }]
       },
       role_list: []
     };

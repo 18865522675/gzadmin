@@ -266,7 +266,7 @@
         </el-table-column>
         <el-table-column
           prop="name"
-          label="课件名称">
+          label="课件名称" :show-overflow-tooltip="true" width="200">
         </el-table-column>
         <el-table-column
           prop="code"
@@ -287,13 +287,13 @@
         </el-table-column>
         <el-table-column
           prop="url"
-          :show-overflow-tooltip="true"
-          label="播放地址">
+         
+          label="播放地址" :show-overflow-tooltip="true" width="200">
         </el-table-column>
         <el-table-column
           prop="coverUrl"
           label="封面"
-          width="120">
+           :show-overflow-tooltip="true" width="200">
           <template slot-scope="scope">
             <tableCover :url="scope.row.coverUrl"/>
           </template>
@@ -395,7 +395,7 @@
           <el-input v-model.trim="form.logo" placeholder="请输入封面地址（不超过255个字）"></el-input>
         </el-form-item>
         <el-form-item label="时长" prop="times">
-          <el-input v-model.trim="form.times" placeholder="请输入时长（不超过100个字）"></el-input>
+          <el-input v-model.trim="form.times" type="number" placeholder="请输入时长（不超过100个字）"></el-input>
         </el-form-item>
         <el-form-item label="顺序号" prop="sorting">
           <el-input v-model.trim="form.sorting" placeholder="请输入顺序号"></el-input>

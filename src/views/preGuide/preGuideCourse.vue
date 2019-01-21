@@ -66,7 +66,7 @@
                             label="课程">
                     </el-table-column>
                     <el-table-column
-                            prop="logo"
+                            prop="logo"  :show-overflow-tooltip="true" width="200"
                             label="课程封面">
                     </el-table-column>
                     <el-table-column
@@ -196,7 +196,7 @@
                 },
                 rulesForm: {
                     name: [
-                        { required: true, message: "请输入科类名称", trigger: "blur" },
+                        { required: true, message: "请输入辅导课程名称", trigger: "blur" },
                         {
                             min: 1,
                             max: 20,

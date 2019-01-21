@@ -71,7 +71,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="文档名称">
+                            label="文档名称 " :show-overflow-tooltip="true" width="200">
                     </el-table-column>
                     <el-table-column
                             prop="level"
@@ -91,7 +91,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="playUrl"
-                            label="阅读地址">
+                            label="阅读地址" :show-overflow-tooltip="true" width="200">
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
@@ -99,7 +99,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
-                            label="创建时间">
+                            label="创建时间" :formatter="$fun.table.time" width="160">
                     </el-table-column>
                     <el-table-column
                             prop="logo"
@@ -168,7 +168,7 @@
                     class="kf-dialog-add">
                 <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
                     <el-form-item label="名称" prop="name">
-                        <el-input v-model.trim="form.name" placeholder="请输入辅导课件名称（不超过20个字）"></el-input>
+                        <el-input v-model.trim="form.name" placeholder="请输入辅导文档名称（不超过20个字）"></el-input>
                     </el-form-item>
                     <el-form-item label="课程" prop="courseId">
                         <el-select  style="width:100%" v-model="form.courseId"  placeholder="请选择课程">
@@ -176,8 +176,8 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="播放地址" prop="playUrl">
-                        <el-input v-model.trim="form.playUrl" placeholder="请输入播放地址"></el-input>
+                    <el-form-item label="阅读地址" prop="playUrl">
+                        <el-input v-model.trim="form.playUrl" placeholder="请输入阅读地址"></el-input>
                     </el-form-item>
                     <el-form-item label="顺序号" prop="sort">
                         <el-input v-model.trim="form.sort" placeholder="请输入顺序号"></el-input>
@@ -245,7 +245,7 @@
                 },
                 rulesForm: {
                     name: [
-                        { required: true, message: "请输入科类名称", trigger: "blur" },
+                        { required: true, message: "请输入辅导文档", trigger: "blur" },
                         {
                             min: 1,
                             max: 20,
