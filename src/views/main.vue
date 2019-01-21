@@ -45,14 +45,14 @@
    <div class="moduleRight">
    		<header>
 	      <div class="moduleRight-header flexItem">
-	        <div class="header-item flexItem">
+	        <!--<div class="header-item flexItem">
 	        	<img src="../assets/img/kefu.png" alt="" />
 	        	<span>客服电话</span>
-	        </div>
-	        <div class="header-item flexItem">
+	        </div>-->
+	        <!--<div class="header-item flexItem">
 	        	<img src="../assets/img/xitong.png" alt="" />
 	        	<span>系统</span>
-	        </div>
+	        </div>-->
 	        <div  class="header-item flexItem" @click="$router.push('/systemManagement/myMessage')">
 	        	<img src="../assets/img/geren.png" alt="" />
 	        	<span>个人中心</span>

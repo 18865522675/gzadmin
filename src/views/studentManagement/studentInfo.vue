@@ -153,7 +153,7 @@
                     <el-table-column
                             label="证件类型" :show-overflow-tooltip="true">
                         <template slot-scope="scope" >
-                            {{scope.row.cardType==0?'身份证':scope.row.cardType==1?'军官证/士兵证':'港澳通行证'}}
+                            {{scope.row.cardType==1?'身份证':scope.row.cardType==2?'军官证/士兵证':'港澳通行证'}}
                         </template>
                     </el-table-column>
                     <el-table-column

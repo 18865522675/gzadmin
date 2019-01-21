@@ -24,6 +24,14 @@ const router_module = {
       component: resolve => require(["@/views/teachManage/teachPlan.vue"], resolve)
     },
     {
+      path: "/teachManage/downloadCenter",
+      meta: {
+        show: true,
+        title: "下载中心"
+      },
+      component: resolve => require(["@/views/teachManage/downloadCenter.vue"], resolve)
+    },
+    {
       path: "/teachManage/discuss",
       meta: {
         show: true,

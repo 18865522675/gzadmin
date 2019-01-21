@@ -106,12 +106,12 @@
 		        </el-table-column>
 		        <el-table-column
 		          prop="userName"
-		          label="姓名" width="150">
+		          label="姓名" width="150" :show-overflow-tooltip="true">
 		        </el-table-column>
 		         <el-table-column
-		          label="证件类型">
+		          label="证件类型" width="150" >
 		          <template slot-scope="scope">
-		            {{scope.row.cardType==0?'身份证':scope.row.cardType==1?'军官证/士兵证':'港澳通行证'}}
+		            {{scope.row.cardType==1?'身份证':scope.row.cardType==2?'军官证/士兵证':'港澳通行证'}}
 		          </template>
 		        </el-table-column>
 		         <el-table-column

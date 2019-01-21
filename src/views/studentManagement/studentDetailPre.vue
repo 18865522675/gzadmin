@@ -17,8 +17,8 @@
                 <div class="kf-table-tab">
                     <div class="kf-table-tab-box">
                         <div class="kf-table-tab-item" :class="{on: table_tab_ind === 0}" data-ind="0" @click="change_table_tab">基本信息</div>
-                        <div class="kf-table-tab-item" :class="{on: table_tab_ind === 1}" data-ind="1" @click="change_table_tab">网上报名</div>
-                        <div class="kf-table-tab-item" :class="{on: table_tab_ind === 2}" data-ind="2" @click="change_table_tab">准考证信息</div>
+                        <!--<div class="kf-table-tab-item" :class="{on: table_tab_ind === 1}" data-ind="1" @click="change_table_tab">网上报名</div>-->
+                        <!--<div class="kf-table-tab-item" :class="{on: table_tab_ind === 2}" data-ind="2" @click="change_table_tab">准考证信息</div>-->
                         <div class="kf-table-tab-item" :class="{on: table_tab_ind === 3}" data-ind="3" @click="change_table_tab">考试信息</div>
                         <!--<div class="kf-table-tab-item" :class="{on: table_tab_ind === 4}" data-ind="4" @click="change_table_tab">录取信息</div>-->
                     </div>
@@ -210,7 +210,7 @@
 
 
 
-                <div  v-show="table_tab_ind==1">
+                <!--<div  v-show="table_tab_ind==1">
                     <div style="width: 600px;margin: 0 auto">
                         <label class="titles">网上报名信息</label>
                         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
@@ -239,7 +239,6 @@
                                         type="datetime"
                                         placeholder="选择日期时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="applyForm.confirmTime"  placeholder="请输入确认时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="考区">
                                 <el-input v-model="applyForm.examArea"  placeholder="请输入考区"></el-input>
@@ -258,11 +257,11 @@
                             </el-form-item>
                         </el-form>
                     </div>
-                </div>
+                </div>-->
 
 
 
-                <div  v-show="table_tab_ind==2">
+                <!--<div  v-show="table_tab_ind==2">
                     <div style="width: 600px;margin: 0 auto">
                         <label class="titles">准考证信息</label>
                         <el-form :label-position="labelPosition" label-width="100px" :model="formLabelAlign">
@@ -279,7 +278,6 @@
                                         type="datetime"
                                         placeholder="选择开始时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj1StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
                                 <el-date-picker
@@ -288,7 +286,6 @@
                                         type="datetime"
                                         placeholder="选择结束时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj1EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj2" placeholder="请输入科目"></el-input>
@@ -303,7 +300,6 @@
                                         type="datetime"
                                         placeholder="选择开始时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj2StartTime" placeholder="请输入开始时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="结束时间">
                                 <el-date-picker
@@ -312,7 +308,6 @@
                                         type="datetime"
                                         placeholder="选择结束时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj2EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj3" placeholder="请输入科目"></el-input>
@@ -327,7 +322,7 @@
                                         type="datetime"
                                         placeholder="选择开始时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj3StartTime" placeholder="请输入开始时间"></el-input>-->
+      
                             </el-form-item>
                             <el-form-item label="结束时间">
                                 <el-date-picker
@@ -336,7 +331,6 @@
                                         type="datetime"
                                         placeholder="选择结束时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj3EndTime" placeholder="请输入结束时间"></el-input>-->
                             </el-form-item>
                             <el-form-item label="科目">
                                 <el-input v-model="stuTicketInfo.obj4" placeholder="请输入科目"></el-input>
@@ -351,7 +345,7 @@
                                         type="datetime"
                                         placeholder="选择开始时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj4StartTime" placeholder="请输入开始时间"></el-input>-->
+  
                             </el-form-item>
                             <el-form-item label="结束时间">
                                 <el-date-picker
@@ -360,7 +354,7 @@
                                         type="datetime"
                                         placeholder="选择结束时间">
                                 </el-date-picker>
-                                <!--<el-input v-model="stuTicketInfo.obj4EndTime" placeholder="请输入结束时间"></el-input>-->
+     
                             </el-form-item>
                             <el-form-item label="是否领取准考证">
                                 <el-radio-group v-model="stuTicketInfo.getTicket">
@@ -373,7 +367,7 @@
                             </el-form-item>
                         </el-form>
                     </div>
-                </div>
+                </div>-->
 
 
 
@@ -458,8 +452,8 @@
         },
         mounted() {
             this.getStudentPreDetail(this.$route.params.studentId);
-            this.getApplyForm(this.$route.params.studentId);
-            this.getTickeyForm(this.$route.params.studentId);
+//          this.getApplyForm(this.$route.params.studentId);
+//          this.getTickeyForm(this.$route.params.studentId);
             this.getExamForm(this.$route.params.studentId);
         },
         methods: {
