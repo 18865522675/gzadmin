@@ -21,7 +21,7 @@ export default {
 	notice_publish: params =>$.post("/notice/notice/publish/"+params, {}, { lock: true }),
 //	编辑公告类型
   notice_edit: (id,params) =>
-    $.put("/notice/notice" + params.id, params, { lock: true }),
+    $.put("/notice/notice/" + params.id, params, { lock: true }),
   
   //获取邮件列表公告类型
   getNoticeKindsList: params => $.get("/notice/notice/listKinds", params),

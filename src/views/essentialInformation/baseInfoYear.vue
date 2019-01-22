@@ -96,10 +96,10 @@
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="年级" prop="name">
-          <el-input v-model.trim="form.name" placeholder="请输入科类名称（不超过20个字）"></el-input>
+          <el-input v-model.trim="form.name" placeholder="请输入年级名称（不超过20个字）"></el-input>
         </el-form-item>
         <el-form-item label="编码" prop="code">
-          <el-input v-model.trim="form.code" placeholder="请输入科类编码（不超过8个字）" :disabled="dialogType===1"></el-input>
+          <el-input v-model.trim="form.code" placeholder="请输入年级编码（不超过8个字）" :disabled="dialogType===1"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">

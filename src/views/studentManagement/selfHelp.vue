@@ -241,7 +241,7 @@
                     class="kf-dialog-add">
                 <el-form ref="allotForm" :rules="allotRules" :model="allotForm" label-width="120px" class="kf-form-add">
                     <el-form-item label="学生">
-                        <el-input v-model.trim="actionRow.name" :disabled="true" placeholder="请输入学生姓名"></el-input>
+                        <el-input v-model.trim="actionRow.userName" :disabled="true" placeholder="请输入学生姓名"></el-input>
                     </el-form-item>
                     <el-form-item label="证件号码">
                         <el-input v-model.trim="actionRow.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>

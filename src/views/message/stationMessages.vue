@@ -61,8 +61,8 @@
 		        </el-table-column>
 		         <el-table-column
 		          prop="content"
-		          width="120"
-		          label="内容">
+		          width="320"
+		          label="内容" :show-overflow-tooltip="true">
 		        </el-table-column>
 		        <el-table-column
 		          width="120"

@@ -138,7 +138,7 @@ export default {
 		extra:[],
 		rulesForm: {
         name: [
-          { required: true, message: "请输入年级名称", trigger: "change" },
+          { required: true, message: "请输入专业名称", trigger: "change" },
           {
             min: 1,
             max: 50,
@@ -147,7 +147,7 @@ export default {
           }
         ],
         code: [
-          { required: true, message: "请输入年级编码", trigger: "change" },
+          { required: true, message: "请输入专业编码", trigger: "change" },
           {
             min: 1,
             max: 8,

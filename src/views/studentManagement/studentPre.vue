@@ -204,7 +204,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="报考年份" prop="enrollYear">
-          <el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>
+        	<el-select v-model="form.enrollYear" class="kf-select" placeholder="请选择报考年份" filterable>
+                          <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                      </el-select>
+          <<!--el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>-->
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.ableStatus">
