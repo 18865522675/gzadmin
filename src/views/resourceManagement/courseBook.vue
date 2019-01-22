@@ -384,7 +384,7 @@
           <el-input v-model.trim="form.intro" placeholder="请输入简介"></el-input>
         </el-form-item>
         <el-form-item label="地址" prop="url">
-          <el-input v-model.trim="form.url" placeholder="请输入播放地址"></el-input>
+          <el-input v-model.trim="form.url" placeholder="请输入阅读地址"></el-input>
         </el-form-item>
         <el-form-item label="封面地址" prop="logo">
           <el-input v-model.trim="form.logo" placeholder="请输入封面地址（不超过255个字）"></el-input>
@@ -605,7 +605,7 @@ export default {
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
         });
     },

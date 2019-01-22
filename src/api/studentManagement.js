@@ -88,7 +88,7 @@ export default {
         $.post("/student/normal", params, { lock: true }),
     //	编辑学籍信息
     studentInfo_edit: (id,params) =>
-        $.put("/student/normal" + id, params, { lock: true }),
+        $.put("/student/normal/" + id, params, { lock: true }),
 
 
     //	学籍异动列表

@@ -28,7 +28,7 @@
                     <div>
                         账号
                     </div>
-                    <div>
+                    <div style="word-wrap:break-word">
                         {{stuBaseInfo.account}}
                     </div>
                     <div>
@@ -66,7 +66,7 @@
                     <div>
                         证件号码
                     </div>
-                    <div>
+                    <div style="word-wrap:break-word">
                         {{stuBaseInfo.cardNo}}
                     </div>
                     <div>
@@ -192,7 +192,7 @@
                         学位申请
                     </div>
                     <div>
-                        域名前缀+身份证号
+                        <!--域名前缀+身份证号-->
                     </div>
                     <div>
                         状态

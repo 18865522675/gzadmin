@@ -56,7 +56,7 @@
 		        </el-table-column>
 		        <el-table-column
 		          prop="title"
-		          label="标题">
+		          label="标题" :show-overflow-tooltip="true" width="200">
 		        </el-table-column>
 		        <el-table-column
 		          prop="kindName"
@@ -76,12 +76,12 @@
 		        <el-table-column
 		          prop="updateTime"
 		          label="更新时间"
-		          width="200"
+		          width="200" :show-overflow-tooltip="true"
 		          :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
 		          prop="publishTime"
-		          label="发布时间"
+		          label="发布时间" :show-overflow-tooltip="true"
 		          :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
@@ -96,7 +96,7 @@
 		          label="操作" width="200">
 		          <template slot-scope="scope">
 		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发布')>-1" >发布</el-button>
-		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)"  v-if="extra.indexOf('编辑')>-1&&scope.row.publishStatus!=1">编辑</el-button>
 		            <baseDelBtn delUrl="/notice/notice" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>

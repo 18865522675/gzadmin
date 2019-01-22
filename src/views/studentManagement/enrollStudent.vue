@@ -7,6 +7,7 @@
                     <span class='label marL10'>年级</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        	 <el-option label="所有" value=""/>
                             <el-option v-for="(item,index) in  batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </div>
@@ -128,20 +129,20 @@
                              label="证件号码">
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
+                            prop="levelName"
                             label="层次"
-                            width="200">
+                            width="200" :formatter="forLevel">
                     </el-table-column>
                     <el-table-column
                             prop="disciplineName"
                             label="科类">
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
+                            prop="major"
                             label="专业">
                     </el-table-column>
                     <el-table-column
-                            prop="batchName"
+                            prop="stationName"
                             label="函授站" v-if="!userInfo.stationId">
                     </el-table-column>
                     <!--<el-table-column-->
@@ -387,6 +388,14 @@
                     this.get_ajax();
                 })
             },
+              forLevel(row){
+          switch(row.level){
+			  case "1":return "高起专";break;
+              case "2":return "专升本";break;
+              case "3":return "高起本";break;
+			  default:return "未知"
+		  }
+	  },
             showAllot(item){
                 this.actionRow={...item};
                 this.allotDialogVisible=true;

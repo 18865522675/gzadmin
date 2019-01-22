@@ -556,7 +556,8 @@
                 }],
                 batchList:[],
                 trailDialogVisible:false,
-                trailRow:{}
+                trailRow:{},
+                allotDialogVisible:false
             };
         },
         components: {},
@@ -590,7 +591,9 @@
             },
             sureTrial(){
             	this.$api.studentManagement.studentInfo_trail(this.trailRow.id,this.trailForm).then((res)=>{
-            		
+            		this.$message.success("审核成功!");
+            		this.ready_ajax();
+            		this.trailDialogVisible=false
             	}).catch((e)=>{
             		this.$message.error("审核失败")
             	})
@@ -634,7 +637,7 @@
                             this.allotDialogVisible=false;
                             this.ready_ajax()
                         }).catch((e)=>{
-                            this.$message.success("学籍更变失败")
+                            this.$message.error("学籍更变失败")
                         })
                     } else {
                         console.log("error submit!!");
@@ -735,14 +738,18 @@
 //      remark: row.remark, //备注
 //      ableStatus: row.ableStatus //启用状态(1启用0禁用)
                     id:row.id,
-                    name:row.name,
+                    name:row.userName,
                     cardType:row.cardType,
                     cardNo:row.cardNo,
+                    batchId:row.batchId,
                     disciplineId:row.disciplineId,
                     majorId:row.majorId,
-                    level:row.level,
+                    level:+row.level,
                     enrollYear:row.enrollYear,
                     remark:row.remark,
+                    term:row.term,
+                    stationId:row.stationId,
+                    ableStatus:row.ableStatus,
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();

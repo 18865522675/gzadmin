@@ -213,7 +213,7 @@
         </el-table-column>
         <el-table-column
           prop="content"
-          label="题目">
+          label="题目" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="version"
@@ -320,8 +320,8 @@
         </el-form-item>
         <el-form-item label="答案" prop="answer" v-if="form.type===1">
           <el-radio-group v-model.trim="form.answer">
-            <el-radio label="RIGHT">正确</el-radio>
-            <el-radio label="WRONG">错误</el-radio>
+            <el-radio label="正确">正确</el-radio>
+            <el-radio label="错误">错误</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="状态">
@@ -519,7 +519,7 @@ export default {
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
         });
     },
