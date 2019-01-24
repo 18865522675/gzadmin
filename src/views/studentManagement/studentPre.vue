@@ -409,7 +409,7 @@ export default {
 						this.saveOutDialogVisible=false;
 						this.ready_ajax()
 					}).catch((e)=>{
-                        this.$message.success("转出失败")
+                        this.$message.error("转出失败")
 					})
               } else {
                   console.log("error submit!!");

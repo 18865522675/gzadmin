@@ -235,7 +235,7 @@
       class="kf-dialog-add">
       <!--表单-->
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-        <template v-if="dialogType===0">
+        <template>
           <el-form-item label="手机" prop="phone">
             <el-input v-model.trim="form.phone" maxlength="11" placeholder="请输入手机"></el-input>
           </el-form-item>
@@ -352,6 +352,7 @@ export default {
   // },
   components: {},
   mounted() {
+  	this.get_role_list()
     this.get_ajax();
   },
   methods: {
@@ -401,13 +402,25 @@ export default {
     },
     //显示编辑框
     dialogEdit_show(row) {
+//  	this.
       this.dialogType = 1;
       this.dialogAddVisible = true;
       this.form = {
         id: row.id,
         remark: row.remark, //备注
-        ableStatus: row.ableStatus //启用状态(1启用0禁用)
+        ableStatus: row.ableStatus, //启用状态(1启用0禁用)
+        name:row.name,
+//      roleId:row.roleId,
+        phone:row.phone,
+        email:row.email
       };
+      if(row.roleName){
+      	for(let i of this.role_list){
+      		if(i.name==row.roleName){
+      			this.form.roleId=i.id
+      		}
+      	}
+      }
 
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();

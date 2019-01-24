@@ -168,14 +168,14 @@
 		          :show-overflow-tooltip="true"
 		          label="学校编码">
 		        </el-table-column>
-		        <el-table-column
+		        <!--<el-table-column
 		          prop="code"
 		          :show-overflow-tooltip="true"
 		          label="账号">
 		          <template slot-scope="scope">
 		           			华中科技大学
 		          </template>
-		        </el-table-column>
+		        </el-table-column>-->
 		        <el-table-column
 		          prop="createTime"
 		          label="创建时间"

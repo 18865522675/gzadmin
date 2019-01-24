@@ -71,7 +71,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="课件名称">
+                            label="课件名称" width="200" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="level"
@@ -79,7 +79,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="courseName"
-                            label="所属课程">
+                            label="所属课程" :show-overflow-tooltip="true"	>
                     </el-table-column>
                     <el-table-column
                             prop="sort"

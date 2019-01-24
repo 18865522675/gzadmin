@@ -113,7 +113,7 @@
               </template>
               <template v-else-if="$store.state.userInfo.type===2">
                 <el-option label="普通" :value="0"/>
-                <el-option label="助考院校" :value="1"/>
+                <!--<el-option label="助考院校" :value="1"/>-->
               </template>
               <template v-else>
                 <el-option label="普通" :value="0"/>

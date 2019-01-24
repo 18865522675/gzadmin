@@ -53,7 +53,7 @@
 	        	<img src="../assets/img/xitong.png" alt="" />
 	        	<span>系统</span>
 	        </div>-->
-	        <div  class="header-item flexItem" @click="$router.push('/systemManagement/myMessage')">
+	        <div  class="header-item flexItem" style="cursor:pointer" @click="$router.push('/systemManagement/myMessage')">
 	        	<img src="../assets/img/geren.png" alt="" />
 	        	<span>个人中心</span>
 	        </div>

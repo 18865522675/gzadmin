@@ -201,10 +201,10 @@
           <el-input v-model.trim="form.courseCredit" type="number" min="0" placeholder="请输入课程学分" ></el-input>
         </el-form-item>
         <el-form-item label="课时" prop="courseClassHour">
-          <el-input v-model.trim="form.courseClassHour" placeholder="请输入课时" ></el-input>
+          <el-input v-model.trim="form.courseClassHour" type="number" max="5" min="0" placeholder="请输入课时" ></el-input>
         </el-form-item>
 		  <el-form-item label="学制" prop="studyYears">
-			  <el-input v-model.trim.number="form.studyYears" placeholder="请输入学制" ></el-input>
+			  <el-input v-model.trim.number="form.studyYears" type="number" max="5" min="0"  placeholder="请输入学制" ></el-input>
 		  </el-form-item>
         <el-form-item label="考试形式" prop="examKind">
           <el-select  style="width:100%" v-model="form.examKind" placeholder="请选择考试形式">

@@ -485,7 +485,7 @@ export default {
           }
         ],
         url: [
-          { required: true, message: "请输入播放地址", trigger: "blur" },
+          { required: true, message: "请输入阅读地址", trigger: "blur" },
           {
             min: 1,
             max: 255,

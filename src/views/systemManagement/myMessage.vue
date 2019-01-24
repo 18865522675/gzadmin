@@ -104,18 +104,29 @@ export default {
       //   return;
       // }
       if (!avatar) {
-        this.$message.error("请上传头像");
-        return;
+//      this.$message.error("请上传头像");
+//      return;
       }
 
       //是否修改密码
       if (this.oldPassword) {
+//				if(!this.oldPassword){
+//					return this.$message.warning("请先输入密码再保存")
+//				}
         if (!this.password) {
           this.$message.error("请输入新密码");
           return;
         }
+        if (this.password.length<6) {
+          this.$message.warning("密码长度必须为6位");
+          return;
+        }
         if (!this.password2) {
           this.$message.error("请再次输入密码");
+          return;
+        }
+        if (this.password2.length<6) {
+          this.$message.warning("密码长度必须为6位");
           return;
         }
         if (this.password !== this.password2) {
@@ -125,9 +136,15 @@ export default {
         this.form.oldPassword = md5(this.oldPassword);
         this.form.password = md5(this.password);
       }
+     	if(!this.oldPassword||!this.password||!this.password2){
+    	 	return 	this.editType = 0;
+     	}
       this.$api.systemManagement.myMessage_edit_info(this.form).then(() => {
         this.$message.success("修改成功");
         this.editType = 0;
+        this.oldPassword="";
+        this.password="";
+        this.password2=""
       });
     },
     upSuccess(res) {

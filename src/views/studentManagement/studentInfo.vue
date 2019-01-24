@@ -349,21 +349,31 @@
                     <el-form-item label="证件号码">
                         <el-input v-model.trim="actionRow.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
                     </el-form-item>
-                    <el-form-item label="类型" prop="kindId">
-                        <el-select  style="width:100%" v-model="allotForm.kindId"  placeholder="请选择操作类型">
+                    <el-form-item label="类型" prop="kind">
+                        <el-select  style="width:100%" v-model="allotForm.kind"  placeholder="请选择操作类型">
                             <el-option v-for="(item,index) in kindIdList" :key="index" :value="item.id" :label="item.name">
 
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="函授站" prop="stationId">
-                        <el-select  style="width:100%" v-model="allotForm.stationId" placeholder="请选择函授站">
+                    <el-form-item label="学籍状态" prop="newValue" v-if="allotForm.kind==1">
+                        <el-select  style="width:100%" v-model="allotForm.newValue" placeholder="请选择学籍状态">
+                            <el-option v-for="(item,index) in schoolStatusList" :key="index"  :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="专业" prop="newValue" v-if="allotForm.kind==2">
+                        <el-select  style="width:100%" v-model="allotForm.newValue" placeholder="请选择专业">
+                            <el-option v-for="(item,index) in majorList" :key="index"  :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="函授站" prop="newValue" v-if="allotForm.kind==3">
+                        <el-select  style="width:100%" v-model="allotForm.newValue" placeholder="请选择函授站">
                             <el-option v-for="(item,index) in stationList" :key="index"  :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="新值" prop="newValue">
+                    <!--<el-form-item label="新值" prop="newValue">
                         <el-input v-model.trim="allotForm.newValue"  placeholder="请输入新值"></el-input>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item label="备注" prop="remark">
                         <el-input v-model.trim="allotForm.remark"  placeholder="备注..." type="textarea" :row="2"></el-input>
                     </el-form-item>
@@ -466,11 +476,11 @@
                 },
 
                 allotRules: {
-                    kindId: [
+                    kind: [
                         { required: true, message: "请选择操作类型 ", trigger: "blur" },
                     ],
                     newValue: [
-                        { required: true, message: "请输入新值 ", trigger: "blur" },
+                        { required: true, message: "请选择新值 ", trigger: "blur" },
                     ],
                     stationId: [
                         { required: true, message: "请选择函授站 ", trigger: "blur" },
@@ -629,10 +639,7 @@
             sureChange(formName){
                 this.$refs[formName].validate(valid => {
                     if (valid) {
-                        this.$api.studentManagement.studentEnroll_allot({
-                            studentId:this.actionRow.id,
-                            ...this.allotForm
-                        }).then((res)=>{
+                        this.$api.studentManagement.studentInfo_allot(this.actionRow.id,this.allotForm).then((res)=>{1
                             this.$message.success("学籍更变成功");
                             this.allotDialogVisible=false;
                             this.ready_ajax()

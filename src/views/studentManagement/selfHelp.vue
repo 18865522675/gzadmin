@@ -570,15 +570,16 @@
                 })
             },
             forSchoolStatus(row){
-                switch(row.schoolStatus){
-                    case 1:return '正常';break;
-                    case 2:return '休学';break;
-                    case 3:return '退学';break;
-                    case 4:return '延迟毕业';break;
-                    case 5:return '肄业';break;
-                    case 6:return '毕业';break;
-                    default:return "未知"
-                }
+//              switch(row.schoolStatus){
+//                  case 1:return '正常';break;
+//                  case 2:return '休学';break;
+//                  case 3:return '退学';break;
+//                  case 4:return '延迟毕业';break;
+//                  case 5:return '肄业';break;
+//                  case 6:return '毕业';break;
+//                  default:return "未录取"
+//              }
+				return "已录取"
             }
             //分页end
         }

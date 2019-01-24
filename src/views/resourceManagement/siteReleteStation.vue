@@ -297,7 +297,7 @@ export default {
             this.stationIds=[];
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
           res.data.pageList.map((item)=>{
               if(item.selected==1){

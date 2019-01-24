@@ -80,8 +80,8 @@ export default {
         $.post("/student/normal/agree/"+id, params, { lock: true }),
         
     //学生信息变更学籍
-    studentInfo_allot: params =>
-        $.post("/student/normal/changeSchoolRoll/"+params, {}, { lock: true }),
+    studentInfo_allot: (id,params) =>
+        $.post("/student/normal/changeSchoolRoll/"+id, params, { lock: true }),
 
     //学生信息添加
     studentInfo_add: params =>
