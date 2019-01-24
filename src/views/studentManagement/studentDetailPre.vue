@@ -195,12 +195,6 @@
                         <!--域名前缀+身份证号-->
                     </div>
                     <div>
-                        状态
-                    </div>
-                    <div>
-                        ***
-                    </div>
-                    <div>
                         备注
                     </div>
                     <div style="overflow:hidden;" :title="stuBaseInfo.remark">
