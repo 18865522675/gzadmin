@@ -235,7 +235,7 @@ export default {
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
-          this.total = res.data.total;
+          this.total = +res.data.total;
           this.tableLoading = false;
         });
     },

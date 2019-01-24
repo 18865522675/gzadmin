@@ -64,7 +64,7 @@
                             label="题型" :show-overflow-tooltip="true" :formatter="forType">
                     </el-table-column>
                 </el-table>
-                <el-pagination
+                <!--<el-pagination
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="pageNum"
@@ -73,7 +73,7 @@
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total"
                         class="kf-pagination">
-                </el-pagination>
+                </el-pagination>-->
             </div>
 
             <el-dialog

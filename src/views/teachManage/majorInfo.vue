@@ -7,6 +7,7 @@
                     <span class='label marL10'>年级</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        	<el-option label="所有" value=""/>
                             <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </div>
@@ -453,7 +454,8 @@
             },
             getStudentPreSimpleDisplines(){
                 this.$api.essentialInformation.subjectManagement_get_list().then((res)=>{
-                    this.disciplineList=res.data
+                    this.disciplineList=res.data.pageList;
+                    console.log(this.disciplineList)
                 })
             },
             getStudentPreSimpleMajors(){

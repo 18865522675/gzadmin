@@ -217,6 +217,9 @@ export default {
 //      if (valid) {
 					console.log(this.nowItem)
 					console.log(this.$api.essentialInformation)
+						if(!this.nowItem.name||!this.nowItem.code){
+						return this.$message.warning("请填写必填信息")
+					}
           this.$api.essentialInformation.subjectManagement_edit(this.nowItem.id,{
           	name:this.nowItem.name,
           	code:this.nowItem.code,

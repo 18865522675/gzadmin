@@ -121,10 +121,14 @@
 		          prop="courseClassHour"
 		          label="课时">
 		        </el-table-column>
-		        <el-table-column
+		        <!--<el-table-column
 		          prop="courseType"
 		          label="课程类别">
-		        </el-table-column>
+		        </el-table-column>-->
+		         <!--<el-table-column
+		          prop="courseName"
+		          label="所属课程">
+		        </el-table-column>-->
 		        <el-table-column
 		          fixed="right"
 		          label="操作" width="200">
@@ -156,28 +160,28 @@
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="年级" prop="batchId">
-          <el-select  style="width:100%" v-model="form.batchId" placeholder="请选择年级">
+          <el-select  style="width:100%" v-model="form.batchId" :disabled="dialogType==1" placeholder="请选择年级">
           	<el-option v-for="(item,index) in batchList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="科类" prop="disciplineId">
-          <el-select  style="width:100%" v-model="form.disciplineId" placeholder="请选择科类">
+          <el-select  style="width:100%" v-model="form.disciplineId" :disabled="dialogType==1"  placeholder="请选择科类">
           	<el-option v-for="(item,index) in disciplineList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="层次" prop="level">
-          <el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">
+          <el-select  style="width:100%" v-model="form.level" :disabled="dialogType==1"  placeholder="请选择层次">
             <el-option value="1" label="高起专"></el-option>
             <el-option value="2" label="专升本"></el-option>
             <el-option value="3" label="高起本"></el-option>
           </el-select>
         </el-form-item>
          <el-form-item label="专业" prop="majorId">
-          <el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">
+          <el-select  style="width:100%" v-model="form.majorId" :disabled="dialogType==1"  placeholder="请选择专业">
           	<el-option v-for="(item,index) in majorList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
@@ -194,7 +198,7 @@
           <el-input v-model.trim="form.siteCourseName" placeholder="请输入课程名称" ></el-input>
         </el-form-item>
         <el-form-item label="课程学分" prop="courseCredit">
-          <el-input v-model.trim="form.courseCredit" placeholder="请输入课程学分" ></el-input>
+          <el-input v-model.trim="form.courseCredit" type="number" min="0" placeholder="请输入课程学分" ></el-input>
         </el-form-item>
         <el-form-item label="课时" prop="courseClassHour">
           <el-input v-model.trim="form.courseClassHour" placeholder="请输入课时" ></el-input>
@@ -202,7 +206,7 @@
 		  <el-form-item label="学制" prop="studyYears">
 			  <el-input v-model.trim.number="form.studyYears" placeholder="请输入学制" ></el-input>
 		  </el-form-item>
-        <el-form-item label="考试形式" prop="examKinde">
+        <el-form-item label="考试形式" prop="examKind">
           <el-select  style="width:100%" v-model="form.examKind" placeholder="请选择考试形式">
           	<!--<el-option label="所有" value=""/>-->
           	<el-option :value="0" label="线下"></el-option>
@@ -218,7 +222,7 @@
           </el-select>
         </el-form-item>
          <el-form-item label="学期(0-5)" prop="term">
-          <el-input v-model.trim="form.term" placeholder="请输入学期"></el-input>
+          <el-input v-model.trim="form.term" type="number" max="5" min="0" placeholder="请输入学期"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">

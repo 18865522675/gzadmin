@@ -305,7 +305,7 @@ export default {
                   // this.stationIds.push(item.id)
                   this.$nextTick(()=>{
                       this.$refs.multipleTable.toggleRowSelection(item);
-                      this.multipleSelection.push(item);
+//                    this.multipleSelection.push(item);
 				  })
 			  }
 		  })
@@ -331,16 +331,15 @@ export default {
     },
     handleSelectionChange(val){
     	 this.multipleSelection = val;
-    	 console.log(val)
-    	 this.multipleSelection.map((item,index)=>{
-    	 	this.stationIds.push(item.id)
-    	 })
-
     },
     save(){
-    	if(!this.stationIds.length){
-    		return 	this.$message.warning("请选择函授站")
-    	}
+//  	if(!this.multipleSelection.length){
+//  		return 	this.$message.warning("请选择函授站")
+//  	}
+    	 	 this.multipleSelection.map((item,index)=>{
+    	 	this.stationIds.push(item.id)
+    	 })
+    	 	 console.log(this.stationIds)
     	this.$api.resourceManagement.schoolManagement_saveStation({
     		siteId:this.siteId,
     		stationIds:this.stationIds.join(",")
