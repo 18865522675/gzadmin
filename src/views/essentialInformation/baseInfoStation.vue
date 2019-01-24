@@ -313,7 +313,7 @@ export default {
       this.$api.essentialInformation
         .organizationalManagement_get_listAllStation({ limitNum: 100000 })
         .then(res => {
-          this.stationList = res.data.pageList;
+          this.stationList = res.data;
         });
     },
     check_detail(batch, major, levelId) {
@@ -400,5 +400,5 @@ export default {
 		}
 
 	}
-	
+
 </style>

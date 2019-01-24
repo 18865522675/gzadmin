@@ -106,12 +106,13 @@
                     </el-table-column>
                     <el-table-column
                             fixed="right"
-                            label="操作" width="200">
+                            label="操作" width="300">
                         <template slot-scope="scope">
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)" v-if="extra.indexOf('分配函授站')>-1">分配</el-button>-->
 
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}`)" >查看</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/1/${scope.row.planId}`)" >关联习题</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/2/${scope.row.planId}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" >编辑</el-button>
                             <baseDelBtn delUrl="/teaching/work" :delId="scope.row.id" :delOk="get_ajax" />
                         </template>

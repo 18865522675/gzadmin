@@ -2,31 +2,32 @@
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
             <div class="pageHead">
-                <div>请先设置各项题目总分(总和100)</div>
-                <div style="margin-top: 30px;">
-  
+                <div v-if="type==1">请先设置各项题目总分(总和100)</div>
+                <div v-else>已关联习题</div>
+                <div style="margin-top: 30px;" v-if="type==1">
+
                         <el-form class="flexDir-r" label="80px" style="display: flex;justify-content: flex-start;">
                                 <el-form-item label="单选题" style="flex:1">
                                     <el-input type="number" v-model.number="simpleScore" placeholder='请输入单选题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-           
+
                                 <el-form-item label="多选题" style="margin-left: 20px;flex:1">
                                     <el-input type="number"  v-model.number="multipleScore"  placeholder='请输入多选题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-                            
-                      
+
+
                                 <el-form-item label="判断题"  style="margin-left: 20px;flex:1">
                                     <el-input type="number"  v-model.number="judgementScore"  placeholder='请输入判断题总分' :maxlength="3">
                                         <template slot="append">分</template>
                                     </el-input>
                                 </el-form-item>
-                            
+
                         </el-form>
-                   
+
 
                 </div>
 
@@ -36,7 +37,7 @@
 
 
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn" style="margin-left: 20px!important;" @click="savePager">
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn" style="margin-left: 20px!important;" @click="savePager"  v-if="type==1">
                     	生成试卷
                 </div>
             </div>
@@ -227,10 +228,18 @@
 //              simpleCount:0,
 //              multipleCount:0,
 //              judgementCount:0
-              
+
             };
         },
         components: {},
+        computed:{
+          "type":function(){
+              return this.$route.params.type
+          },
+            "planId":function(){
+                return this.$route.params.planId
+            }
+        },
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
@@ -337,17 +346,27 @@
             },
             get_ajax() {
                 this.tableLoading = true;
-                this.$api.teachManage
-                    .get_courseWorkExerciseList(this.$route.params.workId)
-                    .then(res => {
-                        this.extra = res.data.extra;
-                        this.tableData = res.data.exercises;
-                        this.simpleScore=res.data.singleAllScore?res.data.singleAllScore:"";
-                        this.multipleScore=res.data.multipleAllScore?res.data.multipleAllScore:"";
-                        this.judgementScore=res.data.judgmentAllScore?res.data.judgmentAllScore:"";
-                        this.total = +res.data.total;
+                if(this.type==2){
+                    this.$api.teachManage
+                        .get_courseWorkExerciseList(this.$route.params.workId)
+                        .then(res => {
+                            this.extra = res.data.extra;
+                            this.tableData = res.data.exercises;
+                            this.simpleScore=res.data.singleAllScore?res.data.singleAllScore:"";
+                            this.multipleScore=res.data.multipleAllScore?res.data.multipleAllScore:"";
+                            this.judgementScore=res.data.judgmentAllScore?res.data.judgmentAllScore:"";
+                            this.total = +res.data.total;
+                            this.tableLoading = false;
+                        });
+                }else if(this.type==1){
+                    this.$api.teachManage.get_courseWorkExerciseListAll({
+                        planId:this.planId,
+                        exerciseType:""
+                    }).then((res)=>{
+                        this.tableData=res.data;
                         this.tableLoading = false;
-                    });
+                    })
+                }
             },
             ready_ajax() {
                 this.pageNum = 1;
@@ -482,7 +501,7 @@
                 }).catch((e)=>{
                 	this.$message.error("试卷生成失败")
                 })
-                
+
             }
             //分页end
         }

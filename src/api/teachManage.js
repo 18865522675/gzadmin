@@ -31,5 +31,8 @@ export default {
         get_courseWorkTeachPlanList: params => $.get("/teaching/discuss/listCourses", params),
 
     get_courseWorkExerciseList: params => $.get("/teaching/work/workExercise/"+params, {}),
+
+    get_courseWorkExerciseListAll: params => $.get("/teaching/work/listExercises", params),
+
      courseWorkAddWork: (params) => $.post("/teaching/work/add", params, { lock: true }),
 };

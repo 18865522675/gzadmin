@@ -79,7 +79,7 @@
 		          label="操作" width='250'>
 		          <template slot-scope="scope">
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
-		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn  small" >查看</el-button>
+		            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn  small" >查看</el-button>-->
 		            <baseDelBtn delUrl="resource/station" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
