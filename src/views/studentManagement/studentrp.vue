@@ -122,9 +122,13 @@
                             label="序号"
                             width="60">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="enrollYear"
                             label="报名年份" :show-overflow-tooltip="true">
+                    </el-table-column>-->
+                      <el-table-column
+                            prop="batchName"
+                            label="年级"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="studentName"
@@ -148,18 +152,33 @@
                             {{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
                         </template>
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="disciplineName"
                             label="科类"  :show-overflow-tooltip="true">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="majorName"
                             label="专业"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
+                            prop="content"
+                            label="内容"  :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stationName"
+                            label="函授站"   v-if="!userInfo.stationId" :show-overflow-tooltip="true">
+                    </el-table-column>
+                      <el-table-column
+                            prop="kind"
+                            label="类型"  :show-overflow-tooltip="true">
+                        <template slot-scope="scope">
+                            {{scope.row.kind==1?'奖励':'惩罚'}}
+                        </template>
+                    </el-table-column>
+                    <!--<el-table-column
                             prop="stationName"
                             label="录取状态">
-                    </el-table-column>
+                    </el-table-column>-->
                     <!--<el-table-column-->
                     <!--label="状态"-->
                     <!--width="80">-->
@@ -176,7 +195,7 @@
 
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>-->
 
-                            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/student/rp" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
                         </template>
                     </el-table-column>
@@ -203,6 +222,46 @@
             <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
             <el-form-item label="学生姓名" prop="name">
             <el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+            </el-form-item>
+
+                <el-form-item label="证件号码" v-if="form.cardNo">
+                    <el-input v-model.trim="form.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
+                </el-form-item>
+
+
+                <el-form-item label="类型" prop="kind">
+                    <el-select  style="width:100%" v-model="form.kind" placeholder="请选择操作类型">
+                        <!--<el-option label="身份证" :value="0"></el-option>-->
+                        <el-option label="奖励" :value="1"></el-option>
+                        <el-option label="惩罚" :value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+                    <el-form-item label="内容" prop="content">
+                        <el-input v-model.trim="form.content" placeholder="请输入内容" type="textarea" :rows="2"></el-input>
+                    </el-form-item>
+
+                <el-form-item label="备注" prop="remark">
+                 <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
+                </el-form-item>
+                </el-form>
+            <div slot="footer" class="dialog-footer">
+             <el-button type="primary" @click="submitForm">保 存</el-button>
+            </div>
+            </el-dialog>
+            
+            
+            
+            
+              <el-dialog
+            title="编辑奖惩信息"
+            :visible.sync="dialogeditVisible"
+            width="660px"
+            center
+            :append-to-body="true"
+            class="kf-dialog-add">
+            <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
+            <el-form-item label="学生姓名" prop="name">
+            <el-input v-model.trim="form.name" :disabled="true" placeholder="请输入学生姓名（不超过20个字）"></el-input>
             </el-form-item>
 
                 <el-form-item label="证件号码" v-if="form.cardNo">
@@ -368,7 +427,8 @@
                 yearList:[],
                 actionId:"",
                 actionRow:{},
-                batchList:[]
+                batchList:[],
+                dialogeditVisible:false
             };
         },
         computed: mapState([ "userInfo"]),
@@ -505,7 +565,7 @@
             //显示编辑框
             dialogEdit_show(row) {
                 this.dialogType = 1;
-                this.dialogAddVisible = true;
+                this.dialogeditVisible = true;
                 this.form = {
 //      id: row.id,
 //      kindId: row.kindId, //课件名称
@@ -513,13 +573,9 @@
 //      remark: row.remark, //备注
 //      ableStatus: row.ableStatus //启用状态(1启用0禁用)
                     id:row.id,
-                    name:row.name,
-                    cardType:row.cardType,
-                    cardNo:row.cardNo,
-                    disciplineId:row.disciplineId,
-                    majorId:row.majorId,
-                    level:row.level,
-                    enrollYear:row.enrollYear,
+                    name:row.studentName,
+                    kind:row.kind,
+                    content:row.content,
                     remark:row.remark,
                 };
                 this.$nextTick(() => {

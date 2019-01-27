@@ -192,11 +192,11 @@
                             label="操作" width="350">
                         <template slot-scope="scope">
                         	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showTrail(scope.row)" v-if="extra.indexOf('审核')>-1">审核</el-button>
-                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" v-if="extra.indexOf('申请')>-1">申请</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" :disabled="scope.row.agreeStatus==2" v-if="extra.indexOf('申请')>-1">申请</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row)" v-if="extra.indexOf('变更学籍')>-1">变更学籍</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
-                            <baseDelBtn delUrl="/student/normal" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+                            <baseDelBtn delUrl="/student/normal"  :disabled="scope.row.agreeStatus==2"  :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -221,7 +221,7 @@
                     class="kf-dialog-add">
                 <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
                     <el-form-item label="学生名称" prop="name">
-                        <el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+                        <el-input v-model.trim="form.name"  placeholder="请输入学生姓名（不超过20个字）"></el-input>
                     </el-form-item>
                     <el-form-item label="证件类型" prop="cardType">
                         <el-select  style="width:100%" v-model="form.cardType" placeholder="请选择证件类型">
@@ -264,7 +264,7 @@
                             <el-option label="第四学期" :value="4"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="函授站" prop="stationId">
+                    <el-form-item label="函授站" prop="stationId"  v-if="!userInfo.stationId">
                         <el-select  style="width:100%" v-model="form.stationId" placeholder="请选择函授站">
                             <el-option v-for="(item,index) in stationList" :key="index"  :label="item.name" :value="item.id"></el-option>
                         </el-select>
@@ -322,8 +322,8 @@
                     </el-form-item>-->
                     <el-form-item label="审核状态">
 	                    <el-radio-group v-model.trim="trailForm.agreeStatus">
-	                    <el-radio :label="3">通过</el-radio>
-	                    <el-radio :label="4">拒绝</el-radio>
+	                    <el-radio :label="2">通过</el-radio>
+	                    <el-radio :label="3">拒绝</el-radio>
 	                    </el-radio-group>
                     </el-form-item>
                 </el-form>
@@ -339,12 +339,12 @@
                     :visible.sync="allotDialogVisible"
                     width="660px"
                     center
-
+					@close="closeDialog"
                     :append-to-body="true"
                     class="kf-dialog-add">
                 <el-form ref="allotForm" :rules="allotRules" :model="allotForm" label-width="120px" class="kf-form-add">
                     <el-form-item label="学生">
-                        <el-input v-model.trim="actionRow.name" :disabled="true" placeholder="请输入学生姓名"></el-input>
+                        <el-input v-model.trim="actionRow.userName" :disabled="true" placeholder="请输入学生姓名"></el-input>
                     </el-form-item>
                     <el-form-item label="证件号码">
                         <el-input v-model.trim="actionRow.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
@@ -462,6 +462,9 @@
                     ],
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },
+                    ],
+                    stationId: [
+                        { required: true, message: "请选择函授站", trigger: "blur" },
                     ]
                 },
 				
@@ -480,7 +483,7 @@
                         { required: true, message: "请选择操作类型 ", trigger: "blur" },
                     ],
                     newValue: [
-                        { required: true, message: "请选择新值 ", trigger: "blur" },
+                        { required: true, message: "请选择更变后的值 ", trigger: "blur" },
                     ],
                     stationId: [
                         { required: true, message: "请选择函授站 ", trigger: "blur" },
@@ -599,6 +602,12 @@
             	this.trailDialogVisible=true;
             	this.trailRow={...row}
             },
+            closeDialog(){
+            	this.allotForm={
+            		kindId:"",
+            		newValue:""
+            	}
+            },
             sureTrial(){
             	this.$api.studentManagement.studentInfo_trail(this.trailRow.id,this.trailForm).then((res)=>{
             		this.$message.success("审核成功!");
@@ -640,11 +649,11 @@
                 this.$refs[formName].validate(valid => {
                     if (valid) {
                         this.$api.studentManagement.studentInfo_allot(this.actionRow.id,this.allotForm).then((res)=>{1
-                            this.$message.success("学籍更变成功");
+                            this.$message.success("学籍变更成功");
                             this.allotDialogVisible=false;
                             this.ready_ajax()
                         }).catch((e)=>{
-                            this.$message.error("学籍更变失败")
+                            this.$message.error("学籍变更失败")
                         })
                     } else {
                         console.log("error submit!!");

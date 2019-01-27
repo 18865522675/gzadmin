@@ -120,6 +120,7 @@
       :visible.sync="dialogAddVisible"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
@@ -227,6 +228,12 @@ export default {
   	}
   },
   methods: {
+  	closeDialog(){
+  		this.form.title="";
+  		this.form.content="";
+  		this.form.remark="";
+  		this.form.receivedIds=[]
+  	},
   	getZhanneixinStationList(){
   		this.$api.message.getZhanneixinStationList({
   			pageNum:1,

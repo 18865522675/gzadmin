@@ -138,7 +138,7 @@
                             label="科类">
                     </el-table-column>
                     <el-table-column
-                            prop="major"
+                            prop="majorName"
                             label="专业">
                     </el-table-column>
                     <el-table-column

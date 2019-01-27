@@ -43,7 +43,7 @@
 				</div>
 			</div>
 
-			<div class="headTopItem">
+			<!--<div class="headTopItem">
 				<span class='label'>科类</span>
 				<div class="marL10">
 					<el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -55,13 +55,13 @@
 								:value="item.id"/>
 					</el-select>
 				</div>
-			</div>
+			</div>-->
 
 			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 				添加
 			</div>
 			<download url="teaching/plan/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1"/>
-			<upload class="mr10 marT20" url="/teaching/plan/upload"  :ok="get_ajax" v-if="extra.indexOf('批量导入')>-1" ></upload>
+			<upload class="mr10 marT20" url="/teaching/plan/upload"  :ok="get_ajax" v-if="extra.indexOf('批量上传')>-1" ></upload>
 
 
   		</div>
@@ -252,7 +252,7 @@ export default {
         batchId:"",
         level:"",
         majorId:"",
-        disciplineId:""
+//      disciplineId:""
       },
       tableData: [],
       //分页——start

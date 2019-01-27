@@ -1,9 +1,10 @@
-const HOST_IND = 3, // 切换服务器
+const HOST_IND = 3 , // 切换服务器
   HOST = [
     "", // 正式服务器
     "http://61.153.184.193:8082/", // 测试服务器
     "http://192.168.1.12:8082/", // 其它测试
-    "http://47.107.105.141:81/" // 代理
+    "http://47.107.105.141:81/", // 代理
+    "http://hlh.gzsqwhcm.com:81/"
   ],
   HOST_CATALOG_API = "manager-api/", // api目录
   HOST_CATALOG_IMG = "manager-api/"; // 图片资源目录

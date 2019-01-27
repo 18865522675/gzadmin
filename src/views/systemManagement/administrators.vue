@@ -237,13 +237,13 @@
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <template>
           <el-form-item label="手机" prop="phone">
-            <el-input v-model.trim="form.phone" maxlength="11" placeholder="请输入手机"></el-input>
+            <el-input v-model.trim="form.phone" :disabled="dialogType==1"  maxlength="11" placeholder="请输入手机"></el-input>
           </el-form-item>
           <el-form-item label="姓名" prop="name">
-            <el-input v-model.trim="form.name" maxlength="11" placeholder="请输入姓名"></el-input>
+            <el-input v-model.trim="form.name" :disabled="dialogType==1"  maxlength="11" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="角色" prop="roleId">
-            <el-select v-model.trim="form.roleId" placeholder="请选择" class="kf-form-item form-sel" style="width: 100%">
+            <el-select v-model.trim="form.roleId" placeholder="请选择" :disabled="dialogType==1"  class="kf-form-item form-sel" style="width: 100%">
               <el-option
                 v-for="(item, index) in role_list"
                 :key="index"
@@ -253,7 +253,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
-            <el-input v-model.trim="form.email" placeholder="请输入邮箱"></el-input>
+            <el-input v-model.trim="form.email" :disabled="dialogType==1" placeholder="请输入邮箱"></el-input>
           </el-form-item>
         </template>
         <el-form-item label="状态">

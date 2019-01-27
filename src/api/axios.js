@@ -5,8 +5,23 @@ import router from "../router";
 import config from "../../config";
 import Cookies from "js-cookie";
 
-const HOST = config.HOST;
-const PREFIX_URL = config.HOST_API;
+//const HOST = config.HOST;
+//const PREFIX_URL = config.HOST_API;
+
+//console.log("http://"+window.location.host+":81/manager-api/")
+
+let HOST="";
+let PREFIX_URL=""
+
+if(window.location.href.indexOf("localhost")<0){
+	  HOST="http://"+window.location.host.split(":")[0]+":81"
+//	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
+}else{
+	 HOST = config.HOST;
+	 PREFIX_URL = config.HOST_API;
+
+}
 
 /**
  *
@@ -30,6 +45,7 @@ const ajax_main = (method, url = "", params, conf = {}) => {
       },
       withCredentials: true //跨域携带凭证
     };
+    console.log(configObj)
 
     //禁用缓存, 不然ie里会有问题
     configObj.headers["If-Modified-Since"] = "0";

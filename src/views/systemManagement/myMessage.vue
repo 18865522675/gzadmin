@@ -10,9 +10,10 @@
           :show-file-list="false"
           :on-success="upSuccess"
           :on-error="upError"
+          :with-credentials="true"
           :before-upload="beforeAvatarUpload"
           :on-progress="upProgress">
-          <div class="mym-head-img" :style="{backgroundImage: 'url('+$config.HOST_API+info.avatar+')'}" v-if="info.avatar"></div>
+          <div class="mym-head-img" :style="{backgroundImage: 'url('+info.avatar+')'}" v-if="info.avatar"></div>
           <div class="mym-head-img" v-else></div>
         </el-upload>
         <div class="mym-head-bd">

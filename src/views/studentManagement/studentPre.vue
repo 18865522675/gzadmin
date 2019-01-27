@@ -7,6 +7,7 @@
                   <span class='label marL10'>报考年份</span>
                   <div class="marL10">
                       <el-select v-model="tableForm.enrollYear" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                      	<el-option label="所有" value=""/>
                           <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
                       </el-select>
                   </div>
