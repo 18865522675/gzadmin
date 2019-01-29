@@ -61,26 +61,30 @@ let permissionReady = () => {
             });
 
             // 二级
-            if (item.children)
-              item.children.map(item_children => {
+            if (item.children){
+            	item.children.map(item_children => {
                 let routerItemStatus = codeType ? false : true; //**权限管理
                 res.map(itemRes => {
-                  if (itemRes.submodules)
-                    itemRes.submodules.map(itemRes_childs => {
-                      if (
-                        item_children.meta.title ===
-                        itemRes_childs.name.replace(/ /g, "")
-                      ) {
-                        routerItemStatus = true;
-                      }
-                    });
+                  if (itemRes.submodules){
+	                   itemRes.submodules.map(itemRes_childs => {
+	                      if (
+	                        item_children.meta.title ===
+	                        itemRes_childs.name.replace(/ /g, "")
+	                      ) {
+	                        routerItemStatus = true;
+	                      }
+	                    });	
+                  }
+                  
                 });
+                console.log(routerItemStatus)
                 item_children.meta = {
                   ...item_children.meta,
                   routerStatus: routerItemStatus
                 };
               });
-
+            }
+					
             item.meta = {
               ...item.meta,
               routerStatus: routerStatus
@@ -92,6 +96,7 @@ let permissionReady = () => {
         } catch (error) {
           reject(error);
         }
+        console.log(routerMain)
       })
       .catch(res => {
         reject(res);

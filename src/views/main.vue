@@ -34,7 +34,7 @@
 					          		<!--<div class="menu-icon" :style="{backgroundImage: 'url('+require('../assets/img/'+item.meta.icon+'.png')+')'}"></div>-->
 					          		<span>{{item.meta.title}}</span>
 					          	</template>
-					          <div v-for="(cItem,cIndex) in item.children"   :key="cIndex"  v-if="cItem.meta.show&&item.meta.routerStatus">
+					          <div v-for="(cItem,cIndex) in item.children"   :key="cIndex"  v-if="cItem.meta.show&&cItem.meta.routerStatus">
 					          		<el-menu-item :index="cItem.path">{{cItem.meta.title}}</el-menu-item>
 					          </div>
 					        </el-submenu>

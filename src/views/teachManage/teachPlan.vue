@@ -187,13 +187,13 @@
           	</el-option>
           </el-select>
         </el-form-item>
-          <el-form-item label="课程" prop="courseId">
+          <!--<el-form-item label="课程" prop="courseId">
           <el-select  style="width:100%" v-model="form.courseId" placeholder="请选择课程">
           	<el-option v-for="(item,index) in courseList" :key="index" :value="item.id" :label="item.name">
 
           	</el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="课程名称" prop="siteCourseName">
           <el-input v-model.trim="form.siteCourseName" placeholder="请输入课程名称" ></el-input>
         </el-form-item>
@@ -365,7 +365,7 @@ export default {
 	  this.getBatchList();
 	this.get_TeachPlanDisciplineList();
 	this.get_TeachPlanMajorList();
-	this.get_TeachPlanCourseList()
+//	this.get_TeachPlanCourseList()
     // this.get_ajax();
   },
   watch:{
@@ -428,7 +428,7 @@ export default {
         disciplineId: "", //课件编码
         level: "", //备注
         majorId: "",
-        courseId: "",
+//      courseId: "",
         siteCourseName: "",
         courseType: "",
         courseCredit: "",
@@ -454,7 +454,7 @@ export default {
         disciplineId: row.disciplineId, //课件编码
         level:  String(row.level), //备注
         majorId: row.majorId,
-        courseId: row.courseId,
+//      courseId: row.courseId,
         siteCourseName: row.siteCourseName,
         courseType:  row.courseType,
         courseCredit:  row.courseCredit,

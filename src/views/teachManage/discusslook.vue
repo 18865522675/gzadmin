@@ -6,9 +6,9 @@
 				 <span style="width: 60px;font-size: 14px;font-weight: bold">主题</span>
 				 <el-input v-model="$route.params.name" :disabled="true"> </el-input>
 			 </div>
-		 	 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
+		 	 <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'>
 				添加
-			</div>
+			</div>-->
 			 <div class="comTopResetBtn comTopBlueBtn topBtn  marL10" @click='$router.go(-1)'>
 				返回
 			</div>

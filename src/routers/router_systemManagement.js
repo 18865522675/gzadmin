@@ -82,15 +82,15 @@ const router_module = {
       component: resolve =>
         require(["../views/systemManagement/administrators.vue"], resolve)
     },
- {
-   path: "/systemManagement/moduleManagement",
-   meta: {
-     title: "模块管理",
-     show: true
-   },
-   component: resolve =>
-     require(["../views/systemManagement/moduleManagement.vue"], resolve)
- },
+// {
+// path: "/systemManagement/moduleManagement",
+// meta: {
+//   title: "模块管理",
+//   show: true
+// },
+// component: resolve =>
+//   require(["../views/systemManagement/moduleManagement.vue"], resolve)
+// },
 //  {
 //    path: "/systemManagement/friendshipLink",
 //    meta: {
