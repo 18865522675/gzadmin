@@ -11,9 +11,9 @@ export default {
   学习设置
    */
   learningSettings_get_info: params =>
-    $.get("system/studySetting", params, { lock: true }),
+    $.get("system/scoreSetup/see", params, { lock: true }),
   learningSettings_save: params =>
-    $.put("system/studySetting", params, { lock: true }),
+    $.post("/system/scoreSetup/save", params, { lock: true }),
 
   /*
   学习设置

@@ -53,7 +53,18 @@
                     </div>
                 </div>
 
-
+			
+			 <div class="headTopItem">
+                <div class="flexItem">
+                    <span class='label marL10'>证件号码</span>
+                    <div class="marL10">
+                        <!--searchInp-->
+                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        </el-input>
+                    </div>
+                </div>
+            </div>
+            
                 <div class="headTopItem" style="width: 400px">
                     <span class='label marL10'>学生</span>
                     <div class="marL10">

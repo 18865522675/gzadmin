@@ -507,7 +507,7 @@ export default {
             name: row.name, //课件名称
             code: row.code, //课件编码
             logo: row.logo, //封面地址
-            used:row.used,
+            used:String(row.used),
             wareFrom:row.wareFrom,
             remark: row.remark, //备注
             ableStatus: row.ableStatus //启用状态(1启用0禁用)

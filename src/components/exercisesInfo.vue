@@ -1,6 +1,6 @@
 <template>
   <div class="exIn-btn">
-    <el-button type="text" size="small" class="kf-btn kf-btn-table small" @click="dialogEdit_show">查看</el-button>
+    <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show">查看</el-button>
     <!--弹窗-->
     <el-dialog
       title="查看"
@@ -40,8 +40,8 @@
         </el-form-item>
         <el-form-item label="答案" prop="answer" v-if="form.type===1">
           <el-radio-group v-model.trim="form.answer" disabled>
-            <el-radio label="RIGHT">正确</el-radio>
-            <el-radio label="WRONG">错误</el-radio>
+            <el-radio label="正确">正确</el-radio>
+            <el-radio label="错误">错误</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="状态">

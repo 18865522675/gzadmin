@@ -398,7 +398,7 @@
           <el-input v-model.trim="form.times" type="number" placeholder="请输入时长（不超过100个字）"></el-input>
         </el-form-item>
         <el-form-item label="顺序号" prop="sorting">
-          <el-input v-model.trim="form.sorting" type="number" min="0" placeholder="请输入顺序号"></el-input>
+          <el-input v-model.trim="form.sorting" onkeypress="return event.keyCode>=48&&event.keyCode<=57" type="number" min="0" placeholder="请输入顺序号"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">

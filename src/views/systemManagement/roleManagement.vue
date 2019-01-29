@@ -70,7 +70,7 @@
               :to="'/systemManagement/roleManagement_sys/'+
               scope.row.id+'/'+
               scope.row.name
-              " size="small" class="kf-btn kf-btn-table small" v-if="extra.indexOf('修改权限')>-1">设置权限</router-link>
+              " size="small" class="kf-btn kf-btn-table small" :disabled="scope.row.remark=='系统创建默认学校角色'" v-if="extra.indexOf('修改权限')>-1">设置权限</router-link>
             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small ml10" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
             <baseDelBtn delUrl="system/role" :delId="scope.row.id" :delOk="ready_ajax" v-if="extra.indexOf('删除')>-1"/>
           </template>

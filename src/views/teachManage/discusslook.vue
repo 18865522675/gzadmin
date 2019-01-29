@@ -64,8 +64,17 @@
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-        <el-form-item label="内容" prop="content">
-          <el-input v-model.trim="form.content" placeholder="请输入内容" type="textarea" :rows="2"></el-input>
+      	<el-form-item label="标题" prop="name">
+          <el-input v-model.trim="form.name" placeholder="请输入标题"></el-input>
+        </el-form-item>
+         <el-form-item label="状态">
+            <el-radio-group v-model="form.ableStatus">
+            <el-radio :label="1">启用</el-radio>
+            <el-radio :label="0">禁用</el-radio>
+            </el-radio-group>
+            </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,24 +106,22 @@ export default {
       dialogAddVisible: false,
       dialogType: 0,
       form: {
-        batchId: "", //课件名称
-        disciplineId: "", //课件编码
-        level: "", //备注
-        majorId: "",
-        courseId: "",
-        siteCourseName: "",
-        courseType: "",
-        courseCredit: "",
-        courseClassHour: "",
-        examKind: "",
-        examNature: "",
-        term: "",
-        remark: "",
+        ableStatus:1,
+        remark:"",
+        name:""
       },
       rulesForm: {
-        content: [
-          { required: true, message: "请输入内容", trigger: "blur" },
-		]
+        name: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+		],
+		  remark: [
+                        {
+                            min: 1,
+                            max: 20,
+                            message: "最长 20 个字符",
+                            trigger: "blur"
+                        }
+                    ],
 //      code: [
 //        { required: true, message: "请输入院校编码", trigger: "blur" },
 //        {
@@ -172,7 +179,7 @@ export default {
         .get_discussContentList({
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-            discussId:this.$route.params.id
+          discussId:this.$route.params.id
         })
         .then(res => {
           this.extra = res.data.extra;
@@ -193,7 +200,10 @@ export default {
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
-          content:''
+          ableStatus:1,
+          remark:"",
+          name:"",
+          planId:this.$route.params.planId
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();

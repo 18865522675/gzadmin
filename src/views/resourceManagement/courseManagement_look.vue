@@ -39,7 +39,7 @@
         <el-table-column
           prop="name"
           label="课件名称"
-          width="200">
+          width="200" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="code"
@@ -48,27 +48,27 @@
         </el-table-column>
         <el-table-column
           prop="courseName"
-          label="所属课程">
+          label="所属课程" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="teacher"
-          label="讲师">
+          label="讲师" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
-          prop="duration"
-          label="时长（秒）">
+          prop="times"
+          label="时长（秒）" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="createTime"
           :formatter="$fun.table.time"
           label="创建时间"
-          width="160">
+          width="160" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="updateTime"
           :formatter="$fun.table.time"
           label="更新时间"
-          width="160">
+          width="160" :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="remark"
@@ -80,7 +80,7 @@
           label="操作"
           width="60">
           <template slot-scope="scope">
-            <el-button type="text" size="small" class="kf-btn kf-btn-table small" @click="dialogVideo_show(scope.row)">预览</el-button>
+            <el-button type="text" size="small"  class="kf-btn kf-btn-table kf-orange-btn  small" @click="dialogVideo_show(scope.row)">预览</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -101,7 +101,7 @@
         </el-table-column>
         <el-table-column
           prop="content"
-          label="题目">
+          label="题目"  :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="version"
@@ -113,19 +113,19 @@
         </el-table-column>
         <el-table-column
           prop="courseName"
-          label="所属于课程">
+          label="所属于课程"  :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="createTime"
           :formatter="$fun.table.time"
           label="创建时间"
-          width="160">
+          width="160"  :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="updateTime"
           :formatter="$fun.table.time"
           label="更新时间"
-          width="160">
+          width="160"  :show-overflow-tooltip="true">
         </el-table-column>
         <el-table-column
           prop="remark"
@@ -138,6 +138,64 @@
           width="60">
           <template slot-scope="scope">
             <exercisesInfo :id="scope.row.id" :courseName="scope.row.courseName"/>
+          </template>
+        </el-table-column>
+      </el-table>
+      
+      
+      
+      <!--图书列表——表格-->
+      <el-table
+        v-loading="tableLoading"
+        :data="tableData"
+        border
+        class="kf-table"
+        style="width: 100%"
+        v-show="table_tab_ind===2">
+        <el-table-column
+          type="index"
+          :index="(index) => (pageNum - 1) * pageSize + index + 1"
+          label="序号"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="图书名称"  :show-overflow-tooltip="true">
+        </el-table-column>
+        <el-table-column
+          prop="code"
+          label="图书编码"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="courseName"
+          label="所属于课程"  :show-overflow-tooltip="true">
+        </el-table-column>
+         <!--<el-table-column
+          prop="courseName"
+          label="类别"  :show-overflow-tooltip="true">
+        </el-table-column>-->
+         <!--<el-table-column
+          prop="sort"
+          label="顺序号"  :show-overflow-tooltip="true">
+        </el-table-column>-->
+        <el-table-column
+          prop="updateTime"
+          :formatter="$fun.table.time"
+          label="更新时间"
+          width="160"  :show-overflow-tooltip="true">
+        </el-table-column>
+        <el-table-column
+          prop="remark"
+          :show-overflow-tooltip="true"
+          label="备注">
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          width="60">
+          <template slot-scope="scope">
+               <el-button type="text" size="small"  class="kf-btn kf-btn-table kf-orange-btn  small" @click="dialogVideo_show(scope.row)">预览</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -268,7 +326,7 @@ export default {
           })
           .then(res => {
             this.tableData = res.data.pageList;
-            this.total = res.data.total;
+            this.total = +res.data.total;
             this.tableLoading = false;
           });
       } else if(this.table_tab_ind === 1){
@@ -280,7 +338,7 @@ export default {
           })
           .then(res => {
             this.tableData = res.data.pageList;
-            this.total = res.data.total;
+            this.total = +res.data.total;
             this.tableLoading = false;
           });
       }else {
@@ -291,7 +349,7 @@ export default {
             })
               .then(res => {
                   this.tableData = res.data.pageList;
-                  this.total = res.data.total;
+                  this.total = +res.data.total;
                   this.tableLoading = false;
               });
       }

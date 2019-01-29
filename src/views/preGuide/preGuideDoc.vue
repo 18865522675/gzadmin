@@ -180,7 +180,7 @@
                         <el-input v-model.trim="form.playUrl" placeholder="请输入阅读地址"></el-input>
                     </el-form-item>
                     <el-form-item label="顺序号" prop="sort">
-                        <el-input v-model.trim="form.sort" placeholder="请输入顺序号"></el-input>
+                        <el-input v-model.trim="form.sort" onkeypress="return event.keyCode>=48&&event.keyCode<=57"  placeholder="请输入顺序号"></el-input>
                     </el-form-item>
                     <el-form-item label="备注" prop="remark">
                         <el-input v-model.trim="form.remark" :row="2" type="textarea" placeholder="请输入备注"></el-input>
