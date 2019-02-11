@@ -116,7 +116,7 @@ export default {
         $.post("/student/rp", params, { lock: true }),
     //	奖惩管理信息
     studentrp_edit: (id,params) =>
-        $.put("/student/rp" + id, params, { lock: true }),
+        $.put("/student/rp/" + id, params, { lock: true }),
 
 
     //	获取自主报名列表
@@ -124,5 +124,11 @@ export default {
 
     studentSelfHelp_allot: params =>
         $.post("/student/enrolledSelf/allotStation", params, { lock: true }),
-
+ 		
+ 		//	获取批次
+    batch_get_list: params => $.get("/student/normal/listBatchs", params),
+    
+    
+    getyidongInfo: params => $.get("/student/transf/listTransfer/"+params, {}),
+    
 };

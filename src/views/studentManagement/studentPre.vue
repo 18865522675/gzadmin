@@ -73,7 +73,7 @@
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
                         <!--searchInp-->
-                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        <el-input v-model="tableForm.cardNo" class='searchInp' placeholder="请输入证件号码">
                         </el-input>
                     </div>
                 </div>
@@ -403,6 +403,11 @@ export default {
   },
   watch:{
   	"tableForm.name":function(n,o){
+  			if(!n){
+  				this.get_ajax()
+  			}
+  	},
+  	"tableForm.cardNo":function(n,o){
   			if(!n){
   				this.get_ajax()
   			}

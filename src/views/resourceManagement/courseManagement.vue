@@ -194,7 +194,19 @@
   	 <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
-  			<span class='label'>课程名称</span>
+  			<span class='label'>匹配</span>
+ 				<div class="marL10">
+            <el-select v-model="tableForm.matched" class="kf-select" placeholder="请选择匹配情况" filterable  @change="searchChange">
+                <el-option label="所有" value=""/>
+                <el-option label="课件未匹配" :value="1"/>
+                <el-option label="图书未匹配" :value="2"/>
+                <el-option label="习题未匹配" :value="3"/>
+                
+            </el-select>
+        </div>
+ 				
+ 				
+  			<span class='label marL10'>课程名称</span>
  				<div class="marL10">
  					<!--searchInp-->
  					<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入内容">
@@ -341,7 +353,8 @@ export default {
       extra: [],
       tableLoading: true,
       tableForm: {
-        name: ""
+        name: "",
+        matched:""
       },
       tableData: [],
       //分页——start

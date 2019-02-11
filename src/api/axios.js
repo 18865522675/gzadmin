@@ -15,8 +15,8 @@ let PREFIX_URL=""
 
 if(window.location.href.indexOf("localhost")<0){
 	  HOST="http://"+window.location.host.split(":")[0]+":81"
-//	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
-	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
+	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+//	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
 }else{
 	 HOST = config.HOST;
 	 PREFIX_URL = config.HOST_API;

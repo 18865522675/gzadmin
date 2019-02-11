@@ -26,7 +26,7 @@ const router_module = {
         require(["../views/resourceManagement/courseExercises.vue"], resolve)
     },
     {
-      path: "/resourceManagement_courseManagement",
+      path: "/resourceManagement_courseManagemen",
       meta: {
         title: "课程管理",
         show: true
@@ -37,7 +37,8 @@ const router_module = {
         {
           path: "/resourceManagement/courseManagement",
           meta: {
-            show: false
+            show: false,
+            title: "课程管理",
           },
           component: resolve =>
             require([
@@ -149,6 +150,15 @@ const router_module = {
       },
       component: resolve =>
         require(["../views/resourceManagement/courseStation.vue"], resolve)
+    },
+    {
+      path: "/resourceManagement/schoolCourse",
+      meta: {
+        title: "学校课程",
+        show: true
+      },
+      component: resolve =>
+        require(["../views/resourceManagement/schoolCourse.vue"], resolve)
     }
   ]
 };

@@ -694,7 +694,7 @@ export default {
               upForm["option" + item.label] = item.value;
             }
           });
-          upForm.answer = upForm.answer.join("");
+          upForm.answer = upForm.answer.join("|");
 
           if (valueNum < 2) {
             this.$message({
@@ -783,7 +783,7 @@ export default {
     type_change() {
       switch (this.form.type) {
         case 1:
-          this.form.answer = "RIGHT";
+          this.form.answer = "正确";
           break;
         case 2:
           this.form.answer = "";

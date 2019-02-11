@@ -35,4 +35,49 @@ export default {
     get_courseWorkExerciseListAll: params => $.get("/teaching/work/listExercises", params),
 
      courseWorkAddWork: (params) => $.post("/teaching/work/add", params, { lock: true }),
+     
+     
+     
+     // 学习记录
+		studyRecordList: params => $.get("/teaching/record/list", params, { lock: true }),
+		
+		studyRecordList_stations: params => $.get("/teaching/record/listStations", params, { lock: true }),
+		studyRecordList_majors: params => $.get("/teaching/record/listMajors", params, { lock: true }),
+		studyRecordList_batchs: params => $.get("/teaching/record/list", params, { lock: true }),
+		
+		studyRecordList_getDetailTable: (id,params) => $.get("/teaching/record/details/"+id, params, { lock: true }),
+		
+		
+		     // 作业评论
+		studyWorkManagerList: params => $.get("/teaching/workManager/list", params, { lock: true }),
+		
+		studyWorkManagerList_stations: params => $.get("/teaching/workManager/listStations", params, { lock: true }),
+		
+		studyWorkManagerList_courses: params => $.get("/teaching/workManager/listCourses", params, { lock: true }),
+		
+		studyWorkManagerList_majors: params => $.get("/teaching/workManager/listMajors", params, { lock: true }),
+		
+		studyWorkManagerList_detail: (id,params) => $.get("/teaching/workManager/"+id+"/details", params, { lock: true }),
+		
+		
+				     // 下载中心
+		getDownload_list: params => $.get("/teaching/doc/list", params, { lock: true }),
+		
+		getDownload_add: params => $.post("/teaching/doc", params, { lock: true }),
+		
+		getDownload_edit: (id,params) => $.put("/teaching/doc/"+id, params, { lock: true }),
+		
+		
+		 // 问答管理
+		getQa_list: params => $.get("/teaching/qa/list", params, { lock: true }),
+		
+		getQa_stations: params => $.get("/teaching/qa/listStations", params, { lock: true }),
+		
+		getQa_majors: params => $.get("/teaching/qa/listMajors", params, { lock: true }),
+		
+		getQa_courses: params => $.get("/teaching/qa/listCourses", params, { lock: true }),
+		
+		qsAnswer: (id,params) => $.post("/teaching/qa/answer/"+id, params, { lock: true }),
+		
+		qsEdit: (id,params) => $.post("/teaching/qa/updateAnswer/"+id, params, { lock: true })
 };

@@ -14,6 +14,7 @@ import payment from "./payment";
 import orderPay from "./orderPay";
 import teachManage from "./teachManage";
 import preGuide from "./preGuide";
+import exam from "./exam";
 //模块目录
 const api = {
   global: {
@@ -34,7 +35,8 @@ const api = {
   payment, //缴费管理
   orderPay, //缴费管理
   teachManage,
-    preGuide
+    preGuide,
+    exam
 };
 
 export default api;

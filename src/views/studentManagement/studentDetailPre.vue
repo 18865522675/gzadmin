@@ -183,7 +183,7 @@
                         学籍状态
                     </div>
                     <div>
-                        {{stuBaseInfo.diplomaNo}}
+                        {{formStatus(stuBaseInfo.schoolStatus)}}
                     </div>
 
 
@@ -453,7 +453,8 @@
         methods: {
             saveExamInfo(){
                 this.$api.studentManagement.saveExamForm({
-                    studentId:this.stuExamInfo.studentId,
+//                  studentId:this.$route.params.studentId,
+					studentId:this.stuExamInfo.studentId,
                     scoreLine:this.stuExamInfo.scoreLine,
                     examScore:this.stuExamInfo.examScore,
                     obj1:this.stuExamInfo.obj1,
@@ -568,6 +569,16 @@
                     this.majorList=res.data
                 })
             },
+            formStatus(val){
+            	switch(val){
+            		case 1:return "正常";
+            		case 2:return "休学";
+            		case 3:return "退学";
+            		case 4:return "延迟毕业";
+            		case 5:return "肄业";
+            		case 6:return "毕业";
+            	}
+            }
         },
         created() {
         },

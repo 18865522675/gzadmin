@@ -54,7 +54,7 @@
                         style="width: 100%">
                      <el-table-column
 				      type="selection"
-				      width="55">
+				      width="55" v-if="type==1">
 				    </el-table-column>
                     <el-table-column
                             prop="content"
@@ -497,7 +497,8 @@
                 	judgementScore:this.judgementScore,
                 	exerciseList:idarr.join(",")
                 }).then(()=>{
-                	this.$message.success("试卷生成成功")
+                	this.$message.success("试卷生成成功");
+                	this.$router.go(-1)
                 }).catch((e)=>{
                 	this.$message.error("试卷生成失败")
                 })

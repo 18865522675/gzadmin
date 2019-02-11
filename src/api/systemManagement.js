@@ -92,5 +92,8 @@ export default {
   */
   appVersion_get_list: params => $.get("system/appVersion/list", params),
   appVersion_add: params => $.post("system/appVersion", params),
-  appVersion_edit: params => $.put("system/appVersion/" + params.id, params)
+  appVersion_edit: params => $.put("system/appVersion/" + params.id, params),
+  
+//获取学校
+   get_schoolList: params => $.get("/Hide/listMajors", params),
 };

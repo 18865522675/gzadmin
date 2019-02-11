@@ -54,12 +54,12 @@
                 </div>
 
                 <div class="headTopItem">
-                    <span class='label marL10'>类型</span>
+                    <span class='label marL10'>学籍</span>
                     <div class="marL10">
-                        <el-select v-model="tableForm.kindId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        <el-select v-model="tableForm.schoolRollStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
                             <el-option label="所有" value=""/>
                             <el-option
-                                    v-for="(item, index) in transKindList"
+                                    v-for="(item, index) in schoolSList"
                                     :key="index"
                                     :label="item.name"
                                     :value="item.id"/>
@@ -121,8 +121,12 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="enrollYear"
-                            label="报名年份">
+                            prop="studentCode"
+                            label="学号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="batchName"
+                            label="年级">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
@@ -139,21 +143,24 @@
                             label="证件号码">
                     </el-table-column>
                     <el-table-column
-                            prop="majorName"
+                   	
                             label="层次"
                             width="200">
+                              <template slot-scope="scope">
+                            {{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
+                        </template>
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="disciplineName"
                             label="科类">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="majorName"
                             label="专业">
                     </el-table-column>
                     <el-table-column
                             prop="stationName"
-                            label="录取状态">
+                            label="函授站">
                     </el-table-column>
                     <!--<el-table-column-->
                     <!--label="状态"-->
@@ -166,9 +173,9 @@
                             fixed="right"
                             label="操作" width="200">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)">分配</el-button>
+                            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)">分配</el-button>-->
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showDialog(scope.row)" >查看</el-button>
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
                             <!--<baseDelBtn delUrl="/student/before" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>-->
                         </template>
@@ -259,7 +266,7 @@
                         <el-input v-model.trim="actionRow.cardNo" :disabled="true" placeholder="请输入证件号码"></el-input>
                     </el-form-item>
                     <el-form-item label="函授站" prop="stationId">
-                        <el-select  style="width:100%" v-model="form.stationId"  placeholder="请选择收函授站">
+                        <el-select  style="width:100%" v-model="allotForm.stationId"  placeholder="请选择函授站">
                             <el-option v-for="(item,index) in stationList" :key="index" :value="item.id" :label="item.name">
 
                             </el-option>
@@ -268,6 +275,48 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="sureAllot('allotForm')">保 存</el-button>
+                </div>
+            </el-dialog>
+            
+            
+            
+             <el-dialog
+                    title="分配函授站"
+                    :visible.sync="allotyidongVisible"
+                    width="800px"
+                    center
+
+                    :append-to-body="true"
+                    class="kf-dialog-add">
+                    <el-table
+				      :data="yidongList"
+				      style="width: 100%">
+				      <el-table-column
+				        type="index"
+				        label="序号">
+				      </el-table-column>
+				      <el-table-column
+				        prop="date"
+				        label="异动记录"  :show-overflow-tooltip="true">
+				        <template slot-scope="scope">
+				        	{{scope.row.oldValue}} -> {{scope.row.newValue}}
+				        </template>
+				      </el-table-column>
+				      <el-table-column
+				        prop="actionUser"
+				        label="操作管理员"  :show-overflow-tooltip="true">
+				      </el-table-column>
+				      <el-table-column
+				        prop="createTime"  :show-overflow-tooltip="true"
+				        label="创建时间" :formatter="$fun.table.time">
+				      </el-table-column>
+				      <el-table-column
+				        prop="remark"
+				        label="备注"  :show-overflow-tooltip="true">
+				      </el-table-column>
+				    </el-table>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="allotyidongVisible=false">关闭</el-button>
                 </div>
             </el-dialog>
 
@@ -288,7 +337,7 @@
                     stationId:"",
                     majorId:"",
                     level:"",
-                    kindId:"",
+                    schoolRollStatus:"",
                     batchId:"",
 
                     // disciplineId:"",
@@ -304,6 +353,26 @@
                     name:'变更函授站',
                     id:3
                 }],
+                schoolSList:[{
+                    name:'正常',
+                    id:1
+                },{
+                    name:'休学',
+                    id:2
+                },{
+                    name:'退学',
+                    id:3
+                },{
+                    name:'延迟毕业',
+                    id:3
+                },{
+                    name:'肄业',
+                    id:3
+                },{
+                    name:'毕业',
+                    id:3
+                }],
+                
                 tableData: [{}],
                 //分页——start
                 pageNum: 1,
@@ -376,7 +445,10 @@
                 yearList:[],
                 actionId:"",
                 actionRow:{},
-                batchList:[]
+                batchList:[],
+                allotyidongVisible:false,
+                yidongList:[]
+                
             };
         },
         components: {},
@@ -406,9 +478,16 @@
         methods: {
             //获取数据
             getBatchList(){
-                this.$api.essentialInformation.batch_get_list().then((res)=>{
-                    this.batchList=res.data.pageList
+                this.$api.studentManagement.batch_get_list().then((res)=>{
+                    this.batchList=res.data
                 })
+            },
+            showDialog(row){
+            	this.allotyidongVisible=true;
+           		this.$api.studentManagement.getyidongInfo(row.id).then((res)=>{
+                    this.yidongList=res.data
+                })
+           		
             },
             showAllot(item){
                 this.actionRow={...item};
