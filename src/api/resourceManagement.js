@@ -150,6 +150,13 @@ export default {
   schoolCourse_getSourceCourseList: params => $.get("/resource/siteCourse/listCourses", params),
   
    schoolCourse_save: params => $.put("/resource/siteCourse/save", params),
+   
+   
+   getPlayUrl: params => $.get("/resource/ware/getPlayUrl/"+params, {}),
+   
+   updateWareDuration: (id,params) => $.put("/resource/ware/updateWareDuration/"+id, params),
+   
+   
   
 
  

@@ -102,6 +102,10 @@
 		          label="课程">
 		        </el-table-column>
 		        <el-table-column
+		          prop="courseType"
+		          label="课程类别">
+		        </el-table-column>
+		        <el-table-column
 		          label="考试性质">
 		           <template slot-scope="scope">
 		            {{scope.row.examNature==0?"考试 ":scope.row.examNature==1?"考查":"统考"}}
@@ -200,6 +204,9 @@
         <el-form-item label="课程学分" prop="courseCredit">
           <el-input v-model.trim="form.courseCredit" type="number" min="0" placeholder="请输入课程学分" ></el-input>
         </el-form-item>
+        <el-form-item label="课程类别" prop="courseType">
+          <el-input v-model.trim="form.courseType"  placeholder="请输入课程类别" ></el-input>
+        </el-form-item>
         <el-form-item label="课时" prop="courseClassHour">
           <el-input v-model.trim="form.courseClassHour" type="number" max="5" min="0" placeholder="请输入课时" ></el-input>
         </el-form-item>
@@ -278,6 +285,7 @@ export default {
         term: "",
         remark: "",
           ableStatus:1,
+          courseType:""
       },
       rulesForm: {
         name: [
@@ -327,6 +335,9 @@ export default {
         ],
         term: [
           { required: true, message: "请输入学期数", trigger: "blur" },
+        ],
+         courseType: [
+          { required: true, message: "请输入课程类别", trigger: "blur" },
         ],
 //      code: [
 //        { required: true, message: "请输入院校编码", trigger: "blur" },
@@ -378,9 +389,9 @@ export default {
   methods: {
     //获取数据
       getBatchList(){
-          this.$api.essentialInformation.batch_get_list().then((res)=>{
-              this.batchList=res.data.pageList;
-              this.tableForm.batchId=res.data.pageList[0].id;
+          this.$api.essentialInformation.SimpleBatch_get_list().then((res)=>{
+              this.batchList=res.data;
+              this.tableForm.batchId=res.data[0].id;
               this.get_ajax();
           })
       },
@@ -438,7 +449,8 @@ export default {
         term: "",
         remark: "",
           ableStatus:1,
-          studyYears:""
+          studyYears:"",
+          courseType:""
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -464,7 +476,8 @@ export default {
         term:   row.term,
         remark:  row.remark,
           ableStatus:row.ableStatus,
-          studyYears:row.studyYears
+          studyYears:row.studyYears,
+          courseType:row.courseType
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();

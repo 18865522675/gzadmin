@@ -8,7 +8,7 @@
     </div>-->
    <div class="moduleLeft ">
    		<div class="moduleLeft_logo">
-   			<img src="../assets/img/logo.png" alt="" />
+   			<img src="../assets/img/logo.png" alt="" style="width: 150px;" />
    		</div>
    		<div class="moduleLeft_con">
    				<el-menu
@@ -46,7 +46,7 @@
    		<header>
 	      <div class="moduleRight-header flexItem">
 	      	 
-        <div class="m-check" :class="{on: checkStatus}" style="margin-top: 20px;">
+        <div class="m-check" :class="{on: checkStatus}" style="margin-top: 20px;"  v-if="userInfo.stationId||userInfo.roleId==1">
           <div class="m-check-cap" @click="checkStatus=!checkStatus">
             <span :title="extResult.name">{{extResult.name?extResult.name:"切换"}}</span>
           </div>
@@ -55,7 +55,7 @@
               <input type="text" @keyup="checkSearch" v-model.trim="checkSearchVal" class="m-check-in" placeholder="快速筛选学校">
             </div>
             <div class="m-check-list">
-              <div class="m-check-item" v-for="(item, index) in schoolList" :key="index"  v-if="schoolList.length&&item.name">{{item.name}}</div>
+              <div class="m-check-item" v-for="(item, index) in schoolList" :key="index" @click="checkSite(item.id)"   v-if="schoolList.length&&item.name">{{item.name}}</div>
               <div class="m-check-item" v-if="!schoolList.length">无内容</div>
               <!--@click="checkSite(item.siteId)"-->
             </div>
@@ -124,15 +124,28 @@ export default {
   computed: mapState(["crumbs", "routesArr", "userInfo"]),
   components: {},
   mounted() {
-	  this.$store.commit("save_userInfo", Cookies.get("userInfo"));
+//	  if(Cookies.set("userInfo")){
+//       	this.$store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
+//  }
+//	  this.$store.dispatch("save_userInfo", JSON.parse(Cookies.set("userInfo")));
+
+	  this.$nextTick(()=>{
+//	  	this.$store.commit("save_userInfo", JSON.parse(Cookies.get("userInfo")));	
+	 		setTimeout(()=>{
+	 			if(Cookies.set("userInfo")){
+	         	this.$store.commit("save_userInfo", JSON.parse(Cookies.get("userInfo")));	
+	      }
+ 		  	let {stationId,roleId}=this.userInfo;
+		  	console.log(this.userInfo)
+		  	if(stationId||roleId==1){
+		  		 this.get_schoolList();
+		  	}
+	 		},500)
+	  })
+	  
+	   
+	 	console.log(this.$store.state.userInfo)
   	this.routesList=this.$router.options.routes[3].children.slice(1);
-  	
-  	
-  	let {stationId,roleId}=JSON.parse(this.userInfo);
-  	console.log(JSON.parse(this.userInfo))
-  	if(stationId||roleId==1){
-  		 this.get_schoolList();
-  	}
   },
   methods: {
     //退出
@@ -198,6 +211,7 @@ export default {
 </script>
 <style lang="less">
 	.moduleWrap{
+		/*overflow-x: hidden;*/
 		.moduleLeft{
 			width: 200px!important;
 			&>.el-menu-item{
@@ -218,6 +232,8 @@ export default {
 		}
 		.moduleRight{
 			flex:1;
+			overflow-x: auto;
+			/*overflow-y: auto;*/
 			.moduleRight-header{
 				align-items: center;
 				background: #FFBB51;

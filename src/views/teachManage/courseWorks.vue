@@ -111,7 +111,7 @@
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showAllot(scope.row)" v-if="extra.indexOf('分配函授站')>-1">分配</el-button>-->
 
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/1/${scope.row.planId}`)" >关联习题</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="goWorkDetail(scope.row)" >关联习题</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/2/${scope.row.planId}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" >编辑</el-button>
                             <baseDelBtn delUrl="/teaching/work" :delId="scope.row.id" :delOk="get_ajax" />
@@ -309,6 +309,12 @@
                     .then(res => {
                         this.teachPlanList=res.data
                     });
+            },
+            goWorkDetail(row){
+            	if(!row.courseId){
+            		return this.$message.warning("该课程没有匹配课程资源，无法选择习题")
+            	}
+            	this.$router.push(`/teachManage/courseWorkRelete/${row.id}/${row.name}/1/${row.planId}`)
             },
             showAllot(item){
                 this.actionRow={...item};

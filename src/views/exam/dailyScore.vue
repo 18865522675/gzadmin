@@ -3,7 +3,7 @@
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:wrap">
 
-                <div class="headTopItem">
+                <!--<div class="headTopItem">
                     <span class='label marL10'>年份</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择年份" filterable  @change="searchChange">
@@ -11,7 +11,7 @@
                             <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </div>
-                </div>
+                </div>-->
                 
                 <div class="headTopItem">
                     <span class='label marL10'>年级</span>
@@ -91,15 +91,15 @@
                     </div>
                 </div>-->
 
-               <!--<div class="headTopItem">
+               <div class="headTopItem">
                 <div class="flexItem">
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
-                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        <el-input v-model="tableForm.cardNo" class='searchInp' placeholder="请输入证件号码">
                         </el-input>
                     </div>
                 </div>
-              </div>-->
+              </div>
                 
                  <div class="headTopItem" style="width: 360px">
                     <span class='label marL10'>姓名</span>

@@ -173,7 +173,7 @@
           label="头像"
           width="120">
           <template slot-scope="scope">
-            <tableCover :url="$config.HOST_API+scope.row.avatar"/>
+            <tableCover :url="scope.row.avatar"/>
           </template>
         </el-table-column>
         <el-table-column

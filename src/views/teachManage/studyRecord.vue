@@ -451,7 +451,7 @@ export default {
       pageSize2: 10,
       total2: 0,
       detailId:0,
-    };
+   };
   },
   components: {},
   computed: mapState(["userInfo"]),
@@ -489,10 +489,10 @@ export default {
     		pageSize:this.pageSize2,
     		term:this.term2
     	}).then((res)=>{
-    		if(res.data.length){
+//  		if(res.data.pageList.length){
     				this.detailTable=res.data.pageList;
     				this.total2=+res.data.total;
-    		}
+//  		}
     	})
     },
     changeDetail(){
@@ -507,9 +507,9 @@ export default {
           })
     },
       getBatchList(){
-          this.$api.essentialInformation.batch_get_list().then((res)=>{
-              this.batchList=res.data.pageList;
-              this.tableForm.batchId=res.data.pageList[0].id;
+          this.$api.essentialInformation.SimpleBatch_get_list().then((res)=>{
+              this.batchList=res.data;
+              this.tableForm.batchId=res.data[0].id;
               this.get_ajax();
           })
       },
@@ -646,11 +646,11 @@ export default {
     },
     handleSizeChange2(val) {
       this.pageSize2 = val;
-      this.get_ajax();
+      this.getDetailTable(this.detailId);
     },
     handleCurrentChange2(val) {
       this.pageNum2 = val;
-      this.get_ajax();
+      this.getDetailTable(this.detailId);
     },
     get_TeachPlanDisciplineList(){
     	this.$api.teachManage.get_TeachPlanDisciplineList().then((res)=>{

@@ -63,7 +63,7 @@
 								v-for="(item, index) in courseList"
 								:key="index"
 								:label="item.siteCourseName"
-								:value="item.id"/>
+								:value="item.planId"/>
 					</el-select>
 				</div>
 			</div>
@@ -272,7 +272,7 @@
         </el-form-item>
         
         <el-form-item label="备注" prop="remark">
-          <el-input v-model.trim="form.remark"  type="textarea" :disabled="isSee"  :rows="3"  placeholder="请输入回复。。"></el-input>
+          <el-input v-model.trim="form.remark"  type="textarea" :disabled="isSee"  :rows="3"  placeholder="请输入备注。。"></el-input>
         </el-form-item>
          <!--<el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">
@@ -408,6 +408,7 @@ export default {
     showDetail(row,isEdit,isSee){
     	this.dialogAddVisible=true;
     	this.isSee=isSee;
+    	this.actionRow={...row}
     	this.isEdit=isEdit;
     	this.form={...row};
     	if(isSee||isEdit){
@@ -437,9 +438,9 @@ export default {
           })
     },
       getBatchList(){
-          this.$api.essentialInformation.batch_get_list().then((res)=>{
-              this.batchList=res.data.pageList;
-              this.tableForm.batchId=res.data.pageList[0].id;
+          this.$api.essentialInformation.SimpleBatch_get_list().then((res)=>{
+              this.batchList=res.data;
+              this.tableForm.batchId=res.data[0].id;
               this.get_ajax();
           })
       },

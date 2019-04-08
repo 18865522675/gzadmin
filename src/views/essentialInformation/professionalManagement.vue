@@ -14,6 +14,8 @@
 			  				<div class="comTopSaveBtn1 comTopOrangeBtn topBtn marL10" @click='dialogAdd_show'  :delOk="ready_ajax" v-if="extra.indexOf('添加')>-1">
 			 					添加
 			 				</div>
+			 				<download url="/baseInfo/major/downloadMould" class="marL10 marT10"  />
+			 				<upload class="marL10 marT10" url="/baseInfo/major/upload"    :ok="get_ajax"   v-if="extra.indexOf('批量上传')>-1"   ></upload>
 			  				<!--@click='dialogAdd_show'-->
 			  		</div>
 

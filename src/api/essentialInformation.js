@@ -64,5 +64,14 @@ export default {
   batch_add: params =>
     $.post("/baseInfo/batch", params, { lock: true }),
   batch_edit: (id,params) =>
-    $.put("/baseInfo/batch/" + id, params, { lock: true })
+    $.put("/baseInfo/batch/" + id, params, { lock: true }),
+    
+    SimpleBatch_get_list: params =>
+    $.get("baseInfo/batch/listBatchs", params),
+    
+     SimpleDiscipline_get_list: params =>
+    $.get("baseInfo/discipline/listDisciplines", params),
+    
+    SimpleMajor_get_list: params =>
+    $.get("baseInfo/major/listMajors", params),
 };

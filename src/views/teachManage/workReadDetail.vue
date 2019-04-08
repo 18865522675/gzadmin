@@ -5,7 +5,7 @@
 			 
 			 
 			 	<div class="headTopItem">
-				<span class='label'>批次</span>
+				<span class='label'>年级</span>
 				<div class="marL10">
 					<el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择年级" filterable  @change="searchChange">
 						<el-option label="所有" value=""/>
@@ -69,7 +69,7 @@
 								v-for="(item,index) in courseList"
 								:key="index"
 								:label="item.siteCourseName"
-								:value="item.id"/>
+								:value="item.planId"/>
 					</el-select>
 				</div>
 			</div>
@@ -160,14 +160,14 @@
 		          label="成绩">
 		        </el-table-column>
 
-		        <el-table-column
+		        <!--<el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="200">
 		          <template slot-scope="scope">
 					  <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/teaching/discuss/removeContent" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
-		        </el-table-column>
+		        </el-table-column>-->
 		      </el-table>
 		        <el-pagination
 			        @size-change="handleSizeChange"
@@ -294,8 +294,8 @@ export default {
   methods: {
     //获取数据
     getBatchList(){
-          this.$api.essentialInformation.batch_get_list().then((res)=>{
-              this.batchList=res.data.pageList;
+          this.$api.essentialInformation.SimpleBatch_get_list().then((res)=>{
+              this.batchList=res.data;
           })
       },
     studyWorkManagerList_majors(){

@@ -2,22 +2,15 @@
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:wrap">
-
-                <div class="headTopItem" style="width: 500px;">
-                    <span class='label marL10'>时间</span>
+                <!--<div class="headTopItem">
+                    <span class='label marL10'>年份</span>
                     <div class="marL10">
-                        	 <el-date-picker
-							    class='timeWrap'
-						      v-model="tableForm.time"
-						      type="datetimerange"
-						      @change="ready_ajax"
-						      range-separator="至"
-						      start-placeholder="开始日期"
-						      end-placeholder="结束日期">
-						    </el-date-picker>
+                        <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择年级" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
                     </div>
-                </div>
-                
+                </div>-->
                 <div class="headTopItem">
                     <span class='label marL10'>年级</span>
                     <div class="marL10">
@@ -72,17 +65,17 @@
                 </div>
 
                 <div class="headTopItem">
-                    <span class='label marL10'>考试类型</span>
+                    <span class='label marL10'>状态</span>
                     <div class="marL10">
-                        <el-select v-model="tableForm.examType" class="kf-select" placeholder="请选择考试类型" filterable  @change="searchChange">
+                        <el-select v-model="tableForm.passed" class="kf-select" placeholder="请选择考试类型" filterable  @change="searchChange">
                             <el-option label="所有" value=""/>
-                            <el-option label="正考" :value="1"/>
-                            <el-option label="补考" :value="2"/>
+                            <el-option label="通过" :value="1"/>
+                            <el-option label="拒绝" :value="0"/>
                         </el-select>
                     </div>
                 </div>
 
-                <!--<div class="headTopItem">
+                <div class="headTopItem">
                     <span class='label marL10'>审核状态</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.agreeStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -94,7 +87,7 @@
                                     :value="item.id"/>
                         </el-select>
                     </div>
-                </div>-->
+                </div>
 
                <div class="headTopItem">
                 <div class="flexItem">
@@ -122,8 +115,8 @@
                 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
-                <download url="/student/normal/downloadNormalMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10 marT20" url="/student/normal/uploadNormal"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="/exam/examlScore/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10 marT20" url="/exam/examlScore/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
 
@@ -191,25 +184,45 @@
                             label="课程" :show-overflow-tooltip="true">
                     </el-table-column>
                      <el-table-column
-                            prop="level"
-                            label="考试类型"
-                            :show-overflow-tooltip="true">
-                        <template slot-scope="scope">
-                            {{scope.row.examType==1?'正考':'补考'}}
-                        </template>
+                            prop="usualScore"
+                            label="平时成绩" :show-overflow-tooltip="true">
                     </el-table-column>
                      <el-table-column
-                            prop="address"
-                            label="地点" :show-overflow-tooltip="true">
+                            prop="examScore"
+                            label="考试成绩" :show-overflow-tooltip="true">
                     </el-table-column>
-                      <el-table-column
-                            prop="startTime"
-                            label="考试开始时间" :show-overflow-tooltip="true" :formatter='$fun.table.time'>
+                     <el-table-column
+                            prop="resitScore"
+                            label="补考成绩" :show-overflow-tooltip="true">
+                    </el-table-column>
+                     <!--<el-table-column
+                            prop="usualScore"
+                            label="清考成绩" :show-overflow-tooltip="true">
+                    </el-table-column>-->
+                    <el-table-column
+                            prop="score"
+                            label="总成绩" :show-overflow-tooltip="true">
+                    </el-table-column>
+                     <el-table-column
+                            prop="passed"
+                            label="状态" :show-overflow-tooltip="true">
+                            <template slot-scope="scope">
+                            	{{scope.row.passed==1?'通过':'未通过'}}
+                            </template>
+                    </el-table-column>
+                     <el-table-column
+                            prop="auditStatus"
+                            label="审核状态" :show-overflow-tooltip="true" :formatter="forshenhe">
                     </el-table-column>
                     <el-table-column
-                            prop="endTime"
-                            label="考试结束时间" :show-overflow-tooltip="true" :formatter='$fun.table.time'>
-                    </el-table-column>
+			          fixed="right"
+			          label="操作" width="200">
+			          <template slot-scope="scope">
+			          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" v-if="extra.indexOf('申请')>-1">申请</el-button>
+			            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showPass(scope.row)"  v-if="extra.indexOf('通过')>-1">通过</el-button>
+			            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showRefuse(scope.row)" v-if="extra.indexOf('拒绝')>-1">拒绝</el-button>
+			          </template>
+			        </el-table-column>
                 </el-table>
                 <el-pagination
                         @size-change="handleSizeChange"
@@ -412,10 +425,8 @@
                     majorId:"",
                     level:"",
                     planId:"",
-                    start:"",
-                   	end:"",
-                   	examType:"",
-                   	time:""
+                    passed:"",
+                    agreeStatus:""
                 },
                 tableData: [],
                 //分页——start
@@ -593,6 +604,20 @@
         	this.getStudentPreSimpleMajors();
         	this.getBatchList();
             this.get_ajax();
+            
+            
+              if(!this.userInfo.stationId){
+            	this.agreeStatusList=[{
+                    name:'待审核',
+                    id:1
+                },{
+                    name:'通过',
+                    id:2
+                },{
+                    name:'拒绝',
+                    id:3
+                }]
+            }
         },
         watch:{
             "tableForm.name":function(n,o){
@@ -629,11 +654,47 @@
 		          cancelButtonText: '取消'
 		        })
 		          .then(() => {
-		           	this.$api.studentManagement.studentInfo_apply(row.id).then((res)=>{
-		           		this.$message.error("申请成功");
+		           	this.$api.exam.applyAction(row.id).then((res)=>{
+		           		this.$message.success("申请成功");
 		           		this.ready_ajax();
 		           	}).catch((e)=>{
 		           		this.$message.error("申请失败")
+		           	})
+		          })
+		          .catch(action => {
+//		            this.$message.info("取消申请")
+		          });
+            },
+            showPass(row){
+            	this.$confirm( `确认要对${row.userName}进行通过操作吗?`,'提示', {
+		          distinguishCancelAndClose: true,
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消'
+		        })
+		          .then(() => {
+		           	this.$api.exam.passAction(row.id).then((res)=>{
+		           		this.$message.success("通过成功");
+		           		this.ready_ajax();
+		           	}).catch((e)=>{
+		           		this.$message.error("通过失败")
+		           	})
+		          })
+		          .catch(action => {
+//		            this.$message.info("取消申请")
+		          });
+            },
+            showRefuse(row){
+            	this.$confirm( `确认要对${row.userName}进行拒绝操作吗?`,'提示', {
+		          distinguishCancelAndClose: true,
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消'
+		        })
+		          .then(() => {
+		           	this.$api.exam.refuseAction(row.id).then((res)=>{
+		           		this.$message.success("拒绝成功");
+		           		this.ready_ajax();
+		           	}).catch((e)=>{
+		           		this.$message.error("拒绝失败")
 		           	})
 		          })
 		          .catch(action => {
@@ -688,6 +749,15 @@
                 this.actionId=id;
                 this.saveOutDialogVisible=true;
             },
+            forshenhe(row){
+            	switch(row.auditStatus){
+            		case 0:return '未提交';
+            		case 1:return '审核中';
+            		case 2:return '通过';
+            		case 3:return '拒绝';
+            		default:return "未提交"
+            	}
+            },
             showSaveAppend(id){
                 this.actionId=id;
                 this.saveAppendDialogVisible=true;
@@ -709,19 +779,11 @@
             },
             get_ajax() {
                 this.tableLoading = true;
-                if(this.tableForm.time){
-			      	this.tableForm.start=new Date(this.tableForm.time[0]).getTime();
-			      	this.tableForm.end=new Date(this.tableForm.time[1]).getTime();
-			      }else{
-			      	this.tableForm.start=this.tableForm.end=""
-			      }
-                let obj={...this.tableForm};
-                delete obj.time
                 this.$api.exam
-                    .getExamStudentList({
+                    .getStudentScoreList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
-                        ...obj
+                        ...this.tableForm
                     })
                     .then(res => {
                         this.extra = res.data.extra;

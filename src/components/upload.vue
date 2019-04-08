@@ -10,7 +10,7 @@
      :on-error="upError"
      :on-progress="upProgress"
    >
-     <div class="kf-btn kf-btn-table"  style="margin-top: -4px;font-size: 14px;color:rgb(255, 187, 81)">批量导入</div>
+     <div class="kf-btn kf-btn-table"  style="margin-top: -4px;font-size: 14px;color:rgb(255, 187, 81)">{{text?text:'批量导入'}}</div>
    </el-upload>
  </div>
 </template>
@@ -22,14 +22,14 @@ export default {
       message: null
     };
   },
-  props: ["url", "ok", "isMultiPay"],
+  props: ["url", "ok", "isMultiPay","text"],
   mounted() {},
 
   methods: {
     upSuccess(res) {
       if (res.code === 0) {
         try {
-        	this.$message.success("导入成功")
+//      	this.$message.success("导入成功")
 //        if (this.isMultiPay) {
 //          let mesArr = [];
 //          let idsArr = [];
@@ -107,6 +107,45 @@ export default {
 //            });
 //          }
 //        }
+//			if(res.data.successCount==res.data.uploadCount){
+//				return this.$message.success("导入成功")
+//			}
+			let msgStr = [];
+            let {
+              successCount,
+              uploadCount,
+              uploadErrorMessages,
+            } = res.data;
+
+            msgStr.push("读取条数：" + uploadCount);
+            msgStr.push("正确导入条数：" + successCount);
+            if (uploadCount !== 0 && successCount === uploadCount) {
+              this.$message({
+                message: msgStr.join("；"),
+                type: "success"
+              });
+            } else {
+            	let msg='';
+            	uploadErrorMessages.map((item)=>{
+            		msg+=item.errorMessage+","
+            	})
+            	this.$message({
+                showClose: true,
+                dangerouslyUseHTMLString: true,
+                message: '<div>'+msgStr.join(',')+'!!<br/>错误信息:'+msg+'<div>',
+                type: "warning",            
+                duration: 0
+              });
+//            if (firstErrorIndex)
+//              msgStr.push("第一次错误位置：" + firstErrorIndex);
+//            if (errorMsg) msgStr.push("错误原因: " + errorMsg);
+//            this.$message({
+//              showClose: true,
+//              message: msgStr.join("；"),
+//              type: "warning",
+//              duration: 0
+//            });
+            }
         } catch (e) {}
         if (this.ok) this.ok();
       } else {

@@ -238,6 +238,11 @@
 		          label="课程名称">
 		        </el-table-column>
 		        <el-table-column
+		          prop="code"
+		          width="120"
+		          label="课程编码">
+		        </el-table-column>
+		        <el-table-column
 		          prop="logo"
 		          label="课程封面"
 		          :show-overflow-tooltip="true" width="200">

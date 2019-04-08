@@ -15,6 +15,7 @@ export default new Vuex.Store({
       src: "",
       poster: "",
       show: false,
+      videoId:'',
       time: 0,
       type: "video" //video 视频，book 图书
     },
@@ -57,6 +58,7 @@ export default new Vuex.Store({
         src: res.src,
         poster: res.poster,
         time: res.time,
+        videoId:res.videoId,
         show: true,
         type: res.type
       });

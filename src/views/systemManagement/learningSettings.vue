@@ -2,79 +2,123 @@
   <div class="g-module">
     <div class="kf-bd">
       <!--表格导航-->
-      <div class="learn-cap">学习综合测评细则设置</div>
-      <div class="learn-tit">综合测评采用100分制</div>
+      <!--<div class="learn-cap">学习综合测评细则设置</div>
+      <div class="learn-tit">综合测评采用100分制</div>-->
 
-      <el-form ref="form" :rules="rulesForm" :model="form" label-width="80px" :inline="true" class="learn-form">
+      <el-form ref="form" :rules="rulesForm" :model="form" label-width="140px" :inline="true" class="learn-form">
         <div class="learn-group">
-          <div class="learn-label">1：课程学习：</div>
+          <div class="learn-label">1：学分设置：</div>
           <div class="learn-item">
-            <el-form-item label="平时成绩" prop="usualScore">
-              <el-input v-model="form.usualScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
-                <template slot="append">分</template>
+            <el-form-item label="学生课程学分达到" prop="thesisCondition">
+              <el-input v-model="form.thesisCondition" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
               </el-input>
             </el-form-item>
-            <div class="learn-msg">助学机构根据学生参加课程面授，课程辅导的考勤，课程变现等情况给出成绩</div>
-          </div>
-          <div class="learn-item">
-            <el-form-item label="学习笔记" prop="noteScore">
-              <el-input v-model="form.noteScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
-                <template slot="append">分</template>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="单次提交" prop="noteTimeScore">
-              <el-input v-model="form.noteTimeScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
-                <template slot="append">分</template>
-              </el-input>
-            </el-form-item>
-            <div class="learn-msg">单门课程提交1次学习笔记{{form.noteTimeScore}}分（满分{{form.noteScore}}分）</div>
+            <div class="learn-msg">可开始论文</div>
           </div>
         </div>
         <div class="learn-group">
-          <div class="learn-label">2：网上学习：</div>
+          <div class="learn-label">2：成绩设置：</div>
           <div class="learn-item">
-            <el-form-item label="登录" prop="signScore">
-              <el-input v-model="form.signScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
+            <el-form-item label="课程成绩满分 : " prop="courseFullGrade">
+              <el-input v-model="form.courseFullGrade" :disabled="userInfo.stationId||editType===0">
                 <template slot="append">分</template>
               </el-input>
             </el-form-item>
-            <el-form-item label="单次登录" prop="signTimeScore">
-              <el-input v-model="form.signTimeScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
+            <div>
+            	<el-form-item label="课程成绩及格分 : " prop="coursePassGrade">
+              <el-input v-model="form.coursePassGrade" :disabled="userInfo.stationId||editType===0">
                 <template slot="append">分</template>
               </el-input>
             </el-form-item>
-            <div class="learn-msg">登录平台（点击单门课程）1次{{form.signTimeScore}}分（满分{{form.signScore}}分）</div>
+            <div class="learn-msg">注：成绩达到及格可获得课程学分</div>
+            </div>
+            <el-form-item label="卷面成绩占比 : " prop="examPer">
+              <el-input v-model="form.examPer" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
+              </el-input>
+            </el-form-item>
+            <div>
+            	<el-form-item label="平时成绩占比 : " prop="normalPer">
+              <el-input v-model="form.normalPer" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
+              </el-input>
+            </el-form-item>
+            <div>
+            	  <span style="color:#606266">补考成绩计算是否算平时成绩</span>
+            	  <el-radio v-model="form.reExamPer" :label="1" style="margin-left:20px">开启</el-radio>
+  							<el-radio v-model="form.reExamPer" :label="0">关闭</el-radio>
+            </div>
+            </div>
+
+            
           </div>
         </div>
-        <div class="learn-group">
-          <div class="learn-label">3：平时作业：</div>
+        <div class="learn-group" style="margin-top: 60px;">
+          <div class="learn-label">3：平时成绩占比详情：<el-radio v-model="form.normalGradeDetailValid" :label="1" style="margin-left:20px">开启</el-radio>
+  							<el-radio v-model="form.normalGradeDetailValid" :label="0">关闭</el-radio></div>
           <div class="learn-item">
-            <el-form-item label="作业成绩" prop="taskScore">
-              <el-input v-model="form.taskScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
-                <template slot="append">分</template>
+            <el-form-item label="课件点播占比: " prop="wareValidPer">
+              <el-input v-model="form.wareValidPer" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
               </el-input>
             </el-form-item>
-            <el-form-item label="单次提交" prop="taskTimeScore">
-              <el-input v-model="form.taskTimeScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
-                <template slot="append">分</template>
+            <el-form-item label="作业成绩占比: " prop="workPer">
+              <el-input v-model="form.workPer" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
               </el-input>
             </el-form-item>
-            <div class="learn-msg">单门课程提交1次作业{{form.taskTimeScore}}分（满分{{form.taskScore}}分）</div>
+            <el-form-item label="问答占比: " prop="aqPer">
+              <el-input v-model="form.aqPer" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">%</template>
+              </el-input>
+            </el-form-item>
           </div>
         </div>
-        <div class="learn-group">
-          <div class="learn-label">4：综合测试：</div>
+        <div class="learn-group"  style="margin-top: 60px;">
+          <div class="learn-label">4：平时成绩设置： <el-radio v-model="form.normalGradeSetup" :label="1" style="margin-left:20px">开启</el-radio>
+  							<el-radio v-model="form.normalGradeSetup" :label="0">关闭</el-radio></div>
           <div class="learn-item">
-            <el-form-item label="测试成绩" prop="examScore">
-              <el-input v-model="form.examScore" :disabled="operates.indexOf('编辑')===-1||editType===0">
+            <el-form-item label="课件点播：播放" prop="wareValidTime">
+              <el-input v-model="form.wareValidTime" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">秒</template>
+              </el-input>
+            </el-form-item>
+            <div class="learn-msg">记为有效视频；</div>
+          </div>
+          
+          <div class="learn-item">
+            <el-form-item label="作     业：达到" prop="workPassCount">
+              <el-input v-model="form.workPassCount" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">个</template>
+              </el-input>
+            </el-form-item>
+            <div class="learn-msg">记为满分；（提交作为即为有效作业）</div>
+          </div>
+          
+          <div class="learn-item">
+            <el-form-item label="问     答：达到" prop="aqPassCount">
+              <el-input v-model="form.aqPassCount" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">个</template>
+              </el-input>
+            </el-form-item>
+            <div class="learn-msg">问答项记为满分；（提问问答都记为有效个数）；</div>
+          </div>
+          
+          
+          <div class="learn-group" style="margin-top: 60px;">
+          <div class="learn-label">5：论文设置</div>
+          <div class="learn-item">
+            <el-form-item label="学位资格: " prop="degressCondition">
+              <el-input v-model="form.degressCondition" :disabled="userInfo.stationId||editType===0">
                 <template slot="append">分</template>
               </el-input>
             </el-form-item>
-            <div class="learn-msg">平台上完成综合测试的成绩{{form.examScore}}%</div>
           </div>
+        </div>	
         </div>
         <div class="learn-ft">
-          <div class="learn-btn" @click="onsubmit" v-if="operates.indexOf('编辑')>-1">{{editType===0?"编 辑":"保 存"}}</div>
+          <div class="learn-btn" @click="onsubmit" v-if="!userInfo.stationId">{{editType===0?"编 辑":"保 存"}}</div>
         </div>
       </el-form>
     </div>
@@ -82,19 +126,27 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 export default {
   data() {
     return {
       editType: 0,
       form: {
-        usualScore: "", //平时成绩
-        noteScore: "", //学习笔记成绩
-        noteTimeScore: "", //单次提交学习笔记成绩
-        signScore: "", //登录成绩
-        signTimeScore: "", //单次登录成绩
-        taskScore: "", //作业成绩
-        taskTimeScore: "", //单次提交作业成绩
-        examScore: "" //测试成绩，百分制
+        reExamPer:1,
+        normalGradeDetailValid:1,
+        normalGradeSetup:1,
+        thesisCondition:"",
+        courseFullGrade:"",
+        coursePassGrade:"",
+        examPer:"",
+        wareValidPer:"",
+        workPer:"",
+        normalPer:"",
+        aqPer:"",
+        wareValidTime:"",
+        workPassCount:"",
+        aqPassCount:"",
+        degressCondition:""
       },
       rulesForm: {
         usualScore: [
@@ -126,23 +178,16 @@ export default {
     };
   },
   components: {},
+  computed: mapState(["userInfo"]),
   mounted() {
     this.get_ajax();
   },
   methods: {
     get_ajax() {
       this.$api.systemManagement.learningSettings_get_info().then(res => {
-        this.form = {
-          usualScore: res.data.usualScore, //平时成绩
-          noteScore: res.data.noteScore, //学习笔记成绩
-          noteTimeScore: res.data.noteTimeScore, //单次提交学习笔记成绩
-          signScore: res.data.signScore, //登录成绩
-          signTimeScore: res.data.signTimeScore, //单次登录成绩
-          taskScore: res.data.taskScore, //作业成绩
-          taskTimeScore: res.data.taskTimeScore, //单次提交作业成绩
-          examScore: res.data.examScore //测试成绩，百分制
-        };
-        this.operates = res.data.operates;
+      	if(res.data&&Object.keys(res.data).length){
+      			this.form=res.data
+      	}
       });
     },
     add_ajax() {
@@ -162,21 +207,7 @@ export default {
       }
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (
-            parseFloat(this.form.usualScore) +
-              parseFloat(this.form.noteScore) +
-              parseFloat(this.form.signScore) +
-              parseFloat(this.form.taskScore) +
-              parseFloat(this.form.examScore) !==
-            100
-          ) {
-            this.$message({
-              type: "error",
-              message: "成绩总和需要等于100分!"
-            });
-          } else {
-            this.add_ajax();
-          }
+           this.add_ajax();
         } else {
           console.log("error submit!!");
           return false;

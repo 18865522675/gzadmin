@@ -14,13 +14,22 @@ let HOST="";
 let PREFIX_URL=""
 
 if(window.location.href.indexOf("localhost")<0){
-	  HOST="http://"+window.location.host.split(":")[0]+":81"
-	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
-//	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
-}else{
-	 HOST = config.HOST;
-	 PREFIX_URL = config.HOST_API;
+	//	正式
+//	  HOST="http://"+window.location.host.split(":")[0]+":81"
+//	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
 
+//		测试
+	   HOST="http://47.107.105.141:88/";
+	   PREFIX_URL="http://47.107.105.141:88/manager-api/"
+}else{
+
+//	正式
+//	 HOST="http://hlh.gzsqwhcm.com:81"
+//	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
+
+//		测试
+	   HOST="http://47.107.105.141:88/";
+	   PREFIX_URL="http://47.107.105.141:88/manager-api/";
 }
 
 /**
@@ -41,7 +50,7 @@ const ajax_main = (method, url = "", params, conf = {}) => {
       method,
       url: PREFIX_URL + url,
       headers: {
-        token:1111
+//      token:1111
       },
       withCredentials: true //跨域携带凭证
     };

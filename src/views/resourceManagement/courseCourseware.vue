@@ -728,11 +728,16 @@ export default {
     },
     //显示视频弹窗
     dialogVideo_show(row) {
-      this.$store.commit("dialogVideo_show", {
-        src: row.playUrl,
-        poster: row.coverUrl,
-        time: row.duration
-      });
+    	this.$api.resourceManagement.getPlayUrl(row.id).then((res)=>{
+    		this.$store.commit("dialogVideo_show", {
+	        src: res.data,
+	        poster: row.coverUrl,
+	        time: row.duration,
+	        videoId:row.id
+	      });
+    	})
+      
+      
     },
     //批量启用
     batchEnabled() {

@@ -31,6 +31,17 @@ export default {
   
   addExamArrange: params => $.post("/exam/exam", params),
   
-  editExamArrange: (id,params) => $.put("/exam/examd/"+id, params),
+  editExamArrange: (id,params) => $.put("/exam/exam/"+id, params),
   
+  
+   
+  //学生成绩	
+  getStudentScoreList: params => $.get("/exam/studentScore/list", params),
+  applyAction: params => $.post("/exam/studentScore/apply/"+params, {}),
+	passAction: params => $.post("/exam/studentScore/passed/"+params, {}),
+  refuseAction: params => $.post("/exam/studentScore/refuse/"+params, {}),
+  
+   getRelateStudents: (id,params) => $.get("/exam/exam/"+id+"/listStudent", params),
+   
+   saveRelateStudents: (id,params) => $.post("/exam/exam/"+id+"/addStudent",params),
 };

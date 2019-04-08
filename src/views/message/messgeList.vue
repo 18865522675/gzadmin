@@ -264,6 +264,14 @@ export default {
           this.tableData = res.data.pageList;
           this.total = +res.data.total;
           this.tableLoading = false;
+                    console.log(this.userInfo)
+          this.tableData.map((item)=>{
+          	if(item.sendName==this.userInfo.name&&item.stationName==this.userInfo.name){
+          		item.canAction=true
+          	}else{
+          		item.canAction=false
+          	}
+          })
         });
     },
     ready_ajax() {
