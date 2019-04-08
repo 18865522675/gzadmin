@@ -45,6 +45,24 @@
    <div class="moduleRight">
    		<header>
 	      <div class="moduleRight-header flexItem">
+	      	 
+        <div class="m-check" :class="{on: checkStatus}" style="margin-top: 20px;">
+          <div class="m-check-cap" @click="checkStatus=!checkStatus">
+            <span :title="extResult.name">{{extResult.name?extResult.name:"切换"}}</span>
+          </div>
+          <div class="m-check-box">
+            <div class="m-check-in-box">
+              <input type="text" @keyup="checkSearch" v-model.trim="checkSearchVal" class="m-check-in" placeholder="快速筛选学校">
+            </div>
+            <div class="m-check-list">
+              <div class="m-check-item" v-for="(item, index) in schoolList" :key="index"  v-if="schoolList.length&&item.name">{{item.name}}</div>
+              <div class="m-check-item" v-if="!schoolList.length">无内容</div>
+              <!--@click="checkSite(item.siteId)"-->
+            </div>
+          </div>
+        </div>
+        
+        
 	        <!--<div class="header-item flexItem">
 	        	<img src="../assets/img/kefu.png" alt="" />
 	        	<span>客服电话</span>
@@ -86,7 +104,14 @@ export default {
       schoolListData: [],
       extResult: {},
       routesList:[],
-      user:{}
+      user:{},
+      checkSearchVal: "",
+      checkStatus: false,
+      checkIf: false,
+      schoolList: [],
+      schoolListData: [],
+      extResult: {}
+      
     };
   },
   watch: {
@@ -100,10 +125,14 @@ export default {
   components: {},
   mounted() {
 	  this.$store.commit("save_userInfo", Cookies.get("userInfo"));
-	 setTimeout(()=>{
-	 	 console.log(this.routesArr)
-	 },1500)
   	this.routesList=this.$router.options.routes[3].children.slice(1);
+  	
+  	
+  	let {stationId,roleId}=JSON.parse(this.userInfo);
+  	console.log(JSON.parse(this.userInfo))
+  	if(stationId||roleId==1){
+  		 this.get_schoolList();
+  	}
   },
   methods: {
     //退出
@@ -131,8 +160,7 @@ export default {
       this.$api.systemManagement
         .get_schoolList()
         .then(res => {
-          if (res.data.extResult) this.extResult = res.data.extResult;
-          this.schoolListData = res.data.results;
+          this.schoolListData = res.data;
         })
         .catch(err => {
           console.log(err);
@@ -225,5 +253,8 @@ export default {
 			 background-size: 100% 100%;
 			 display: inline-block;
 		}
+	}
+	.m-check-box{
+		background-color: rgba(0,0,0,0.4)!important;
 	}
 </style>

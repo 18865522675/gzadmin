@@ -59,7 +59,7 @@
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
                         <!--searchInp-->
-                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        <el-input v-model="tableForm.cardNo" class='searchInp' placeholder="请输入证件号码">
                         </el-input>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <span class='label marL10'>学生</span>
                     <div class="marL10">
                         <!--searchInp-->
-                        <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名，证件号码">
+                        <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入姓名">
                             <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
                         </el-input>
                     </div>
@@ -385,7 +385,12 @@
                 if(!n){
                     this.get_ajax()
                 }
-            }
+            },
+            "tableForm.cardNo":function(n,o){
+  			if(!n){
+  				this.get_ajax()
+		  			}
+		  	}
         },
         methods: {
             //获取数据

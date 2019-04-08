@@ -187,6 +187,10 @@
                             {{scope.row.kind==1?'奖励':'惩罚'}}
                         </template>
                     </el-table-column>
+                    <el-table-column
+                            prop="remark" width='150'
+                            label="备注"    :show-overflow-tooltip="true">
+                    </el-table-column>
                     <!--<el-table-column
                             prop="stationName"
                             label="录取状态">
@@ -471,8 +475,8 @@
         methods: {
             //获取数据
             getBatchList(){
-                this.$api.essentialInformation.batch_get_list().then((res)=>{
-                    this.batchList=res.data.pageList
+                this.$api.studentManagement.batch_get_list().then((res)=>{
+                    this.batchList=res.data
                 })
             },
             showAllot(item){
@@ -616,7 +620,7 @@
                                 type: "success",
                                 message: "编辑成功!"
                             });
-                            this.dialogAddVisible = false;
+                            this.dialogeditVisible = false;
                             this.ready_ajax();
                         });
                 }

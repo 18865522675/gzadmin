@@ -5,7 +5,7 @@
       <div class="mym-head">
         <el-upload
           class="mym-head-img-uploader"
-          :action="$config.HOST_API+'Hide/upload'"
+          :action="hostApi+'Hide/upload'"
           name="imageFile"
           :show-file-list="false"
           :on-success="upSuccess"
@@ -72,11 +72,19 @@ export default {
       oldPassword: "",
       password: "",
       password2: "",
-      message: null
+      message: null,
+      hostApi:""
     };
   },
   components: {},
   mounted() {
+  	if(window.location.href.indexOf("localhost")<0){
+		 this.hostApi="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+	//	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
+	}else{
+		 this.hostApi = this.$config.HOST_API;
+	}
+//	console.lo
     this.get_ajax();
   },
   methods: {
@@ -151,6 +159,8 @@ export default {
     upSuccess(res) {
       if (res.code === 0) {
         this.info.avatar = this.form.avatar = res.data;
+        this.$api.systemManagement.myMessage_edit_info(this.form).then(() => {
+      });
       } else {
         this.$message.error(res.msg);
       }

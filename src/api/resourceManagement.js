@@ -133,5 +133,25 @@ export default {
   StationManagement_add: params =>
     $.post("resource/station", params, { lock: true }),
   StationManagement_edit: params =>
-    $.put("resource/station/" + params.id, params, { lock: true })
+    $.put("resource/station/" + params.id, params, { lock: true }),
+    
+    
+    /*
+  学校课程
+  */
+  getSchoolCourseList: params => $.get("/resource/siteCourse/listSites", params),
+  
+  schoolCourse_getBatchList: params => $.get("/resource/siteCourse/listBatchs", params),
+  
+  schoolCourse_getMajorList: params => $.get("/resource/siteCourse/listMajors", params),
+  
+  schoolCourse_getList: params => $.get("/resource/siteCourse/list", params),
+  
+  schoolCourse_getSourceCourseList: params => $.get("/resource/siteCourse/listCourses", params),
+  
+   schoolCourse_save: params => $.put("/resource/siteCourse/save", params),
+  
+
+ 
+  
 };

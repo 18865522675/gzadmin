@@ -46,10 +46,10 @@
           label="课件编码"
           width="120">
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="courseName"
           label="所属课程" :show-overflow-tooltip="true">
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column
           prop="teacher"
           label="讲师" :show-overflow-tooltip="true">

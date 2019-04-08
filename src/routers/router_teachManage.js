@@ -47,6 +47,39 @@ const router_module = {
       },
       component: resolve => require(["@/views/teachManage/courseWorks.vue"], resolve)
     },
+     {
+      path: "/teachManage/studyRecord",
+      meta: {
+        show: true,
+        title: "学习记录"
+      },
+      component: resolve => require(["@/views/teachManage/studyRecord.vue"], resolve)
+    },
+    {
+      path: "/teachManage/workRead",
+      meta: {
+        show: true,
+        title: "作业评阅"
+      },
+      component: resolve => require(["@/views/teachManage/workRead.vue"], resolve)
+    },
+     {
+      path: "/teachManage/qaList",
+      meta: {
+        show: true,
+        title: "问答管理"
+      },
+      component: resolve => require(["@/views/teachManage/qaList.vue"], resolve)
+    },
+    {
+      path: "/teachManage/workReadDetail/:id/:name",
+      meta: {
+        show: false,
+        title: "作业评阅-查看"
+      },
+      component: resolve => require(["@/views/teachManage/workReadDetail.vue"], resolve)
+    },
+    
       {
           path: "/teachManage/courseWorkRelete/:workId/:workName/:type/:planId",
           meta: {

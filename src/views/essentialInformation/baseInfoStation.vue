@@ -95,12 +95,11 @@
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-          <el-form-item label="函授站" prop="courseId">
+          <el-form-item label="函授站" prop="stationIds">
 	          <el-select v-model.trim="form.stationIds" multiple filterable placeholder="请选择函授站" class="kf-form-item form-sel" style="width: 100%">
 	            <el-option
 	              v-for="(item, index) in stationList"
 	              :key="index"
-	             	v-if="item.selected==0"
 	              :label="item.name"
 	              :value="item.id">
 	            </el-option>
@@ -135,32 +134,9 @@ export default {
 		},
 		nowItem:{},
 		rulesForm: {
-        name: [
-          { required: true, message: "请输入年级名称", trigger: "change" },
-          {
-            min: 1,
-            max: 50,
-            message: "最长 50 个字符",
-            trigger: "change"
-          }
+        stationIds: [
+          { required: true, message: "请选择函授站", trigger: "blur" },
         ],
-        code: [
-          { required: true, message: "请输入年级编码", trigger: "change" },
-          {
-            min: 1,
-            max: 8,
-            message: "最长 8 个字符",
-            trigger: "change"
-          }
-        ],
-        remark: [
-          {
-            min: 1,
-            max: 255,
-            message: "最长 255 个字符",
-            trigger: "change"
-          }
-        ]
       },
     };
   },
@@ -256,6 +232,7 @@ export default {
 //    });
     },
     add_ajax() {
+    	console.log(this.form.stationIds)	
       if (this.dialogType === 0) {
         this.$api.essentialInformation
           .organizationalManagement_relete({
@@ -297,11 +274,9 @@ export default {
         .then(res => {
           this.List = res.data.pageList;
           this.List.map((item,index)=>{
-          	item.isEdit=false
+          	item.isEdit=false;
           })
             this.extra=res.data.extra;
-          console.log(this.List);
-          //分页
           this.total = +res.data.total;
         })
         .catch(res => {
@@ -314,6 +289,13 @@ export default {
         .organizationalManagement_get_listAllStation({ limitNum: 100000 })
         .then(res => {
           this.stationList = res.data;
+         	this.stationList.map((item)=>{
+         		if(item.selected==1){
+         			this.form.stationIds.push(item.id)
+         		}
+         	})
+//       	console.log(this.form.stationIds)
+         	
         });
     },
     check_detail(batch, major, levelId) {
@@ -343,9 +325,6 @@ export default {
      dialogAdd_show() {
       this.dialogType = 0;
       this.dialogAddVisible = true;
-      this.form = {
-       stationIds:[]
-      };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
       });

@@ -1,51 +1,110 @@
 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
-            <div class="pageHead flexItem">
-                <span class='label'>课程</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.courseId" class="kf-select" placeholder="请选择课程" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in courseList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+            <div class="pageHead flexItem" style="flex-wrap: wrap;">
+            	 <div class="headTopItem">
+                    <span class='label'>学校</span>
+	                <div class="marL10">
+	                    <el-select v-model="tableForm.siteId" class="kf-select" placeholder="请选择学校" filterable  @change="searchChange">
+	                        <el-option label="所有" value=""/>
+	                        <el-option
+	                                v-for="(item,index) in schoolList"
+	                                :key="index"
+	                                :label="item.name"
+	                                :value="item.id"/>
+	                    </el-select>
+	                </div>
                 </div>
-                <span class='label marL10'>层次</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择层次" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in levelList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+                
+                 <div class="headTopItem">
+                    <span class='label'>年级</span>
+	                <div class="marL10">
+	                    <el-select v-model="tableForm.batchId" class="kf-select" placeholder="请选择批次"  filterable  @change="searchChange">
+	                        <el-option label="所有" value=""/>
+	                        <el-option
+	                                v-for="(item,index) in batchList"
+	                                :key="index"
+	                                :label="item.name"
+	                                :value="item.id"/>
+	                    </el-select>
+	                </div>
                 </div>
-                <span class='label marL10'>科类</span>
-                <div class="marL10">
-                    <el-select v-model="tableForm.disciplineId" class="kf-select" placeholder="请选择科类" filterable  @change="searchChange">
-                        <el-option label="所有" value=""/>
-                        <el-option
-                                v-for="(item,index) in disciplineList"
-                                :key="index"
-                                :label="item.name"
-                                :value="item.id"/>
-                    </el-select>
+                
+                
+                 <div class="headTopItem">
+                     <span class='label'>层次</span>
+	                <div class="marL10">
+	                    <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择层次" filterable  @change="searchChange">
+	                        <el-option label="所有" value=""/>
+	                        <el-option
+	                                v-for="(item,index) in levelList"
+	                                :key="index"
+	                                :label="item.name"
+	                                :value="item.id"/>
+	                    </el-select>
+	                </div>
                 </div>
-                <span class='label marL10'>课件</span>
-                <div class="marL10">
-                    <!--searchInp-->
-
-                    <el-input v-model="tableForm.name" class='searchInp' placeholder="请输入辅导课件名称">
-                        <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
-                    </el-input>
-
+                
+                 <div class="headTopItem">
+                     <span class='label'>专业</span>
+	                <div class="marL10">
+	                    <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择专业" filterable  @change="searchChange">
+	                        <el-option label="所有" value=""/>
+	                        <el-option
+	                                v-for="(item,index) in majorList"
+	                                :key="index"
+	                                :label="item.name"
+	                                :value="item.id"/>
+	                    </el-select>
+	                </div>
                 </div>
+                
+                <div class="headTopItem">
+                      <span class='label'>学期</span>
+		                <div class="marL10">
+		                    <el-select v-model="tableForm.term" class="kf-select" placeholder="请选择学期" filterable  @change="searchChange">
+		                        <el-option label="所有" value=""/>
+		                        <el-option
+		                                v-for="(item,index) in termList"
+		                                :key="index"
+		                                :label="item.name"
+		                                :value="item.id"/>
+		                    </el-select>
+		                </div>
+                </div>
+                
+                  <div class="headTopItem">
+                      <span class='label'>匹配</span>
+		                <div class="marL10">
+		                    <el-select v-model="tableForm.matched" class="kf-select" placeholder="请选择匹配情况" filterable  @change="searchChange">
+		                        <el-option label="所有" value=""/>
+		                        <el-option label="已匹配" :value="1"/>
+		                        <el-option label="未匹配" :value="0"/>
+		                        
+		                    </el-select>
+		                </div>
+                </div>
+                
+                
+                 <div class="headTopItem"  style="width: 360px">
+                      <span class='label'>课程</span>
+	                <div class="marL10">
+	                    <!--searchInp-->
+	
+	                    <el-input v-model="tableForm.siteCourseName" class='searchInp' placeholder="请输入学校课程名称">
+	                        <el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
+	                    </el-input>
+	
+	                </div>
+                </div>
+               
+                
+              
+                
+                
+                
                 <!--v-if="extra.indexOf('添加')>-1"-->
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
 
@@ -70,51 +129,38 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="name"
-                            label="课件名称" width="200" :show-overflow-tooltip="true">
+                            prop="batchName"
+                            label="年级" width="200" :show-overflow-tooltip="true">
+                    </el-table-column>
+                     <el-table-column
+                            prop="siteName"
+                            label="学校" width="200" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="level"
                             label="层次"  :formatter="forLevel">
                     </el-table-column>
                     <el-table-column
+                            prop="majorName"
+                            label="专业" :show-overflow-tooltip="true"	>
+                    </el-table-column>
+                    <el-table-column
+                            prop="term"
+                            label="学期">
+                     <template slot-scope='scope'>
+                     	第{{scope.row.term}}学期
+                     </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="siteCourseName"
+                            label="课程名称">
+                    </el-table-column>
+                    <el-table-column
                             prop="courseName"
-                            label="所属课程" :show-overflow-tooltip="true"	>
+                            label="资源课程">
                     </el-table-column>
-                    <el-table-column
-                            prop="sort"
-                            label="顺序号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="playTimes"
-                            label="观看次数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="playUrl"
-                            label="播放地址" :show-overflow-tooltip="true" width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="disciplineName"
-                            label="科类">
-                    </el-table-column>
-                    <el-table-column
-                            prop="createTime"
-                            label="创建时间" :formatter="$fun.table.time" width="160">
-                    </el-table-column>
-                    <el-table-column
-                            prop="logo"
-                            label="预览">
-                    </el-table-column>
-                    <el-table-column
-                            prop="agreeStatus"
-                            label="审核状态" :formatter="forStatus">
-                    </el-table-column>
-                    <el-table-column
-                            label="状态">
-                        <template slot-scope="scope">
-                            {{scope.row.ableStatus==1?"启用":"禁用"}}
-                        </template>
-                    </el-table-column>
+
+
                     <!--<el-table-column-->
                     <!--prop="publisher"-->
                     <!--width="120"-->
@@ -142,7 +188,8 @@
                             fixed="right"
                             label="操作" width="200">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push('/resourceManagement/courseManagement')">查看</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('保存')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/tutor/ware" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
                         </template>
                     </el-table-column>
@@ -167,43 +214,14 @@
                     :append-to-body="true"
                     class="kf-dialog-add">
                 <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-                    <el-form-item label="名称" prop="name">
-                        <el-input v-model.trim="form.name" placeholder="请输入辅导课件名称（不超过20个字）"></el-input>
+                    <el-form-item label="学校课程">
+                        <el-input v-model.trim="form.siteCourseName" :disabled="true" placeholder="请输入"></el-input>
                     </el-form-item>
-                    <el-form-item label="课程" prop="courseId">
-                        <el-select  style="width:100%" v-model="form.courseId"  placeholder="请选择课程">
+                    <el-form-item label="资源课程" prop="courseId">
+                        <el-select  style="width:100%" v-model="form.courseId"  placeholder="请选择资源课程">
                             <el-option v-for="(item,index) in courseList" :key="index" :value="item.id" :label="item.name">
                             </el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="播放地址" prop="playUrl">
-                        <el-input v-model.trim="form.playUrl" placeholder="请输入播放地址"></el-input>
-                    </el-form-item>
-                    <el-form-item label="顺序号" prop="sort">
-                        <el-input v-model.trim="form.sort" type="number" onkeypress="return event.keyCode>=48&&event.keyCode<=57" placeholder="请输入顺序号"></el-input>
-                    </el-form-item>
-                    <el-form-item label="备注" prop="remark">
-                        <el-input v-model.trim="form.remark" :row="2" type="textarea" placeholder="请输入备注"></el-input>
-                    </el-form-item>
-                    <!--<el-form-item label="层次" prop="level">-->
-                        <!--<el-select  style="width:100%" v-model="form.level"  placeholder="请选择层次">-->
-                            <!--<el-option v-for="(item,index) in levelList" :key="index" :value="item.id" :label="item.name">-->
-
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="科类" prop="disciplineId">-->
-                        <!--<el-select  style="width:100%" v-model="form.disciplineId"  placeholder="请选择科类">-->
-                            <!--<el-option v-for="(item,index) in disciplineList" :key="index" :value="item.id" :label="item.name">-->
-
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                    <el-form-item label="状态">
-                        <el-radio-group v-model="form.ableStatus">
-                            <el-radio :label="1">启用</el-radio>
-                            <el-radio :label="0">禁用</el-radio>
-                        </el-radio-group>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -222,10 +240,14 @@
                 extra: [],
                 tableLoading: true,
                 tableForm: {
-                    name: "",
+                    siteId: "",
                     level:"",
-                    disciplineId:"",
-                    courseId:""
+                    batchId:"",
+                    majorId:"",
+                    term:"",
+                    siteCourseName:"",
+                    matched:""
+                 
                 },
                 tableData: [],
                 //分页——start
@@ -293,7 +315,30 @@
                 },{
                     name:'高起本 ',
                     id:3
-                }]
+                }],
+                majorList:[],
+                schoolList:[],
+                batchList:[],
+                termList:[{
+                	name:'第一学期',
+                	id:1
+                },{
+                	name:'第二学期',
+                	id:2
+                },{
+                	name:'第三学期',
+                	id:3
+                },{
+                	name:'第四学期',
+                	id:4
+                },{
+                	name:'第五学期',
+                	id:5
+                },{
+                	name:'第六学期',
+                	id:6
+                }],
+                courseList:[]
             };
         },
         computed: mapState(["userInfo"]),
@@ -301,18 +346,33 @@
         mounted() {
             // this.getStudentList();
             // this.getZhanneixinStationList();
-            this.getDisciplineList();
-            this.getCourseList()
+            this.schoolCourse_getSourceCourseList();
+            this.getSchoolList();
+            this.schoolCourse_getBatchList();
+            this.schoolCourse_getMajorList()
             this.get_ajax();
         },
         watch:{
-            "tableForm.name":function(n,o){
+            "tableForm.siteCourseName":function(n,o){
                 if(!n){
                     this.get_ajax()
                 }
             }
         },
         methods: {
+        	 getSchoolList(){
+                this.$api.resourceManagement.getSchoolCourseList({
+                    pageNum:1,
+                    pageSize:1000
+                }).then((res)=>{
+                    this.schoolList=res.data;
+//                  if(res.data.length){
+//                  	this.tableForm.siteId=res.data[0].id
+//                  }
+                }).catch((e)=>{
+					
+                })
+            },
             forStatus(row){
                 switch (row.agreeStatus) {
                     case 0:return '待提交';break;
@@ -328,18 +388,31 @@
                     case 3:return '高起本';break;
                 }
             },
-            getDisciplineList(){
-                this.$api.preGuide.getGuidePreWare_discipliness({
+            schoolCourse_getBatchList(){
+                this.$api.resourceManagement.schoolCourse_getBatchList({
                     pageNum:1,
                     pageSize:1000
                 }).then((res)=>{
-                    this.disciplineList=res.data;
+                    this.batchList=res.data;
+                    if(res.data.length){
+                    	this.tableForm.batchId=res.data[0].id
+                    }
                 }).catch((e)=>{
 
                 })
             },
-            getCourseList(){
-                this.$api.preGuide.getGuidePreWare_courses({
+            schoolCourse_getMajorList(){
+                this.$api.resourceManagement.schoolCourse_getMajorList({
+                    pageNum:1,
+                    pageSize:1000
+                }).then((res)=>{
+                    this.majorList=res.data;
+                }).catch((e)=>{
+
+                })
+            },
+             schoolCourse_getSourceCourseList(){
+                this.$api.resourceManagement.schoolCourse_getSourceCourseList({
                     pageNum:1,
                     pageSize:1000
                 }).then((res)=>{
@@ -351,8 +424,8 @@
             //获取数据
             get_ajax() {
                 this.tableLoading = true;
-                this.$api.preGuide
-                    .getGuidePreWare({
+                this.$api.resourceManagement
+                    .schoolCourse_getList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         ...this.tableForm
@@ -392,13 +465,9 @@
                 this.dialogType = 1;
                 this.dialogAddVisible = true;
                 this.form = {
-                    id: row.id,
-                    name: row.name, //课件名称
-                    playUrl:row.playUrl,
+                    planId:row.planId,
                     courseId:row.courseId,
-                    sort:row.sort,
-                    remark:row.remark,
-                    ableStatus: row.ableStatus //启用状态(1启用0禁用)
+                    siteCourseName:row.siteCourseName
                 };
                 this.$nextTick(() => {
                 });
@@ -418,8 +487,8 @@
                             this.ready_ajax();
                         });
                 } else {
-                    this.$api.preGuide
-                        .preGuideWare_edit(this.form.id,this.form)
+                    this.$api.resourceManagement
+                        .schoolCourse_save(this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -449,16 +518,6 @@
                 this.pageNum = val;
                 this.get_ajax();
             },
-            getStudentList(){
-                this.$api.message.getStudentList().then((res)=>{
-                    this.kindList=res.data
-                })
-            },
-            getZhanneixinStationList(){
-                this.$api.message.getZhanneixinStationList().then((res)=>{
-                    this.stationList=res.data
-                })
-            }
             //分页end
         }
     };
