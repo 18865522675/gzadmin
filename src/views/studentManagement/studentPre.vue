@@ -99,7 +99,7 @@
             <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模版')>-1" />
             <download url="student/before/export" text="数据导出" class="marL10 marT20"   v-if="extra.indexOf('批量导出')>-1"/>
             <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
-            <upload class="marL10 marT20" url="/student/before/uploadPhoto" text='批量导入学生照片'     :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
+            <upload class="marL10 marT20" url="/student/before/uploadSimplePhoto" text='批量导入学生照片'  :isMore="true"   :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
             </div>
 
   		</div>

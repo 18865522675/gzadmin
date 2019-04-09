@@ -50,3 +50,13 @@ export default {
   }
 };
 </script>
+<style lang="less">
+	.tableImg-img {
+  width: 100%;
+  min-width: 100px;
+  height: 40px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+</style>

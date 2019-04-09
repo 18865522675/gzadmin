@@ -2,12 +2,13 @@
  <div>
    <el-upload
      class="xf-upload-temp"
-     name="excelFile"
+     :name="isMore?'imageFiles':'excelFile'"
      :action="$api.global.url + url"
      :show-file-list="false"
      :with-credentials="true"
      :on-success="upSuccess"
      :on-error="upError"
+     :multiple="isMore"
      :on-progress="upProgress"
    >
      <div class="kf-btn kf-btn-table"  style="margin-top: -4px;font-size: 14px;color:rgb(255, 187, 81)">{{text?text:'批量导入'}}</div>
@@ -22,7 +23,7 @@ export default {
       message: null
     };
   },
-  props: ["url", "ok", "isMultiPay","text"],
+  props: ["url", "ok", "isMultiPay","text","isMore"],
   mounted() {},
 
   methods: {
@@ -110,6 +111,9 @@ export default {
 //			if(res.data.successCount==res.data.uploadCount){
 //				return this.$message.success("导入成功")
 //			}
+			if(this.isMore){
+				return this.$message.success("图片导入成功")
+			}
 			let msgStr = [];
             let {
               successCount,
