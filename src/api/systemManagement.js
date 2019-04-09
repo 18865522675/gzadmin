@@ -46,7 +46,7 @@ export default {
   roleManagement_edit: params =>
     $.put("system/role/" + params.id, params, { lock: true }),
   roleManagement_get_manage: params =>
-    $.get("system/role/manage/" + params.id, params, { lock: true }),
+    $.get("system/role/manage/" + params.id, {}, { lock: true }),
   roleManagement_save: params =>
     $.put("system/role/updatePermission/" + params.id, params, { lock: true }),
 
@@ -96,4 +96,8 @@ export default {
   
 //获取学校
    get_schoolList: params => $.get("/Hide/listMajors", params),
+   
+   get_checkSite: params => $.post("/Hide/changeSite", params),
+   
+   
 };

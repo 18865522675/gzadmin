@@ -79,16 +79,16 @@
                     </el-table-column>
                     <el-table-column
                             prop="courseName"
-                            label="所属课程">
+                            label="所属课程" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="sort"
                             label="顺序号">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="playTimes"
                             label="观看次数">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="playUrl"
                             label="阅读地址" :show-overflow-tooltip="true" width="200">
@@ -140,7 +140,7 @@
                     </el-table-column>-->
                     <el-table-column
                             fixed="right"
-                            label="操作">
+                            label="操作" width="200">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                             <baseDelBtn delUrl="/tutor/doc" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>

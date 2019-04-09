@@ -384,7 +384,7 @@
             this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getBatchList();
-            this.getStudentPreSimpleStations();
+//          this.getStudentPreSimpleStations();
             this.get_ajax();
         },
         watch:{
@@ -401,9 +401,9 @@
                 this.allotDialogVisible=true;
             },
             getBatchList(){
-                this.$api.essentialInformation.batch_get_list().then((res)=>{
-                    this.batchList=res.data.pageList;
-                    this.tableForm.batchId=res.data.pageList[0].id;
+                this.$api.essentialInformation.SimpleBatch_get_list().then((res)=>{
+                    this.batchList=res.data;
+                    this.tableForm.batchId=res.data[0].id;
                     this.get_ajax();
                 })
             },
@@ -453,13 +453,13 @@
                 this.saveAppendDialogVisible=true;
             },
             getStudentPreSimpleDisplines(){
-                this.$api.essentialInformation.subjectManagement_get_list().then((res)=>{
-                    this.disciplineList=res.data.pageList;
+                this.$api.essentialInformation.SimpleDiscipline_get_list().then((res)=>{
+                    this.disciplineList=res.data;
                     console.log(this.disciplineList)
                 })
             },
             getStudentPreSimpleMajors(){
-                this.$api.essentialInformation.essentialInformation_get_list().then((res)=>{
+                this.$api.essentialInformation.SimpleMajor_get_list().then((res)=>{
                     this.majorList=res.data
                 })
             },

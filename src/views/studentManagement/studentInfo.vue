@@ -101,7 +101,7 @@
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
                         <!--searchInp-->
-                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        <el-input v-model="tableForm.cardNo" class='searchInp' placeholder="请输入证件号码">
                         </el-input>
                     </div>
                 </div>
@@ -123,10 +123,18 @@
                 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
-                <download url="/student/normal/downloadNormalMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10 marT20" url="/student/normal/uploadNormal"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="/student/normal/downloadNormalMould" class="marL10 marT20"  v-if="extra.indexOf('下载模版')>-1" />
+                	<download url="/student/normal/export" text='数据导出' class="marL10 marT20"  />
+                <upload class="marL10 marT20" url="/student/normal/uploadNormal"    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
+                <upload class="marL10 marT20" url="/student/normal/uploadPhoto"  text='批量导入学生照片'    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
 
-
+ <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showMulti' v-if="extra.indexOf('批量审核')>-1">
+                    一键审核
+                </div>
+                
+                 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showMultiApply' v-if="extra.indexOf('批量申请')>-1">
+                    一键申请
+                </div>
 
 
                 <!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
@@ -145,18 +153,24 @@
                         v-loading="tableLoading"
                         :data="tableData"
                         border
+                        ref="multipleTable"
                         class="kf-table"
+                        @selection-change="handleSelectionChange"
                         style="width: 100%">
+                     <el-table-column
+				      type="selection"
+				      width="55">
+				    </el-table-column>
                     <el-table-column
                             type="index"
                             :index="(index) => (pageNum - 1) * pageSize + index + 1"
                             label="序号"
                             width="60">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="enrollYear"
                             label="报名年份" :show-overflow-tooltip="true">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="userName"
                             label="姓名" :show-overflow-tooltip="true">
@@ -203,11 +217,11 @@
                             label="操作" width="350">
                         <template slot-scope="scope">
                         	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showTrail(scope.row)" v-if="extra.indexOf('审核')>-1">审核</el-button>
-                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" :disabled="scope.row.agreeStatus==2" v-if="extra.indexOf('申请')>-1">申请</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(scope.row)" v-if="extra.indexOf('申请')>-1&&scope.row.agreeStatus!=2">申请</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showChange(scope.row)" v-if="extra.indexOf('变更学籍')>-1">变更学籍</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/studentManagement/studentDetailPre/${scope.row.id}/${scope.row.userName}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
-                            <baseDelBtn delUrl="/student/normal"  :disabled="scope.row.agreeStatus==2"  :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+                            <baseDelBtn delUrl="/student/normal"  :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1&&scope.row.agreeStatus!=2"/>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -229,7 +243,7 @@
                     width="660px"
                     center
                     :append-to-body="true"
-                    class="kf-dialog-add">
+                    class="kf-dialog-add"  @close="closeDialog1">
                 <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
                     <el-form-item label="学生名称" prop="name">
                         <el-input v-model.trim="form.name"  placeholder="请输入学生姓名（不超过20个字）"></el-input>
@@ -268,11 +282,12 @@
                     </el-form-item>
                     <el-form-item label="学期" prop="term">
                         <el-select  style="width:100%" v-model="form.term" placeholder="请选择学期">
-                            <el-option label="考前辅导" :value="0"></el-option>
+                            <!--<el-option label="考前辅导" :value="0"></el-option>-->
                             <el-option label="第一学期" :value="1"></el-option>
                             <el-option label="第二学期" :value="2"></el-option>
                             <el-option label="第三学期" :value="3"></el-option>
                             <el-option label="第四学期" :value="4"></el-option>
+                            <el-option label="第五学期" :value="5"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="函授站" prop="stationId"  v-if="!userInfo.stationId">
@@ -280,6 +295,70 @@
                             <el-option v-for="(item,index) in stationList" :key="index"  :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
+                    <!--<el-form-item label="报考年份" prop="enrollYear">
+        				<el-select v-model="form.enrollYear" class="kf-select" style="width:100%" placeholder="请选择报考年份">
+                          <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                     </el-select>
+                   </el-form-item>-->
+        <el-form-item label="性别" >
+          <el-select  style="width:100%" v-model="form.gender" placeholder="请选择性别">
+          	<el-option label="未知" :value="0"></el-option>
+			    <el-option label="男" :value="1"></el-option>
+			    <el-option label="女" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年龄">
+          <el-input v-model.trim="form.age" placeholder="请输入年龄" type='number'></el-input>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-input v-model.trim="form.birthday" placeholder="请输入出生日期"></el-input>
+        </el-form-item>
+        <el-form-item label="民族">
+          <el-input v-model.trim="form.nation" placeholder="请输入民族"></el-input>
+        </el-form-item>
+        <el-form-item label="政治面貌">
+          <el-input v-model.trim="form.political" placeholder="请输入政治面貌"></el-input>
+        </el-form-item>
+        <el-form-item label="邮编">
+          <el-input v-model.trim="form.zipCode" placeholder="请输入邮编"></el-input>
+        </el-form-item>
+        <el-form-item label="email">
+          <el-input v-model.trim="form.email" placeholder="请输入email"></el-input>
+        </el-form-item>
+        <el-form-item label="标识">
+          <el-input v-model.trim="form.identifying" placeholder="请输入标识"></el-input>
+        </el-form-item>
+         <el-form-item label="最后学历">
+          <el-input v-model.trim="form.lastEducation" placeholder="请输入最后学历"></el-input>
+        </el-form-item>
+         <el-form-item label="毕业院校">
+          <el-input v-model.trim="form.graduateSchool" placeholder="请输入毕业院校"></el-input>
+        </el-form-item>
+         <el-form-item label="毕业年份">
+ 				<el-date-picker
+		      v-model="form.graduateDate"
+		      type="year"
+		      style='width: 100%;'
+		      placeholder="选择毕业年份">
+		    </el-date-picker>        </el-form-item>
+        <el-form-item label="毕业证书是否国民教育系列">
+ 				<el-radio-group v-model="form.ableStatus">
+                            <el-radio :label="1">是</el-radio>
+                            <el-radio :label="0">否</el-radio>
+                        </el-radio-group>        
+        </el-form-item>
+         <el-form-item label="毕业证书编号">
+          <el-input v-model.trim="form.diplomaNo" placeholder="请输入毕业证书编号"></el-input>
+        </el-form-item>
+        <el-form-item label="单位名称">
+          <el-input v-model.trim="form.company" placeholder="请输入单位名称"></el-input>
+        </el-form-item>
+        <el-form-item label="籍贯">
+          <el-input v-model.trim="form.place" placeholder="请输入籍贯"></el-input>
+        </el-form-item>
+        <el-form-item label="通讯地址">
+          <el-input v-model.trim="form.address" placeholder="请输入通讯地址"></el-input>
+        </el-form-item>
                     <el-form-item label="状态">
                         <el-radio-group v-model="form.ableStatus">
                             <el-radio :label="1">启用</el-radio>
@@ -394,6 +473,30 @@
                 </div>
             </el-dialog>
 
+			
+			
+			<el-dialog
+			  title="一键审核"
+			  :visible.sync="multiDialogVisible"
+			  width="660px">
+			  <div>
+			  	 <el-form ref="multiTrailForm" :rules="multiAgreeStatus" :model="multiTrailForm" label-width="120px" class="kf-form-add">
+                    <!--<el-form-item label="转出信息" prop="content">
+                        <el-input v-model.trim="saveOutForm.content" placeholder="请输入学生姓名（不超过20个字）"></el-input>
+                    </el-form-item>-->
+                    <el-form-item label="审核状态">
+	                    <el-radio-group v-model.trim="multiTrailForm.agreeStatus">
+	                    <el-radio :label="2">通过</el-radio>
+	                    <el-radio :label="3">拒绝</el-radio>
+	                    </el-radio-group>
+                    </el-form-item>
+                </el-form>
+			  </div>
+			  <span slot="footer" class="dialog-footer">
+			    <el-button @click="multiDialogVisible = false">取 消</el-button>
+			    <el-button type="primary" @click="sureMulti">确 定</el-button>
+			  </span>
+			</el-dialog>
 
         </el-card>
     </div>
@@ -415,7 +518,8 @@
                     enrollYear:"",
                     batchId:"",
                     schoolRollStatu:"",
-                    agreeStatus:""
+                    agreeStatus:"",
+                    logo:""
                 },
                 tableData: [],
                 //分页——start
@@ -441,6 +545,10 @@
                     cardNo:"",        
                     ableStatus:1,
                 },
+                multiTrailForm:{
+                	agreeStatus:2
+                },
+                
                 rulesForm: {
                     name: [
                         { required: true, message: "请输入学生姓名", trigger: "blur" },
@@ -582,7 +690,9 @@
                 batchList:[],
                 trailDialogVisible:false,
                 trailRow:{},
-                allotDialogVisible:false
+                allotDialogVisible:false,
+                multipleSelection: [],
+                multiDialogVisible:false
             };
         },
         components: {},
@@ -613,6 +723,33 @@
         },
         methods: {
             //获取数据
+            sureMulti(){
+            	let arr=[];
+            	this.multipleSelection.map((item)=>{
+            		arr.push(item.id)
+            	})
+            	this.$api.studentManagement.studentInfo_agreeMore({
+            		ids:arr.join(","),
+            		agreeStatus:this.multiTrailForm.agreeStatus
+            	}).then(()=>{
+            		this.$message.success("操作成功！");
+            		this.multiDialogVisible=false;
+            		this.ready_ajax()
+            	})
+            },
+            showMulti(){
+            	if(!this.multipleSelection.length){
+            		return this.$message.warning("请先选择学生");
+            	}
+            	this.multiDialogVisible=true
+//          	let arr=[];
+//          	this.multipleSelection.map((item)=>{
+//          		arr.push(item.id)
+//          	})
+            },
+            handleSelectionChange(val) {
+	          this.multipleSelection = val;
+	       },
             showTrail(row){
             	this.trailDialogVisible=true;
             	this.trailRow={...row}
@@ -623,6 +760,26 @@
             		newValue:""
             	}
             },
+            closeDialog1(){
+//  	 this.form = {
+//      name:"",
+//    	cardType:1,
+//    	cardNo:"",
+//    	disciplineId:"",
+//    	majorId:"",
+//    	level:"",
+//    	enrollYear:"",
+//    	remark:"",
+//		   ableStatus:1
+//    };
+      for(let i in this.form){
+      	if(i!="cardType"&&i!="ableStatus"){
+      		this.form[i]=""
+      	}
+      }
+      this.form.ableStatus=1;
+      this.form.cardType=1;
+    },
             sureTrial(){
             	this.$api.studentManagement.studentInfo_trail(this.trailRow.id,this.trailForm).then((res)=>{
             		this.$message.success("审核成功!");
@@ -640,10 +797,37 @@
 		        })
 		          .then(() => {
 		           	this.$api.studentManagement.studentInfo_apply(row.id).then((res)=>{
-		           		this.$message.error("申请成功");
+		           		this.$message.success("申请成功");
 		           		this.ready_ajax();
 		           	}).catch((e)=>{
 		           		this.$message.error("申请失败")
+		           	})
+		          })
+		          .catch(action => {
+//		            this.$message.info("取消申请")
+		          });
+            },
+             showMultiApply(){
+             	if(!this.multipleSelection.length){
+             		return this.$message.warning("请先选择学生")
+             	}
+            	this.$confirm( `确认要对选中的学生进行申请操作吗?`,'提示', {
+		          distinguishCancelAndClose: true,
+		          confirmButtonText: '确定',
+		          cancelButtonText: '取消'
+		        })
+		          .then(() => {
+		          	let arr=[];
+	            	this.multipleSelection.map((item)=>{
+	            		arr.push(item.id)
+	            	})
+		           	this.$api.studentManagement.studentInfo_applyMore({
+		           		ids:arr.join(",")
+		           	}).then((res)=>{
+		           		this.$message.success("一键申请成功");
+		           		this.ready_ajax();
+		           	}).catch((e)=>{
+		           		this.$message.error(e.msg)
 		           	})
 		          })
 		          .catch(action => {
@@ -785,10 +969,18 @@
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
                 });
+                
+                this.$api.studentManagement.getStudentPreDetail(row.id).then((res)=>{
+                    this.form={...this.form,...res.data.studentDetail}
+                }).catch((e)=>{
+                    // console.log(e)
+                    this.$message.error("获取学生详情失败")
+                })
             },
             //添加编辑数据
             add_ajax() {
                 if (this.dialogType === 0) {
+                	this.form.graduateDate=this.$fun.table.time(this.form.graduateDate)
                     this.$api.studentManagement
                         .studentInfo_add(this.form)
                         .then(() => {

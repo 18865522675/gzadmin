@@ -74,7 +74,7 @@
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
                         <!--searchInp-->
-                        <el-input v-model="tableForm.code" class='searchInp' placeholder="请输入证件号码">
+                        <el-input v-model="tableForm.cardNo" class='searchInp' placeholder="请输入证件号码">
                         </el-input>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
             
             
              <el-dialog
-                    title="分配函授站"
+                    title="查看"
                     :visible.sync="allotyidongVisible"
                     width="800px"
                     center
@@ -364,13 +364,13 @@
                     id:3
                 },{
                     name:'延迟毕业',
-                    id:3
+                    id:4			
                 },{
                     name:'肄业',
-                    id:3
+                    id:5
                 },{
                     name:'毕业',
-                    id:3
+                    id:6
                 }],
                 
                 tableData: [{}],

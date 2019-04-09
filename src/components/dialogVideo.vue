@@ -15,7 +15,7 @@
     </div>
     <!--视频-->
     <div class="kf-dialog-video-box" v-if="dialogVideo.type==='video'">
-      <video :src="dialogVideo.src" :poster="dialogVideo.poster" controls="controls" class="kf-dialog-video-main"></video>
+      <video :src="dialogVideo.src" ref="dialogVideo" id="dialogVideo" :poster="dialogVideo.poster" controls="controls" class="kf-dialog-video-main"></video>
     </div>
     <!--图书-->
     <div class="kf-dialog-book-box" v-if="dialogVideo.type==='book'">
@@ -42,6 +42,18 @@ export default {
   watch: {
     "dialogVideo.show": function() {
       this.bookMake = true;
+      this.$nextTick(()=>{
+      	setTimeout(()=>{
+//    		console.log(document.getElementById("dialogVideo").duration);
+      		this.$store.state.videoTime=this.$refs.dialogVideo.duration;
+      		console.log(this.$refs.dialogVideo)
+      		this.$api.resourceManagement.updateWareDuration(this.$store.state.dialogVideo.videoId,{
+      			wareTimes:this.$store.state.videoTime.toFixed(0)
+      		}).then(()=>{})
+    		
+    			
+      	},3000)
+      })
     }
   },
   computed: mapState(["dialogVideo"]),

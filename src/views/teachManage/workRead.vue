@@ -90,11 +90,17 @@
 		         <el-table-column
 		          prop="stationName"
 		          label="函授站"  v-if="!userInfo.stationId">
+		          <template slot-scope="scope">
+		          	{{scope.row.stationName?scope.row.stationName:'全部'}}
+		          </template>
 		        </el-table-column>
-		        <!--<el-table-column
+		        <el-table-column
 		          prop="userName"
 		          label="适用">
-		        </el-table-column>-->
+		          <template slot-scope="scope">
+		          	{{scope.row.stationName?scope.row.stationName:'全部'}}
+		          </template>
+		        </el-table-column>
 		         <el-table-column
 		          prop="usedCount"
 		          label="作业提交次数">

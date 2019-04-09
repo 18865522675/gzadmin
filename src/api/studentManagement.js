@@ -131,4 +131,24 @@ export default {
     
     getyidongInfo: params => $.get("/student/transf/listTransfer/"+params, {}),
     
+    
+    getEnroll_batchs: params => $.get("/student/transf/listTransfer/"+params, {}),
+    
+    
+    enrollStudent_add: params => $.post("/student/enrolled", params),
+    
+     getGraduateList: params => $.get("/student/graduation/list", params),
+     
+     getGraduate_getBatchs: params => $.get("/student/graduation/listBatchs", params),
+     
+     getGraduate_getMajors: params => $.get("/student/graduation/listMajors", params),
+     
+     getGraduate_getDisciplines: params => $.get("/student/graduation/listDisciplines", params),
+     
+     getGraduate_getStations: params => $.get("/student/graduation/listStations", params),
+     
+     studentInfo_agreeMore: params => $.post("/student/normal/agreeMore", params),
+     
+     studentInfo_applyMore: params => $.post("/student/normal/applyMore", params),
+   
 };

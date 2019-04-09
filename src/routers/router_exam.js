@@ -21,7 +21,7 @@ const router_module = {
         show: false,
         title: "考试安排-学生"
       },
-      component: resolve => require(["@/views/exam/examArrange.vue"], resolve)
+      component: resolve => require(["@/views/exam/arrangeStudent.vue"], resolve)
     },
     {
       path: "/exam/examStudent",
@@ -46,6 +46,14 @@ const router_module = {
         title: "考试成绩"
       },
       component: resolve => require(["@/views/exam/examScore.vue"], resolve)
+    },
+    {
+      path: "/exam/studentScore",
+      meta: {	
+        show: true,
+        title: "学生成绩"
+      },
+      component: resolve => require(["@/views/exam/studentScore.vue"], resolve)
     }
   ]
 };

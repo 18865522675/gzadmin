@@ -92,11 +92,15 @@
             </div>
 
 
-            <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+            <div class="flexDir-r flexItem">
+            	<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                 添加
             </div>
-            <download url="student/enrolled/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
-            <upload class="marL10 marT20" url="/student/enrolled/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+            <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模版')>-1" />
+            <download url="student/before/export" text="数据导出" class="marL10 marT20"   v-if="extra.indexOf('批量导出')>-1"/>
+            <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
+            <upload class="marL10 marT20" url="/student/before/uploadPhoto" text='批量导入学生照片'     :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
+            </div>
 
   		</div>
   		<div class="pageCon">
@@ -183,7 +187,7 @@
       width="660px"
       center
       :append-to-body="true"
-      class="kf-dialog-add">
+      class="kf-dialog-add" @close="closeDialog">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="学生名称" prop="name">
           <el-input v-model.trim="form.name" placeholder="请输入学生姓名（不超过20个字）"></el-input>
@@ -220,6 +224,72 @@
                           <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
                       </el-select>
           <!--el-input v-model.trim="form.enrollYear" placeholder="请输入报考年份"></el-input>-->
+        </el-form-item>
+        <el-form-item label="性别" >
+          <el-select  style="width:100%" v-model="form.gender" placeholder="请选择性别">
+          	<el-option label="未知" :value="0"></el-option>
+			    <el-option label="男" :value="1"></el-option>
+			    <el-option label="女" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="年龄">
+          <el-input v-model.trim="form.age" placeholder="请输入年龄" type='number'></el-input>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <!--<el-input v-model.trim="form.birthday" placeholder="请输入出生日期"></el-input>-->
+            <el-date-picker
+			      v-model="form.birthday"
+			      type="date"
+			      style="width: 100%;"
+			      placeholder="请选择出生日期">
+			    </el-date-picker>
+        </el-form-item>
+        <el-form-item label="民族">
+          <el-input v-model.trim="form.nation" placeholder="请输入民族"></el-input>
+        </el-form-item>
+        <el-form-item label="政治面貌">
+          <el-input v-model.trim="form.political" placeholder="请输入政治面貌"></el-input>
+        </el-form-item>
+        <el-form-item label="邮编">
+          <el-input v-model.trim="form.zipCode" placeholder="请输入邮编"></el-input>
+        </el-form-item>
+        <el-form-item label="email">
+          <el-input v-model.trim="form.email" placeholder="请输入email"></el-input>
+        </el-form-item>
+        <el-form-item label="标识">
+          <el-input v-model.trim="form.identifying" placeholder="请输入标识"></el-input>
+        </el-form-item>
+         <el-form-item label="最后学历">
+          <el-input v-model.trim="form.lastEducation" placeholder="请输入最后学历"></el-input>
+        </el-form-item>
+         <el-form-item label="毕业院校">
+          <el-input v-model.trim="form.graduateSchool" placeholder="请输入毕业院校"></el-input>
+        </el-form-item>
+         <el-form-item label="毕业年份">
+         <!--<el-date-picker
+		      v-model="form.graduateDate"
+		      type="year"
+		      style='width: 100%;'
+		      placeholder="选择毕业年份">
+		    </el-date-picker>-->
+		    <el-input v-model.trim="form.graduateDate" onkeypress="return event.keyCode>=48&&event.keyCode<=57" type="number" min="0"  placeholder="请输入毕业年份"></el-input>
+        </el-form-item>
+        <el-form-item label="毕业证书是否国民教育系列">
+									<el-radio-group v-model="form.ableStatus">
+                            <el-radio :label="1">是</el-radio>
+                            <el-radio :label="0">否</el-radio>
+                        </el-radio-group>            </el-form-item>
+         <el-form-item label="毕业证书编号">
+          <el-input v-model.trim="form.diplomaNo" placeholder="请输入毕业证书编号"></el-input>
+        </el-form-item>
+        <el-form-item label="单位名称">
+          <el-input v-model.trim="form.company" placeholder="请输入单位名称"></el-input>
+        </el-form-item>
+        <el-form-item label="籍贯">
+          <el-input v-model.trim="form.place" placeholder="请输入籍贯"></el-input>
+        </el-form-item>
+        <el-form-item label="通讯地址">
+          <el-input v-model.trim="form.address" placeholder="请输入通讯地址"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.ableStatus">
@@ -327,6 +397,7 @@ export default {
       	enrollYear:"",
       	remark:"",
 		  ableStatus:1,
+		  logo:""
       },
       rulesForm: {
         name: [
@@ -502,20 +573,40 @@ export default {
     dialogAdd_show() {
       this.dialogType = 0;
       this.dialogAddVisible = true;
-      this.form = {
-        name:"",
-      	cardType:1,
-      	cardNo:"",
-      	disciplineId:"",
-      	majorId:"",
-      	level:"",
-      	enrollYear:"",
-      	remark:"",
-		  ableStatus:1
-      };
+//    this.form = {
+//      name:"",
+//    	cardType:1,
+//    	cardNo:"",
+//    	disciplineId:"",
+//    	majorId:"",
+//    	level:"",
+//    	enrollYear:"",
+//    	remark:"",
+//		  ableStatus:1
+//    };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
       });
+    },
+    closeDialog(){
+//  	 this.form = {
+//      name:"",
+//    	cardType:1,
+//    	cardNo:"",
+//    	disciplineId:"",
+//    	majorId:"",
+//    	level:"",
+//    	enrollYear:"",
+//    	remark:"",
+//		   ableStatus:1
+//    };
+      for(let i in this.form){
+      	if(i!="cardType"&&i!="ableStatus"){
+      		this.form[i]=""
+      	}
+      }
+      this.form.ableStatus=1;
+      this.form.cardType=1;
     },
     //显示编辑框
     dialogEdit_show(row) {
@@ -538,13 +629,21 @@ export default {
           ableStatus:row.ableStatus,
       	remark:row.remark,
       };
+      
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
       });
+       this.$api.studentManagement.getStudentPreDetail(row.id).then((res)=>{
+                    this.form={...res.data.studentDetail,...this.form}
+                }).catch((e)=>{
+                    // console.log(e)
+                    this.$message.error("获取学生详情失败")
+                })
     },
     //添加编辑数据
     add_ajax() {
       if (this.dialogType === 0) {
+   			this.form.birthday=this.$fun.notAlltime(this.form.birthday)
         this.$api.studentManagement
           .studentPre_add(this.form)
           .then(() => {

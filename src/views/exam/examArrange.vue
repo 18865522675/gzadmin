@@ -2,16 +2,18 @@
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
-  			<span class='label'>年份</span>
+  			<span class='label'>时间</span>
   			<div class="marL10">
-				 <el-select v-model="tableForm.kindId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-		              <el-option label="所有" value=""/>
-		              <el-option
-		                v-for="(item,index) in kindList"
-		                :key="index"
-		                :label="item.name"
-		                :value="item.id"/>
-	          	  </el-select>
+				    <el-date-picker
+				    class='timeWrap'
+			      v-model="tableForm.time"
+			      type="datetimerange"
+			      @change="ready_ajax"
+			      range-separator="至"
+			      @onClick="clearAction"
+			      start-placeholder="开始日期"
+			      end-placeholder="结束日期">
+			    </el-date-picker>
 		 	</div>
 		 	<!--<span class='label marL10' v-if="!userInfo.stationId">函授站</span>
 		 	<div class="marL10" v-if="!userInfo.stationId">
@@ -62,12 +64,19 @@
 		          label="考试地点" :show-overflow-tooltip="true" width="200">
 		        </el-table-column>
 		        <el-table-column
+		          prop="examType"
+		          label="考试类型" :show-overflow-tooltip="true" width="200">
+		          <template slot-scope='scope'>
+		          	{{scope.row.examType==1?'正考':'补考'}}
+		          </template>
+		        </el-table-column>
+		        <el-table-column
 		          prop="startTime"
-		          label="考试开始时间">
+		          label="考试开始时间" :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
 		          prop="endTime"
-		          label="考试结束时间">
+		          label="考试结束时间" :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
 		          prop="capacity"
@@ -78,10 +87,10 @@
 		        </el-table-column>
 		        <el-table-column
 		          fixed="right"
-		          label="操作" width="200">
+		          label="操作" width="250">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发布')>-1" >发布</el-button>
-		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)"  v-if="extra.indexOf('编辑')>-1&&scope.row.publishStatus!=1">编辑</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push('/exam/arrangeStudent/'+scope.row.id)"   v-if="extra.indexOf('关联学生列表')>-1" >添加学生</el-button>
+		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)"  v-if="extra.indexOf('编辑')>-1">编辑</el-button>
 		            <baseDelBtn delUrl="/exam/exam" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
@@ -105,8 +114,8 @@
       center
       :append-to-body="true"
       class="kf-dialog-add">
-      <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-      	 <el-form-item label="考试开始时间" prop="time">
+      <el-form ref="form" :rules="rulesForm" :model="form" label-width="140px" class="kf-form-add">
+      	 <el-form-item label="考试开始时间" prop="start">
               <el-date-picker
 		      v-model="form.start"
 		      type="datetime"
@@ -114,7 +123,7 @@
 		      placeholder="选择日期时间">
 		    </el-date-picker>
         </el-form-item>
-         <el-form-item label="考试结束时间" prop="time">
+         <el-form-item label="考试结束时间" prop="end">
               <el-date-picker
 		      v-model="form.end"
 		      type="datetime"
@@ -123,16 +132,16 @@
 		    </el-date-picker>
         </el-form-item>
       	 <el-form-item label="考试地点" prop="address">
-          <el-input v-model.trim="form.address	" placeholder="请输入考试地点" type="number"></el-input>
+          <el-input v-model.trim="form.address	" placeholder="请输入考试地点"></el-input>
         </el-form-item>
          <el-form-item label="考试类型" prop="examType">
-          <el-select  style="width:100%" v-model="form.examType" placeholder="请选择考试类型">
+          <el-select  style="width:100%" v-model="form.examType" :disabled="dialogType==1" placeholder="请选择考试类型">
           	<el-option label="正考" :value='1'></el-option>
           	<el-option label="补考" :value='2'></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="教师容纳人数" prop="capacity	">
-          <el-input v-model.trim="form.capacity	" placeholder="请输入教容纳人数" type="number"></el-input>
+        <el-form-item label="教室容纳人数"  prop="capacity">
+          <el-input v-model.trim="form.capacity" placeholder="请输入教室容纳人数" type="number" onkeypress="return event.keyCode>=48&&event.keyCode<=57"  min="0"></el-input>
         </el-form-item>
         <!--<el-form-item label="状态">
           <el-radio-group v-model.trim="form.ableStatus">
@@ -162,7 +171,8 @@ export default {
       tableForm: {
 		  examType:"",
 		  start:"",
-		  end:""
+		  end:"",
+		  time:''
       },
       tableData: [],
       //分页——start
@@ -190,6 +200,12 @@ export default {
         ],
         capacity: [
           { required: true, message: "请输入教室容纳人数", trigger: "blur" },
+        ],
+        start: [
+          { required: true, message: "请选择开始时间", trigger: "blur" },
+        ],
+        end: [
+          { required: true, message: "请选择结束时间", trigger: "blur" },
         ],
 //      code: [
 //        { required: true, message: "请输入院校编码", trigger: "blur" },
@@ -230,6 +246,9 @@ export default {
   },
   methods: {
     //获取数据
+    clearAction(){
+    	za
+    },
     publish(id){
     	this.$alert('确认发布此公告？', '发布', {
           confirmButtonText: '确定',
@@ -249,6 +268,12 @@ export default {
     },
     get_ajax() {
       this.tableLoading = true;
+      if(this.tableForm.time){
+      	this.tableForm.start=this.$fun.table.time(null,null,this.tableForm.time[0]);
+      	this.tableForm.end=this.$fun.table.time(null,null,this.tableForm.time[1]);
+      }else{
+      	this.tableForm.start=this.tableForm.end=""
+      }
       this.$api.exam
         .getExamArrangeList({
           pageNum: this.pageNum,
@@ -274,7 +299,8 @@ export default {
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
-          examType:"",
+          start:"",
+          end:"",
           examType:"",
           remark:"",
           address:"",
@@ -289,9 +315,12 @@ export default {
       this.dialogType = 1;
       this.dialogAddVisible = true;
       this.form = {
+      	id:row.id,
         address:row.address,
         capacity:row.capacity,
- 		examType:row.examType,
+        start:row.startTime,
+        end:row.endTime,
+ 				examType:row.examType,
         remark: row.remark, //备注
       };
       this.$nextTick(() => {
@@ -316,8 +345,8 @@ export default {
       } else {
       	this.form.start=this.$fun.time(this.form.start);
       	this.form.end=this.$fun.time(this.form.end);
-        this.$api.message
-          .notice_edit(this.form.id,this.form)
+        this.$api.exam
+          .editExamArrange(this.form.id,this.form)
           .then(() => {
             this.$message({
               type: "success",

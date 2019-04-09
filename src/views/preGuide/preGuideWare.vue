@@ -85,10 +85,10 @@
                             prop="sort"
                             label="顺序号">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="playTimes"
                             label="观看次数">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="playUrl"
                             label="播放地址" :show-overflow-tooltip="true" width="200">

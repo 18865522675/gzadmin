@@ -41,7 +41,7 @@
                         性别
                     </div>
                     <div>
-                        {{stuBaseInfo.gender}}
+                        {{stuBaseInfo.studentDetail.gender==1?'男':stuBaseInfo.studentDetail	.gender==2?'女':'未知'}}
                     </div>
                     <div>
                         年级
@@ -73,7 +73,7 @@
                         出生日期
                     </div>
                     <div>
-                        {{stuBaseInfo.birthday}}
+                        {{stuBaseInfo.studentDetail.birthday}}
                     </div>
 
 
@@ -82,25 +82,25 @@
                         民族
                     </div>
                     <div>
-                        {{stuBaseInfo.nation}}
+                        {{stuBaseInfo.studentDetail.nation}}
                     </div>
                     <div>
                         政治面貌
                     </div>
                     <div>
-                        {{stuBaseInfo.political}}
+                        {{stuBaseInfo.studentDetail.political}}
                     </div>
                     <div>
                         邮编
                     </div>
                     <div>
-                        {{stuBaseInfo.zipCode}}
+                        {{stuBaseInfo.studentDetail.zipCode}}
                     </div>
                     <div>
                         Email
                     </div>
                     <div>
-                        {{stuBaseInfo.email}}
+                        {{stuBaseInfo.studentDetail.email}}
                     </div>
 
 
@@ -138,25 +138,25 @@
                         原毕业院校
                     </div>
                     <div>
-                        {{stuBaseInfo.graduateSchool}}
+                        {{stuBaseInfo.studentDetail.graduateSchool}}
                     </div>
                     <div>
                         原毕业年份
                     </div>
                     <div>
-                        {{stuBaseInfo.graduateDate}}
+                        {{stuBaseInfo.studentDetail.graduateDate}}
                     </div>
                     <div>
                         最高学历
                     </div>
                     <div>
-                        {{stuBaseInfo.lastEducation}}
+                        {{stuBaseInfo.studentDetail.lastEducation}}
                     </div>
                     <div>
                         籍贯
                     </div>
                     <div>
-                        {{stuBaseInfo.place}}
+                        {{stuBaseInfo.studentDetail.place}}
                     </div>
 
 
@@ -165,7 +165,7 @@
                         原证书编号
                     </div>
                     <div>
-                        {{stuBaseInfo.diplomaNo}}
+                        {{stuBaseInfo.studentDetail.diplomaNo}}
                     </div>
                     <div>
                         移动电话
@@ -177,7 +177,7 @@
                         通讯地址
                     </div>
                     <div>
-                        {{stuBaseInfo.address}}
+                        {{stuBaseInfo.studentDetail.address}}
                     </div>
                     <div>
                         学籍状态
@@ -454,7 +454,7 @@
             saveExamInfo(){
                 this.$api.studentManagement.saveExamForm({
 //                  studentId:this.$route.params.studentId,
-					studentId:this.stuExamInfo.studentId,
+					studentId:this.$route.params.studentId,
                     scoreLine:this.stuExamInfo.scoreLine,
                     examScore:this.stuExamInfo.examScore,
                     obj1:this.stuExamInfo.obj1,
@@ -469,7 +469,7 @@
                     this.$message.success("考试信息保存成功")
                 }).catch((e)=>{
                     // console.log(e)
-                    this.$message.success("考试信息保存失败")
+                    this.$message.error("考试信息保存失败")
                 })
             },
             saveTicketInfo(){
@@ -502,7 +502,7 @@
             saveApplyNet(){
                 console.log(this.applyForm.confirmTime)
                 this.$api.studentManagement.saveApplyForm({
-                    studentId:this.applyForm.studentId,
+                    studentId:this.$route.params.studentId,
                     enroll_no:this.applyForm.enrollNo,
                     confirm_score_area:this.applyForm.confirmScoreArea,
                     exam_area:this.applyForm.examArea,
@@ -513,7 +513,7 @@
                     this.$message.success("考试信息保存成功")
                 }).catch((e)=>{
                     // console.log(e)
-                    this.$message.success("考试信息保存失败")
+                    this.$message.error("考试信息保存失败")
                 })
             },
             change_table_tab(e){

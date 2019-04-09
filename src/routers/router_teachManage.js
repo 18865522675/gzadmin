@@ -35,7 +35,7 @@ const router_module = {
       path: "/teachManage/discuss",
       meta: {
         show: true,
-        title: "主题讨论"
+        title: "讨论主题"
       },
       component: resolve => require(["@/views/teachManage/discuss.vue"], resolve)
     },

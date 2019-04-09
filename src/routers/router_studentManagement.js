@@ -105,6 +105,17 @@ const router_module = {
                   "../views/studentManagement/studentrp.vue"
               ], resolve)
       },
+      {
+          path: "/studentManagement/graduation",
+          meta: {
+              title: "毕业管理",
+              show: true
+          },
+          component: resolve =>
+              require([
+                  "../views/studentManagement/graduation.vue"
+              ], resolve)
+      },
     // {
     //   path: "/studentManagement/qualificationExamination",
     //   meta: {

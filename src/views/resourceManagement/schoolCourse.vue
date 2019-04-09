@@ -5,7 +5,7 @@
             	 <div class="headTopItem">
                     <span class='label'>学校</span>
 	                <div class="marL10">
-	                    <el-select v-model="tableForm.siteId" class="kf-select" placeholder="请选择学校" filterable  @change="searchChange">
+	                    <el-select v-model="tableForm.siteId" class="kf-select" placeholder="请选择学校" filterable  @change="searchChangeSchool">
 	                        <el-option label="所有" value=""/>
 	                        <el-option
 	                                v-for="(item,index) in schoolList"
@@ -348,8 +348,8 @@
             // this.getZhanneixinStationList();
             this.schoolCourse_getSourceCourseList();
             this.getSchoolList();
-            this.schoolCourse_getBatchList();
-            this.schoolCourse_getMajorList()
+//          this.schoolCourse_getBatchList();
+//          this.schoolCourse_getMajorList()
             this.get_ajax();
         },
         watch:{
@@ -390,21 +390,19 @@
             },
             schoolCourse_getBatchList(){
                 this.$api.resourceManagement.schoolCourse_getBatchList({
-                    pageNum:1,
-                    pageSize:1000
+                    siteId:this.tableForm.siteId
                 }).then((res)=>{
                     this.batchList=res.data;
-                    if(res.data.length){
-                    	this.tableForm.batchId=res.data[0].id
-                    }
+//                  if(res.data.length){
+//                  	this.tableForm.batchId=res.data[0].id
+//                  }
                 }).catch((e)=>{
 
                 })
             },
             schoolCourse_getMajorList(){
                 this.$api.resourceManagement.schoolCourse_getMajorList({
-                    pageNum:1,
-                    pageSize:1000
+                    siteId:this.tableForm.siteId
                 }).then((res)=>{
                     this.majorList=res.data;
                 }).catch((e)=>{
@@ -443,6 +441,18 @@
             },
             searchChange() {
                 this.ready_ajax();
+            },
+            searchChangeSchool(val){
+            	if(val){
+            	this.schoolCourse_getBatchList();
+            	this.schoolCourse_getMajorList()	
+            	}else{
+            		this.batchLisy=[];
+            		this.marjorList=[];
+            		this.tableForm.batchId="";
+            		this.tableForm.majorId="";
+            	}
+            	
             },
             //显示添加框
             dialogAdd_show() {

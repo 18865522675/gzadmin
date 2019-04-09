@@ -2,6 +2,17 @@
   <div class="schoolManagementWrap">
   	<el-card class="pageCard">
   		<div class="pageHead flexItem">
+  			<!--<span class='label'>类别</span>
+  			<div class="marL10">
+				 <el-select v-model="tableForm.kindId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+		              <el-option label="所有" value=""/>
+		              <el-option
+		                v-for="(item,index) in kindList"
+		                :key="index"
+		                :label="item.name"
+		                :value="item.id"/>
+	          	  </el-select>
+		 	</div>
 		 	<span class='label marL10' v-if="!userInfo.stationId">函授站</span>
 		 	<div class="marL10" v-if="!userInfo.stationId">
 				 <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -12,19 +23,16 @@
 		                :label="item.name"
 		                :value="item.id"/>
 	            </el-select>
-		 	</div>
-		 	<span class='label marL10'>学生</span>
+		 	</div>-->
 		 	<div class="marL10">
  					<!--searchInp-->
-
-			<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入收件人姓名">
-			 	<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
-			</el-input>
-
+				<el-input v-model="tableForm.name" class='searchInp' placeholder="请输入函授站名称">
+				 	<el-button slot="append" icon="el-icon-search" @click="get_ajax()"></el-button>
+				</el-input>
  			</div>
-			<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
+			<!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
 				添加
-			</div>
+			</div>-->
 
  				<!--<div  class="comTopResetBtn comTopBlueBtn topBtn  marL10">
  					重置
@@ -47,59 +55,32 @@
 		          width="60">
 		        </el-table-column>
 		        <el-table-column
-		          prop="sendName"
-		          label="发件人">
+		          prop="stationName"
+		          label="函授站" :show-overflow-tooltip="true" width="200">
 		        </el-table-column>
 		        <el-table-column
-		          prop="receivedName"
-		          label="收件人">
+		          prop="contactUser"
+		          label="负责人">
 		        </el-table-column>
 		         <el-table-column
-		          prop="title"
-		          width="320"
-		          label="标题">
+		          prop="contactPhone"
+		          label="联系电话">
 		        </el-table-column>
 		         <el-table-column
-		          prop="content"
-		          width="320"
-		          label="内容" :show-overflow-tooltip="true">
+		          prop="email"
+		          label="邮箱">
 		        </el-table-column>
 		        <el-table-column
-		          width="120"
-		          label="已读">
-		          <template slot-scope="scope">
-		            {{scope.row.readed==1?"已读":"未读"}}
-		          </template>
+		          prop="studentCount"
+		          label="学生人数">
 		        </el-table-column>
-		        <!--<el-table-column-->
-		          <!--prop="publisher"-->
-		          <!--width="120"-->
-		          <!--label="收件人是否已删">-->
-		        <!--</el-table-column>-->
-		        <!--<el-table-column-->
-		          <!--prop="updateTime"-->
-		          <!--label="更新时间"-->
-		          <!--width="200"-->
-		          <!--:formatter="$fun.table.time">-->
-		        <!--</el-table-column>-->
-		        <!--<el-table-column-->
-		          <!--prop="publisher"-->
-		          <!--width="120"-->
-		          <!--label="发布状态">-->
-		        <!--</el-table-column>-->
-		        <!--<el-table-column
-		          label="状态"
-		          width="80">
-		          <template slot-scope="scope">
-		            {{scope.row.ableStatus?"启用":"禁用"}}
-		          </template>
-		        </el-table-column>-->
 		        <el-table-column
 		          fixed="right"
-		          label="操作">
+		          label="操作" width="200">
 		          <template slot-scope="scope">
-		            <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-		            <baseDelBtn delUrl="/notice/msg" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发布')>-1" >发布</el-button>
+		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)"  v-if="extra.indexOf('编辑')>-1&&scope.row.publishStatus!=1">编辑</el-button>
+		            <baseDelBtn delUrl="/notice/notice" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
 		      </el-table>
@@ -120,25 +101,17 @@
       :visible.sync="dialogAddVisible"
       width="660px"
       center
-      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-        <el-form-item label="标题" prop="title">
-          <el-input v-model.trim="form.title" placeholder="请输入标题（不超过20个字）"></el-input>
+        <el-form-item label="负责人" prop="contactUser">
+          <el-input v-model.trim="form.contactUser" placeholder="请输入负责人名字"></el-input>
         </el-form-item>
-         <el-form-item label="收件人" prop="receivedIds">
-          <el-select  style="width:100%" v-model="form.receivedIds" multiple placeholder="请选择收件人">
-          	<el-option v-for="(item,index) in kindList" :key="index" :value="item.id" :label="item.userName">
-
-          	</el-option>
-          </el-select>
+        <el-form-item label="联系电话" prop="phone">
+          <el-input v-model.trim="form.phone" placeholder="请输入手机号码"></el-input>
         </el-form-item>
-        <el-form-item label="内容" prop="content">
-          <el-input v-model.trim="form.content" placeholder="请输入内容" type="textarea" :rows="2"></el-input>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model.trim="form.email" placeholder="请输入email"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -157,8 +130,7 @@ export default {
       extra: [],
       tableLoading: true,
       tableForm: {
-        name: "",
-		  stationId:""
+		  name:"",
       },
       tableData: [],
       //分页——start
@@ -166,30 +138,22 @@ export default {
       pageSize: 10,
       total: 0,
       //分页——end
-      stationList:[],
       dialogAddVisible: false,
       dialogType: 0,
       form: {
-        name: "", //课件名称
-        code: "", //课件编码
-        remark: "", //备注
-        ableStatus: 1 //启用状态(1启用0禁用)
+		email:"",
+		phone:"",
+		contactUser:""
       },
       rulesForm: {
-        name: [
-          { required: true, message: "请输入名称", trigger: "blur" },
-          {
-            min: 1,
-            max: 20,
-            message: "最长 20 个字符",
-            trigger: "change"
-          }
+        contactUser: [
+          { required: true, message: "请输入负责人", trigger: "blur" },
         ],
-		  receivedIds: [
-          { required: true, message: "请选择收件人", trigger: "blur" },
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
         ],
-        content: [
-          { required: true, message: "请输入内容", trigger: "blur" },
+        email: [
+          { required: true, message: "请输入email", trigger: "blur" },
         ],
 //      code: [
 //        { required: true, message: "请输入院校编码", trigger: "blur" },
@@ -213,11 +177,12 @@ export default {
      stationList:[]
     };
   },
-    computed: mapState(["userInfo"]),
   components: {},
+    computed: mapState(["userInfo"]),
+
   mounted() {
-	this.getStudentList();
-	this.getZhanneixinStationList();
+//	this.getKindList();
+//	this.getStationList();
     this.get_ajax();
   },
   watch:{
@@ -228,36 +193,45 @@ export default {
   	}
   },
   methods: {
-  	closeDialog(){
-  		this.form.title="";
-  		this.form.content="";
-  		this.form.remark="";
-  		this.form.receivedIds=[]
-  	},
-  	getZhanneixinStationList(){
-  		this.$api.message.getZhanneixinStationList({
-  			pageNum:1,
-  			pageSize:1000
-  		}).then((res)=>{
-  			this.stationList=res.data.list;
-  		}).catch((e)=>{
-
-  		})
-  	},
     //获取数据
+    publish(id){
+    	this.$alert('确认发布此公告？', '发布', {
+          confirmButtonText: '确定',
+          callback: action => {
+              if(action=='confirm'){
+                  this.$api.message.notice_publish(id).then((res)=>{
+                      this.$message.success("发布成功");
+                      this.get_ajax()
+                  }).catch((e)=>{
+                      this.$message.error("发布失败")
+                  })
+			  }else{
+                  this.$message.info("已取消发布")
+			  }
+          }
+        });
+    },
     get_ajax() {
       this.tableLoading = true;
-      this.$api.message
+      this.$api.schoolManage
         .getStationList({
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          ...this.tableForm
+			...this.tableForm
         })
         .then(res => {
           this.extra = res.data.extra;
           this.tableData = res.data.pageList;
           this.total = +res.data.total;
           this.tableLoading = false;
+                    console.log(this.userInfo)
+          this.tableData.map((item)=>{
+          	if(item.sendName==this.userInfo.name&&item.stationName==this.userInfo.name){
+          		item.canAction=true
+          	}else{
+          		item.canAction=false
+          	}
+          })
         });
     },
     ready_ajax() {
@@ -272,11 +246,9 @@ export default {
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
-        name: "", //课件名称
-        code: "", //课件编码
-        remark: "", //备注
-        ableStatus: 1, //启用状态(1启用0禁用)
-        receivedIds:[]
+        email:"",
+		phone:"",
+		contactUser:""
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -288,9 +260,9 @@ export default {
       this.dialogAddVisible = true;
       this.form = {
         id: row.id,
-        title: row.title, //课件名称
-        content: row.content, //课件编码
-        receivedIds:row.receivedIds.join(",")
+		email:row.email,
+		phone:row.contactPhone,
+		contactUser:row.contactUser
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -299,9 +271,8 @@ export default {
     //添加编辑数据
     add_ajax() {
       if (this.dialogType === 0) {
-          this.form.receivedIds=this.form.receivedIds.join(",")
         this.$api.message
-          .stationMsg_add(this.form)
+          .notice_add(this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -311,8 +282,8 @@ export default {
             this.ready_ajax();
           });
       } else {
-        this.$api.message
-          .notice_edit(this.form.id,this.form)
+        this.$api.schoolManage
+          .stationEdit(this.form.id,this.form)
           .then(() => {
             this.$message({
               type: "success",
@@ -342,13 +313,13 @@ export default {
       this.pageNum = val;
       this.get_ajax();
     },
-    getStudentList(){
-    	this.$api.message.getStudentList().then((res)=>{
+    getKindList(){
+    	this.$api.message.getNoticeKindsList().then((res)=>{
     		this.kindList=res.data
     	})
     },
-      getZhanneixinStationList(){
-    	this.$api.message.getZhanneixinStationList().then((res)=>{
+    getStationList(){
+    	this.$api.message.getNoticeStationsList().then((res)=>{
     		this.stationList=res.data
     	})
     }
