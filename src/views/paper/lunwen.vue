@@ -527,13 +527,13 @@
                 batchList:[],
                 auditStatusList:[{
                 	name:'审核中',
-                	id:0
-                },{
-                	name:'通过',
                 	id:1
                 },{
-                	name:'拒绝',
+                	name:'通过',
                 	id:2
+                },{
+                	name:'拒绝',
+                	id:3
                 },],
                 applyType:true,
                 applyDialog:false
