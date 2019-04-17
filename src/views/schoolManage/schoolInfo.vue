@@ -13,7 +13,7 @@
 			    <el-input v-model.trim="ruleForm.address" :disabled="!isEdit" autocomplete="off"  placeholder="请输入详细地址"></el-input>
 			  </el-form-item>
 			  <el-form-item label="邮箱" prop="email">
-			    <el-input v-model.number="ruleForm.email"   :disabled="!isEdit" placeholder="请输入邮箱"></el-input>
+			    <el-input v-model="ruleForm.email"   :disabled="!isEdit" placeholder="请输入邮箱"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校LOGO">
 			    <el-upload
