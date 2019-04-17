@@ -13,7 +13,7 @@
 			    <el-input v-model.trim="ruleForm.address" :disabled="!isEdit" autocomplete="off"  placeholder="请输入详细地址"></el-input>
 			  </el-form-item>
 			  <el-form-item label="邮箱" prop="email">
-			    <el-input v-model.number="ruleForm.email"   :disabled="!isEdit" placeholder="请输入邮箱"></el-input>
+			    <el-input v-model.trim="ruleForm.email"   :disabled="!isEdit" placeholder="请输入邮箱"></el-input>
 			  </el-form-item>
 			  <el-form-item label="学校LOGO">
 			    <el-upload
@@ -58,12 +58,12 @@
 		          :with-credentials="true"
 		          :before-upload="beforeAvatarUpload"
 		          :on-progress="upProgress">
-			  <img v-if="ruleForm.adminBgImg" style="width: 100%;" :src="ruleForm.adminBgImg" class="avatar">
+			  <img v-if="ruleForm.adminBgImg" style="width: 100%" :src="ruleForm.adminBgImg" class="avatar">
 			  <i v-else class="el-icon-plus aplusIcon avatar-uploader-icon"></i>
 			</el-upload>
   			</div>
   			<div class="tip">
-  				注：上传图片最佳尺寸为1100px*390px
+  				注：上传图片最佳尺寸为1920px*1080px
   			</div>
   		</div>
   		<div style="text-align: center;margin-top: 50px;">
