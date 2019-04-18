@@ -212,8 +212,14 @@
           width="60">
         </el-table-column>
         <el-table-column
-          prop="content"
+          prop="content" width="450"
           label="题目" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+             <tableCover v-if="scope.row.content.indexOf('http')==0" :url="scope.row.content"/>
+             <div v-else> 
+             	{{scope.row.content}}
+             </div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="version"
@@ -302,21 +308,29 @@
           </el-select>
         </el-form-item>
         <el-form-item label="题目名称" prop="content">
-          <el-input v-model.trim="form.content" placeholder="请输入题目名称（不超过200个字）"></el-input>
+          <el-input v-model.trim="form.content" placeholder="请输入题目名称（不超过200个字）" style="width: 500px!important;"></el-input>
+          <div style="width: 100px;float: right;">
+          	<uploadImg v-model="form.content"></uploadImg>
+          </div>
         </el-form-item>
         <el-form-item label="答案" prop="answer" v-if="form.type>1">
-          <el-input
-            placeholder="请输入答案"
-            v-model.trim="item.value"
-            class="answerItem"
-            v-for="(item, index) in form.options" :key="index"
-            v-if="form.type===2&&index<4||form.type===3">
-            <label slot="prepend" class="kf-checkbox">
-              <input type="checkbox" name="options" v-model="item.check" @change="optionsChange(index)">
-              <i></i>
-              {{item.label}}.
-            </label>
-          </el-input>
+          <div  v-for="(item, index) in form.options" :key="index">
+          	<el-input
+	            placeholder="请输入答案"
+	            v-model.trim="item.value"
+	            class="answerItem"
+	            style="width:500px!important;"
+	            v-if="form.type===2&&index<4||form.type===3">
+	            <label slot="prepend" class="kf-checkbox">
+	              <input  type="checkbox" name="options" v-model="item.check" @change="optionsChange(index)">
+	              <i></i>
+	              {{item.label}}.
+	            </label>
+	          </el-input>
+	          <div style="width: 100px;float: right;"  v-if="form.type===2&&index<4||form.type===3">
+	          	<uploadImg v-model.trim="item.value"></uploadImg>
+	          </div>
+          </div>
         </el-form-item>
         <el-form-item label="答案" prop="answer" v-if="form.type===1">
           <el-radio-group v-model.trim="form.answer">
@@ -347,6 +361,7 @@
 
 <script>
 import exercisesInfo from "../../components/exercisesInfo";
+import uploadImg from "../../components/uploadImg";
 export default {
   data() {
     const checkAnswer = (rule, value, callback) => {
@@ -467,11 +482,22 @@ export default {
         ],
         answer: [{ required: true, validator: checkAnswer, trigger: "change" }]
       },
-      listCourse: []
+      listCourse: [],
+      hostApi:""
     };
   },
-  components: { exercisesInfo },
+  components: { exercisesInfo,uploadImg },
   mounted() {
+  	if(window.location.href.indexOf("localhost")<0){
+		 if(window.location.host.indexOf('test')>-1){
+		 	this.hostApi = this.$config.HOST_API;
+  		}else{
+  			this.hostApi="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+  		}
+	}else{
+		 this.hostApi = this.$config.HOST_API;
+	}
+	
     this.get_listCourse();
     this.get_ajax();
   },

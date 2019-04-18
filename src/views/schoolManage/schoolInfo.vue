@@ -146,7 +146,11 @@ export default {
   components: {},
   mounted() {
   	if(window.location.href.indexOf("localhost")<0){
-		 this.hostApi="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+  		if(window.location.host.indexOf('test')>-1){
+  			this.hostApi = this.$config.HOST_API;
+  		}else{
+  			this.hostApi="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+  		}
 	//	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
 	}else{
 		 this.hostApi = this.$config.HOST_API;
