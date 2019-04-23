@@ -655,7 +655,7 @@
             get_ajax() {
 //              this.tableLoading = true;
                 this.$api.paper
-                    .getPaperAuditList({
+                    .getPaperOpenList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         ...this.tableForm,

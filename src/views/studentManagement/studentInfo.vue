@@ -126,7 +126,7 @@
                 <download url="/student/normal/downloadNormalMould" class="marL10 marT20"  v-if="extra.indexOf('下载模版')>-1" />
                 	<download url="/student/normal/export" text='数据导出' class="marL10 marT20"  />
                 <upload class="marL10 marT20" url="/student/normal/uploadNormal"    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
-                <upload class="marL10 marT20" url="/student/normal/uploadPhoto"  text='批量导入学生照片'  :isMorde="true"   :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
+                <upload class="marL10 marT20" url="/student/normal/uploadPhoto"  text='批量导入学生照片'  :isMore="true"   :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
 
  <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showMulti' v-if="extra.indexOf('批量审核')>-1">
                     一键审核
