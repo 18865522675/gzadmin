@@ -414,9 +414,12 @@
       center
       :append-to-body="true"
       class="kf-dialog-add">
-      <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
+      <el-form ref="applyForm" :rules="rules" :model="applyForm" label-width="120px" class="kf-form-add">
+       <el-form-item  v-if="applyType"  label="分数" prop="score">
+               <el-input v-model.trim="applyForm.score"placeholder="请输入分数"></el-input>
+       </el-form-item>        
       	<el-form-item label="理由">
-               <el-input v-model.trim="form.remark" placeholder="请输入理由"></el-input>
+               <el-input v-model.trim="applyForm.remark" placeholder="请输入理由"></el-input>
        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -460,7 +463,8 @@
                 dialogVisible:false,
                 dialogType: 0,
                 applyForm:{
-                	remark:""
+                	remark:"",
+                	score:""
                 },
                 form: {
                     name:"",
@@ -473,37 +477,10 @@
                 },
                 teacherList:[],
                 applyId:"",
-                rulesForm: {
-                    name: [
-                        { required: true, message: "请输入学生姓名", trigger: "blur" },
-                        {
-                            min: 1,
-                            max: 20,
-                            message: "最长 20 个字符",
-                            trigger: "change"
-                        }
+                rules: {
+                    score: [
+                        { required: true, message: "请选择输入分数", trigger: "blur" },
                     ],
-                    cardType: [
-                        { required: true, message: "请选择证件类型", trigger: "blur" },
-                    ],
-                    cardNo: [
-                        { required: true, message: "请输入证件号码", trigger: "blur" },
-                    ],
-                    disciplineId: [
-                        { required: true, message: "请选择科类", trigger: "blur" },
-                    ],
-                    level: [
-                        { required: true, message: "请选择层次", trigger: "blur" },
-                    ],
-                    majorId: [
-                        { required: true, message: "请选择专业", trigger: "blur" },
-                    ],
-                    batchId: [
-                        { required: true, message: "请选择年级", trigger: "blur" },
-                    ],
-                    enrollYear: [
-                        { required: true, message: "请输入年份", trigger: "blur" },
-                    ]
                 },
 
 
@@ -758,8 +735,10 @@
                             this.ready_ajax();
                         });
                } else {
+               	    let params={...this.applyForm};
+               	    delete params.score
                     this.$api.paper
-                        .LunwenApplyRefuse(this.applyId,this.applyForm)
+                        .LunwenApplyRefuse(this.applyId,params)
                         .then(() => {
                             this.$message({
                                 type: "success",

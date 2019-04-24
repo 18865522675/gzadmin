@@ -15,12 +15,12 @@ let PREFIX_URL=""
 
 if(window.location.href.indexOf("localhost")<0){
 	//	正式
-	  HOST="http://"+window.location.host.split(":")[0]+":81"
-	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
+//	  HOST="http://"+window.location.host.split(":")[0]+":81"
+//	 PREFIX_URL="http://"+window.location.host.split(":")[0]+":81/manager-api/";	
 
 //		测试
-//	   HOST="http://47.107.105.141:88/";
-//	   PREFIX_URL="http://47.107.105.141:88/manager-api/"
+	   HOST="http://47.107.105.141:88/";
+	   PREFIX_URL="http://47.107.105.141:88/manager-api/"
 }else{
 
 //	正式
