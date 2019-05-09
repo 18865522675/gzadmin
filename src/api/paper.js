@@ -116,9 +116,9 @@ export default {
 
   getPaperScoreList: params => $.get("/thesis/reply/score/list", params),
   
-  ScoreApplyPass: (id,params) => $.post("/thesis/reply/score/pass/"+id, params),
+  ScoreApplyPass: (params) => $.post("/thesis/reply/score/sitePass", params),
   
-  ScoreApplyRefuse: (id,params) => $.post("/thesis/reply/score/refuse/"+id, params),
+  ScoreApplyRefuse: (params) => $.post("/thesis/reply/score/siteRefuse", params),
   
   muliApply: params => $.post("/thesis/reply/score/apply", params),
   
@@ -145,6 +145,35 @@ export default {
   PositionApplyPass: (id,params) => $.post("/thesis/degree/pass/"+id, params),
   
   PositionApplyRefuse: (id,params) => $.post("/thesis/degree/refuse/"+id, params),
+  
+  PositionApplyRefuse: (id,params) => $.post("/thesis/degree/refuse/"+id, params),
+  
+  
+  
+  
+  
+  //          //答辩安排
+ 
+  getDefenceArrange_simpleBatch: params => $.get("/thesis/reply/listBatchs", params),	
+  
+  getDefenceArrange_simpleDiscipline: params => $.get("/thesis/reply/listDisciplines", params),
+
+  getDefenceArrange_simpleMajors: params => $.get("/thesis/reply/listMajors", params),	
+   
+  getDefenceArrange_simpleTeachers: params => $.get("/thesis/reply/listTeachers", params),
+  
+  getDefenceArrangeList: params => $.get("/thesis/reply/list", params),
+  
+  addDefenceArrange: params => $.post("/thesis/reply/save", params),
+  
+  getDefenceArrangeSeeList: params => $.get("/thesis/reply/listForAllot", params),
+  
+  saveDefenceArrangeStudent: (id,params) => $.post("/thesis/reply/allot/"+id, params),
+  
+ 	schoolPass: params => $.post("/thesis/reply/score/sitePass", params),
+ 	
+ 	schoolRefuse: params => $.post("/thesis/reply/score/siteRefuse", params),
+
   
   
   

@@ -258,6 +258,9 @@
                     <el-form-item label="证件号码" prop="cardNo">
                         <el-input v-model.trim="form.cardNo" placeholder="请输入证件号码"></el-input>
                     </el-form-item>
+                    <el-form-item label="学号">
+                        <el-input v-model.trim="form.code" placeholder="请输入学号"></el-input>
+                    </el-form-item>
                     <el-form-item label="年级" prop="batchId">
                         <el-select  style="width:100%" v-model="form.batchId" placeholder="请选择年级">
                             <el-option v-for="(item,index) in batchList" :key="index"  :label="item.name" :value="item.id"></el-option>
@@ -585,7 +588,11 @@
                     ],
                     stationId: [
                         { required: true, message: "请选择函授站", trigger: "blur" },
-                    ]
+                    ],
+//                  code: [
+//                      { required: true, message: "请输入学号", trigger: "blur" },
+//                  ],
+                    
                 },
 				
 				trailForm:{
@@ -936,7 +943,8 @@
                     level:"",
                     enrollYear:"",
                     remark:"",
-                    ableStatus:1
+                    ableStatus:1,
+                    code:""
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
@@ -963,6 +971,7 @@
                     enrollYear:row.enrollYear,
                     remark:row.remark,
                     term:row.term,
+                    code:row.code,
                     stationId:row.stationId,
                     ableStatus:row.ableStatus,
                 };

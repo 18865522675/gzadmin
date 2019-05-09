@@ -56,6 +56,14 @@ const router_module = {
       component: resolve => require(["@/views/paper/defenceApply.vue"], resolve)
     },
     {
+      path: "/paper/defenceArrange",
+      meta: {
+        show: true,
+        title: "答辩安排"
+      },
+      component: resolve => require(["@/views/paper/defenceArrange.vue"], resolve)
+    },
+    {
       path: "/paper/defenceScore",
       meta: {
         show: true,
@@ -79,6 +87,15 @@ const router_module = {
       },
       component: resolve => require(["@/views/paper/teacherSee.vue"], resolve)
     },
+    {
+      path: "/paper/defenceArrangeSee/:id",
+      meta: {
+        show: false,
+        title: "答辩安排-查看"
+      },
+      component: resolve => require(["@/views/paper/defenceArrangeSee.vue"], resolve)
+    },
+    
     
   ]
 };
