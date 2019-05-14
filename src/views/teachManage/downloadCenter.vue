@@ -227,6 +227,7 @@
         </el-form-item>
         <el-form-item label="文档地址" prop="url">
           <el-input v-model.trim="form.url" placeholder="请输入文档地址"></el-input>
+         	
         </el-form-item>
 	  <el-form-item label="文档描述" prop="intro">
 		  <el-input v-model.trim="form.intro" placeholder="请输入文档描述"></el-input>
