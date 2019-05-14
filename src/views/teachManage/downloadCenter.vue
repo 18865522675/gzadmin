@@ -226,8 +226,10 @@
           <el-input v-model.trim="form.name" placeholder="请输入文档名称（不超过20个字）"></el-input>
         </el-form-item>
         <el-form-item label="文档地址" prop="url">
-          <el-input v-model.trim="form.url" placeholder="请输入文档地址"></el-input>
-         	
+          <el-input v-model.trim="form.url" style="width:400px!important" placeholder="请输入文档地址"></el-input>
+         	<div style="width: 100px;float: right;">
+	          	<uploadFile v-model.trim="form.url"></uploadFile>
+	        </div>
         </el-form-item>
 	  <el-form-item label="文档描述" prop="intro">
 		  <el-input v-model.trim="form.intro" placeholder="请输入文档描述"></el-input>
@@ -248,6 +250,7 @@
 </template>
 
 <script>
+import uploadFile from "../../components/uploadFile";
 export default {
   data() {
     return {
@@ -303,7 +306,9 @@ export default {
       }
     };
   },
-  components: {},
+  components: {
+  	uploadFile
+  },
   mounted() {
     this.get_ajax();
   },
