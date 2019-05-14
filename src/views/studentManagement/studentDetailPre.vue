@@ -38,6 +38,12 @@
                         {{stuBaseInfo.userName}}
                     </div>
                     <div>
+                         学号
+                    </div>
+                    <div>
+                        {{stuBaseInfo.code}}
+                    </div>
+                    <div>
                         性别
                     </div>
                     <div>

@@ -245,7 +245,10 @@
 		        <el-table-column
 		          prop="logo"
 		          label="课程封面"
-		          :show-overflow-tooltip="true" width="200">
+		          :show-overflow-tooltip="true" width="250">
+		          <template slot-scope="scope">
+	            <tableCover :url="scope.row.logo"/>
+	          </template>
 		        </el-table-column>
 		        <!--<el-table-column
 		          prop="code"

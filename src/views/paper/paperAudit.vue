@@ -220,7 +220,7 @@
                             label="函授站" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="teacherName "
+                            prop="teacherName"
                             label="导师" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
@@ -228,7 +228,7 @@
                             label="选题方向" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="topicName "
+                            prop="topicName"
                             label="论题" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column

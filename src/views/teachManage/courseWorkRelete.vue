@@ -59,6 +59,12 @@
                     <el-table-column
                             prop="content"
                             label="题目" :show-overflow-tooltip="true">
+                        <template slot-scope="scope">
+                    	<tableCover v-if="scope.row.content.indexOf('http')==0" :url="scope.row.content"/>
+			             <div v-else> 
+			             	{{scope.row.content}}
+			             </div>
+                    </template>
                     </el-table-column>
                     <el-table-column
                             prop="type"

@@ -108,7 +108,10 @@
 
 
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showMulti' >
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showMulti' v-if="extra.indexOf('申请')>-1">
+                    批量申请
+                </div>
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='showSchoolAudit' v-if="extra.indexOf('通过')>-1">
                     批量审核
                 </div>
                 <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
@@ -401,6 +404,39 @@
         <el-button type="primary" @click="submitApplyForm">保 存</el-button>
       </div>
     </el-dialog>
+    
+    
+       <el-dialog
+      title="批量审核"
+      :visible.sync="schoolAuditDialog"
+      width="660px"
+      center
+      :append-to-body="true"
+      class="kf-dialog-add">
+      <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
+      	<el-form-item label="审核选择 : ">
+         	  <el-radio v-model="schoolAudit" label="pass">通过</el-radio>
+  			  <el-radio v-model="schoolAudit" label="refuse">拒绝</el-radio>
+       </el-form-item>
+      </el-form>
+     <el-dialog
+      width="500px"
+      title="拒绝原因"
+      :visible.sync="innerVisible"
+      append-to-body>
+      <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
+      	<el-form-item label="理由">
+               <el-input v-model.trim="remark" placeholder="请输入拒绝理由"></el-input>
+       </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="sureRefuse">确定</el-button>
+      </div>
+    </el-dialog>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitSchoolAudit">保 存</el-button>
+      </div>
+    </el-dialog>
 
 
         </el-card>
@@ -490,7 +526,11 @@
                 	id:3
                 },],
                 applyType:true,
-                applyDialog:false
+                applyDialog:false,
+                schoolAuditDialog:false,
+                schoolAudit:"pass",
+                innerVisible:false,
+                remark:""
             };
         },
         components: {},
@@ -546,7 +586,7 @@
             	if(!this.multipleSelection.length){
             		return this.$message.warning("请先选择学生,再进行申请");
             	}
-            	this.$alert('这是一段内容', '标题名称', {
+            	this.$alert('您确定要对选中的学生进行批量申请吗', '批量申请', {
 		          confirmButtonText: '确定',
 		          callback: action => {
 		           	if(action=='confirm'){
@@ -565,10 +605,76 @@
 		           	}
 		          }
 		        });
-//          	let arr=[];
-//          	this.multipleSelection.map((item)=>{
-//          		arr.push(item.id)
-//          	})
+            },
+            showSchoolAudit(){
+            	if(!this.multipleSelection.length){
+            		return this.$message.warning("请先选择学生,再进行批量审核");
+            	}
+            	this.schoolAuditDialog=true;
+//          	this.$alert('您确定要对选中的学生进行批量申请吗', '批量申请', {
+//		          confirmButtonText: '确定',
+//		          callback: action => {
+//		           	if(action=='confirm'){
+//		           		let arr=[];
+//		           		this.multipleSelection.map((item)=>{
+//		           			arr.push(item.id)
+//		           		})
+//		           		this.$api.paper.muliApply({
+//		           			ids:arr.join(",")
+//		           		}).then((res)=>{
+//		           			this.$message.success("批量申请成功");
+//		           			this.ready_ajax()
+//		           		})
+//		           	}else{
+//		           		
+//		           	}
+//		          }
+//		        });
+            },
+            submitSchoolAudit(){
+            	if(this.schoolAudit=='refuse'){
+            		return this.innerVisible=true;
+            	}
+            	this.$alert(`您确定要对选中的学生进行批量${this.schoolAudit=='pass'?'通过':'拒绝'}吗?`, `批量${this.schoolAudit=='pass'?'通过':'拒绝'}`, {
+		          confirmButtonText: '确定',
+		          callback: action => {
+		           	if(action=='confirm'){
+		           		let arr=[];
+		           		this.multipleSelection.map((item)=>{
+		           			arr.push(item.id)
+		           		})
+		           		let reqUrl=this.schoolAudit=='pass'?'schoolPass':'schoolRefuse'
+		           		this.$api.paper[reqUrl]({
+		           			ids:arr.join(",")
+		           		}).then((res)=>{
+		           			this.$message.success("批量操作成功");
+		           			this.ready_ajax();
+		           			this.schoolAuditDialog=false;
+		           		})
+		           	}else{
+		           		
+		           	}
+		          }
+		        });
+            },
+            sureRefuse(){
+            	if(!this.remark){
+            		return this.$message.error("请输入拒绝理由")
+            	}
+            	let arr=[];
+           		this.multipleSelection.map((item)=>{
+           			arr.push(item.id)
+           		})
+//         		let reqUrl=this.schoolAudit=='pass'?'schoolPass':'schoolRefuse'
+           		this.$api.paper.schoolRefuse({
+           			ids:arr.join(","),
+           			remark:this.remark
+           		}).then((res)=>{
+           			this.$message.success("批量拒绝成功");
+           			this.ready_ajax();
+           			this.schoolAuditDialog=false;
+           			this.innerVisible=false;
+           		})
             },
             getTeacherList(){
                 this.$api.paper.getPaperScore_simpleTeacher().then((res)=>{
@@ -728,7 +834,10 @@
             submitApplyForm(){
             	 if (this.applyType) {
                     this.$api.paper
-                        .ScoreApplyPass(this.applyId,this.applyForm)
+                        .ScoreApplyPass({
+                        	ids:this.applyId,
+                        	...this.form
+                        })
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -739,7 +848,10 @@
                         });
                } else {
                     this.$api.paper
-                        .ScoreApplyRefuse(this.applyId,this.applyForm)
+                        .ScoreApplyRefuse({
+                        	ids:this.applyId,
+                        	...this.form
+                        })
                         .then(() => {
                             this.$message({
                                 type: "success",

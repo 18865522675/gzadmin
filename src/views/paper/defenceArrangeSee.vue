@@ -12,11 +12,10 @@
                         </el-select>
                     </div>
                 </div>
-
                 <div class="headTopItem">
                     <span class='label marL10'>层次</span>
                     <div class="marL10">
-                        <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                       <el-select v-model="tableForm.level" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
                             <el-option label="所有" value=""/>
                             <el-option label="高起专" :value="1"></el-option>
                             <el-option label="专升本" :value="2"></el-option>
@@ -24,20 +23,40 @@
                         </el-select>
                     </div>
                 </div>
-
                 <div class="headTopItem">
                     <span class='label marL10'>专业</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.majorId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                            <el-option label="所有" value=""/>
-                            <el-option
-                                    v-for="(item,index) in majorList"
-                                    :key="index"
-                                    :label="item.name"
-                                    :value="item.id"/>
+                        	<el-option label="所有" value=""/>
+                            <el-option v-for="(item,index) in majorList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </div>
                 </div>
+                
+                
+                <div class="headTopItem">
+                    <span class='label marL10'>导师</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.teacherId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                        	<el-option label="所有" value=""/>
+                            <el-option v-for="(item,index) in teacherList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                
+                
+                <div class="headTopItem">
+                    <span class='label marL10'>分配状态</span>
+                    <div class="marL10">
+                       <el-select v-model="tableForm.allotStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option label="未分配" :value="0"></el-option>
+                            <el-option label="已分配" :value="1"></el-option>
+                            <el-option label="当前场地" :value="2"></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                
                 
                 <div class="headTopItem">
                     <span class='label marL10'>函授站</span>
@@ -53,35 +72,9 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
-                    <span class='label marL10'>导师</span>
-                    <div class="marL10">
-                        <el-select v-model="tableForm.teacherId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                            <el-option label="所有" value=""/>
-                            <el-option
-                                    v-for="(item,index) in teacherList"
-                                    :key="index"
-                                    :label="item.name"
-                                    :value="item.id"/>
-                        </el-select>
-                    </div>
-                </div>
+                
                 
                 <div class="headTopItem">
-                    <span class='label marL10'>审核状态</span>
-                    <div class="marL10">
-                        <el-select v-model="tableForm.auditStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
-                            <el-option label="所有" value=""/>
-                            <el-option
-                                    v-for="(item,index) in auditStatusList"
-                                    :key="index"
-                                    :label="item.name"
-                                    :value="item.id"/>
-                        </el-select>
-                    </div>
-                </div>
-
-                 <div class="headTopItem">
                 <div class="flexItem">
                     <span class='label marL10'>证件号码</span>
                     <div class="marL10">
@@ -101,6 +94,7 @@
                         </el-input>
                     </div>
                 </div>
+   
 
 
 
@@ -108,11 +102,11 @@
 
 
 
-                <!--<div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' >
-                    添加
-                </div>-->
-                <download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='saveAction' v-if="extra.indexOf('保存答辩分配学生')>-1" >
+                    保存
+                </div>
+                <!--<download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <upload class="marL10 marT20" url="/student/before/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>-->
 
                 <!--<span class='label marL10' style="word-spacing:1.7em">专业</span>-->
                 <!--<div class="marL10">-->
@@ -174,8 +168,14 @@
                         v-loading="tableLoading"
                         :data="tableData"
                         border
+                        ref="multipleTable"
+                         @selection-change="handleSelectionChange"
                         class="kf-table"
                         style="width: 100%">
+                     <el-table-column
+				      type="selection"
+				      width="55" :selectable="canCheck">
+				    </el-table-column>
                     <el-table-column
                             type="index"
                             :index="(index) => (pageNum - 1) * pageSize + index + 1"
@@ -183,61 +183,33 @@
                             width="60">
                     </el-table-column>
                     <el-table-column
-                            prop="code"
-                            label="学号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="batchName"
-                            label="年级">
+                            prop="userName"
+                            label="姓名"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="userName"
-                            label="姓名">
+                            label="分配状态"  :formatter="formats" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <!--<el-table-column
-                            label="证件类型" :show-overflow-tooltip="true">
-                        <template slot-scope="scope" >
-                            {{scope.row.cardType==1?'身份证':scope.row.cardType==2?'军官证/士兵证':'港澳通行证'}}
-                        </template>
+                    
+                    <el-table-column
+                            prop="topicName"
+                            label="论题"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="cardNo"
-                            label="证件号码" :show-overflow-tooltip="true">
-                    </el-table-column>-->
+                            prop="batchName"
+                            label="年级"  :show-overflow-tooltip="true">
+                    </el-table-column>
                     <el-table-column
                             prop="level"
-                            label="层次">
-                        <template slot-scope="scope">
-                        {{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
-                        </template>
+                            label="层次"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="majorName"
-                            label="专业"  :show-overflow-tooltip="true" >
+                            label="专业"  :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="stationName"
-                            label="函授站" :show-overflow-tooltip="true">
-                    </el-table-column>
-                    <el-table-column
-                            prop="teacherName "
-                            label="导师" :show-overflow-tooltip="true">
-                    </el-table-column>
-                    <el-table-column
-                            prop="direction"
-                            label="选题方向" :show-overflow-tooltip="true">
-                    </el-table-column>
-                    <el-table-column
-                            prop="topicName "
-                            label="论题" :show-overflow-tooltip="true">
-                    </el-table-column>
-                    <el-table-column
-                            prop="topicName"
-                            label="开题报告" :show-overflow-tooltip="true">
-                    </el-table-column>
-                    <el-table-column
-                            prop="auditStatus"
-                            label="审核" :show-overflow-tooltip="true" :formatter="formats">
+                            prop="remark"
+                            label="备注" :show-overflow-tooltip="true">
                     </el-table-column>
                     <!--<el-table-column
                             prop="commitTime"
@@ -252,9 +224,7 @@
                             label="操作" width="250">
                         <template slot-scope="scope">
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(true,scope.row)" v-if="(scope.row.auditStatus==1||scope.row.auditStatus==3)&&extra.indexOf('通过')>-1">通过</el-button>
-                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(false,scope.row)"   v-if="(scope.row.auditStatus==1||scope.row.auditStatus==2)&&extra.indexOf('拒绝')>-1">拒绝</el-button>
-                            <!--<baseDelBtn delUrl="/thesis/topic"  :delId="scope.row.id" :delOk="get_ajax" />-->
+                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="scope.row.id" :delOk="get_ajax" />
                         </template>
                     </el-table-column>
                     <!--<el-table-column-->
@@ -366,34 +336,26 @@
           	<el-option v-for="(item,index) in batchList" :key="index" :value="item.id" :label="item.name">
           	</el-option>
           </el-select>
+       </el-form-item>
+        <el-form-item label="老师" prop="teachers">
+          <el-input v-model.trim="form.teachers" placeholder="请输入答辩老师"></el-input>
         </el-form-item>
-        <el-form-item label="层次" prop="level">
-          <el-select  style="width:100%" v-model="form.level" placeholder="请选择层次">
-          	<el-option label="高起专" :value="1"></el-option>
-            <el-option label="专升本" :value="2"></el-option>
-            <el-option label="高起本" :value="3"></el-option>
-          </el-select>
+        <el-form-item label="老师">
+             <el-date-picker
+		      v-model="form.time"
+		      style="width: 100%!important"
+		      :picker-options="pickerOptions"
+		      type="datetimerange"
+		      range-separator="至"
+		      start-placeholder="开始日期"
+		      end-placeholder="结束日期">
+		    </el-date-picker>
         </el-form-item>
-        <el-form-item label="专业" prop="majorId">
-          <el-select  style="width:100%" v-model="form.majorId" placeholder="请选择专业">
-          	<el-option v-for="(item,index) in majorList" :key="index" :value="item.id" :label="item.name">
-          	</el-option>
-          </el-select>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model.trim="form.address" placeholder="请输入答辩地址"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model.trim="form.name" placeholder="请输入导师名字"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model.trim="form.email" placeholder="请输入邮箱"></el-input>
-        </el-form-item>
-        <el-form-item label="简介" prop="summary">
-          <el-input v-model.trim="form.summary" placeholder="请输入简介"></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model.trim="form.ableStatus">
-            <el-radio :label="1">启用</el-radio>
-            <el-radio :label="0">禁用</el-radio>
-          </el-radio-group>
+        <el-form-item label="简介" prop="remark">
+          <el-input v-model.trim="form.remark" placeholder="请输入备注"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -432,16 +394,12 @@
                 extra: [],
                 tableLoading: false,
                 tableForm: {
-                    name: "",
-                    // stationId:"",
-                    // majorId:"",
-                    level:"",
                     batchId:"",
-                    majorId:"",
-                    auditStatus:"",
+                    stationId:"",
                     teacherId:"",
-                    cardNo:"",
-                    stationId:""
+                    level:"",
+                    majorId:"",
+                    allotStatus:""
                     // enrollYear:"",
                 },
                 tableData: [],
@@ -458,15 +416,40 @@
                 applyForm:{
                 	remark:""
                 },
+                 multipleSelection: [],
                 form: {
-                    name:"",
-                    email:"",
                     batchId:"",
-                    majorId:"",
-                    level:"",
-                    summary:"",
-                    ableStatus:1
+                    teachers:"",
+                    address:"",
+                    time:"",
                 },
+                pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
                 teacherList:[],
                 applyId:"",
                 rulesForm: {
@@ -557,10 +540,37 @@
                 if(!n){
                     this.get_ajax()
                 }
+            },
+            "tableForm.cardNo":function(n,o){
+                if(!n){
+                    this.get_ajax()
+                }
             }
         },
         methods: {
             //获取数据
+            saveAction(){
+            	if(!this.multipleSelection.length){
+            		return this.$message.warning("请先选择记录")
+            	}
+            	let arr=[];
+            	this.multipleSelection.map((item)=>{
+            		arr.push(item.id)
+            	})
+            	this.$api.paper.saveDefenceArrangeStudent(this.$route.params.id,{
+            		studentThesisIds:arr.join(",")
+            	}).then((res)=>{
+            		this.ready_ajax();
+            		this.$message.success("保存成功")
+            	})
+            },
+            canCheck(row){
+            	return row.allotStatus==0
+            },
+	        handleSelectionChange(val) {
+		        this.multipleSelection = val;
+		        console.log(this.multipleSelection)
+		    },
             showApply(type,row){
             	this.applyId=row.id,
             	this.applyType=type;
@@ -571,21 +581,21 @@
                 this.allotDialogVisible=true;
             },
             formats(row){
-            	switch(row.auditStatus){
-            		case 1:return "审核中";
-            		case 2:return "通过";
-            		case 3:return "拒绝";
+            	switch(row.allotStatus){
+            		case 0:return "未分配";
+            		case 1:return "已分配";
+            		case 2:return "当前场地";
             	}
             },
             getBatchList(){
-                this.$api.paper.getPaperOpen_simpleBatch().then((res)=>{
+                this.$api.paper.getDefenceArrange_simpleBatch().then((res)=>{
                     this.batchList=res.data;
 //                  this.tableForm.batchId=res.data[0].id;
 //                  this.get_ajax();
                 })
             },
             getTeacherList(){
-                this.$api.paper.getPaperOpen_simpleTeacher().then((res)=>{
+                this.$api.paper.getDefenceArrange_simpleTeachers().then((res)=>{
                     this.teacherList=res.data;
 //                  this.tableForm.batchId=res.data[0].id;
 //                  this.get_ajax();
@@ -643,21 +653,22 @@
                 })
             },
             getStudentPreSimpleMajors(){
-                this.$api.paper.getPaperOpen_simpleMajor().then((res)=>{
+                this.$api.paper.getDefenceArrange_simpleMajors().then((res)=>{
                     this.majorList=res.data
                 })
             },
             getStudentPreSimpleStations(){
-                this.$api.paper.getPaperOpen_simpleStation().then((res)=>{
+                this.$api.paper.getPaperDefence_simpleStation().then((res)=>{
                     this.stationList=res.data
                 })
             },
             get_ajax() {
 //              this.tableLoading = true;
                 this.$api.paper
-                    .getPaperOpenList({
+                    .getDefenceArrangeSeeList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
+                        replyId:this.$route.params.id,
                         ...this.tableForm,
                     })
                     .then(res => {
@@ -665,6 +676,14 @@
                         this.tableData = res.data.pageList;
                         this.total = +res.data.total;
                         this.tableLoading = false;
+                        this.tableData.map((item)=>{
+                        	if(item.allotStatus==1){                       		
+//                      		this.multipleSelection.push(item);
+                        		this.$nextTick(()=>{
+                        			this.$refs.multipleTable.toggleRowSelection(item);
+                        		})
+                        	}
+                        })
                     });
             },
             ready_ajax() {
@@ -716,9 +735,14 @@
             },
             //添加编辑数据
             add_ajax() {
+            	if(!this.form.time){
+            		return this.$message.warning("请选择时间")
+            	}
+            	this.form.startTime=this.$fun.time(this.form.time[0]);
+            	this.form.endTime=this.$fun.time(this.form.time[1]);
                 if (this.dialogType === 0) {
                     this.$api.paper
-                        .teacher_add(this.form)
+                        .addDefenceArrange(this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -744,7 +768,7 @@
             submitApplyForm(){
             	 if (this.applyType) {
                     this.$api.paper
-                        .OpenApplyPass(this.applyId,this.applyForm)
+                        .DefenceApplyPass(this.applyId,this.applyForm)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -755,7 +779,7 @@
                         });
                } else {
                     this.$api.paper
-                        .OpenApplyRefuse(this.applyId,this.applyForm)
+                        .DefenceApplyRefuse(this.applyId,this.applyForm)
                         .then(() => {
                             this.$message({
                                 type: "success",

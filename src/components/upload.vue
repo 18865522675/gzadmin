@@ -6,6 +6,7 @@
      :action="$api.global.url + url"
      :show-file-list="false"
      :with-credentials="true"
+     :before-upload="beforeUpload"
      :on-success="upSuccess"
      :on-error="upError"
      :multiple="isMore"
@@ -27,6 +28,9 @@ export default {
   mounted() {},
 
   methods: {
+  	beforeUpload(file){
+  		console.log(file)
+  	},
     upSuccess(res) {
       if (res.code === 0) {
         try {
