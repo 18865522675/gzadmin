@@ -220,20 +220,21 @@
                             label="函授站" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="teacherName "
+                            prop="teacherName"
                             label="导师" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="direction"
                             label="选题方向" :show-overflow-tooltip="true">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
-                            prop="topicName "
+                            prop="topicName"
                             label="论题" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="topicName"
-                            label="开题报告" :show-overflow-tooltip="true">
+                            label="论文" :show-overflow-tooltip="true">
+                            <template slot-scope="scope"><a style="color:blue;cursor: pointer;text-decoration: underline;font-size: 14px;" :href="scope.row.attachmentUrl" download>附件下载</a></template>
                     </el-table-column>
                     <el-table-column
                             prop="auditStatus"
@@ -736,7 +737,8 @@
                         });
                } else {
                	    let params={...this.applyForm};
-               	    delete params.score
+               	    delete params.score;
+               	    console.log(params)
                     this.$api.paper
                         .LunwenApplyRefuse(this.applyId,params)
                         .then(() => {

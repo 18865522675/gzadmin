@@ -202,7 +202,11 @@
                     <el-table-column
                             prop="level"
                             label="层次"  :show-overflow-tooltip="true">
+                            <template slot-scope="scope">
+                            	{{scope.row.level==1?'高起专':scope.row.level==2?'专升本':'高起本'}}
+                            </template>
                     </el-table-column>
+                    
                     <el-table-column
                             prop="majorName"
                             label="专业"  :show-overflow-tooltip="true">
@@ -224,7 +228,7 @@
                             label="操作" width="250">
                         <template slot-scope="scope">
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="scope.row.id" :delOk="get_ajax" />
+                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="$route.params.id" :studentThesisIds="scope.row.id" :delOk="get_ajax" />
                         </template>
                     </el-table-column>
                     <!--<el-table-column-->
@@ -340,7 +344,7 @@
         <el-form-item label="老师" prop="teachers">
           <el-input v-model.trim="form.teachers" placeholder="请输入答辩老师"></el-input>
         </el-form-item>
-        <el-form-item label="老师">
+        <el-form-item label="答辩安排">
              <el-date-picker
 		      v-model="form.time"
 		      style="width: 100%!important"
@@ -479,6 +483,9 @@
                     ],
                     batchId: [
                         { required: true, message: "请选择年级", trigger: "blur" },
+                    ],
+                    enrollYear: [
+                        { required: true, message: "请输入年份", trigger: "blur" },
                     ],
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },

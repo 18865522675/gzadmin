@@ -202,10 +202,10 @@
                             label="专业"  :show-overflow-tooltip="true" >
                     </el-table-column>
                     <el-table-column
-                            prop="name"
+                            prop="stationName"
                             label="函授站" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <el-table-column
+                    <el-table-column	
                             prop="commitTime"
                             label="申请时间" :show-overflow-tooltip="true" :formatter="$fun.table.time">
                     </el-table-column>

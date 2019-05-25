@@ -27,6 +27,10 @@ export default {
     disabled: {
       required: false,
       default: false
+    },
+    studentThesisIds:{
+    	required:false,
+    	default:0
     }
   },
   methods: {
@@ -38,7 +42,14 @@ export default {
         // cancelButtonText: "取消",
         callback: action => {
           if (action == "confirm") {
-            $.delete(`${this.delUrl}/${this.delId}`).then(() => {
+          	var  params={};
+          	if(this.studentThesisIds){
+          		params={
+          			studentThesisIds:this.studentThesisIds
+          		}
+          	}
+          	
+            $.delete(`${this.delUrl}/${this.delId}`,params).then(() => {
               this.$message.success("删除成功");
               this.delOk && this.delOk();
             });

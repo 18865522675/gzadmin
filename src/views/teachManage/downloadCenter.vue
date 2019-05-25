@@ -226,7 +226,7 @@
           <el-input v-model.trim="form.name" placeholder="请输入文档名称（不超过20个字）"></el-input>
         </el-form-item>
         <el-form-item label="文档地址" prop="url">
-          <el-input v-model.trim="form.url" style="width:400px!important" placeholder="请输入文档地址"></el-input>
+          <el-input v-model.trim="form.url" :disabled="true" style="width:400px!important" placeholder="请输入文档地址"></el-input>
          	<div style="width: 100px;float: right;">
 	          	<uploadFile v-model.trim="form.url"></uploadFile>
 	        </div>

@@ -227,10 +227,10 @@
                             prop="cardNo"
                             label="证件号码" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <el-table-column
-                            prop="commitTime"
+                    <!--<el-table-column
+                            prop="direction"
                             label="选题方向" :show-overflow-tooltip="true">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="topicName"
                             label="论题" :show-overflow-tooltip="true">
@@ -378,7 +378,7 @@
           <el-input v-model.trim="form.score" placeholder="请输入答辩成绩"></el-input>
         </el-form-item>
         <el-form-item label="拒绝理由" prop="remark">
-          <el-input v-model.trim="form.remark" placeholder="请输入拒绝理由"></el-input>
+          <el-input v-model.trim="form.remark" placeholder="请输入回复理由"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

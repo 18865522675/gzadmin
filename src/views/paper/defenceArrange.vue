@@ -268,7 +268,7 @@
         <el-form-item label="老师" prop="teachers">
           <el-input v-model.trim="form.teachers" placeholder="请输入答辩老师"></el-input>
         </el-form-item>
-        <el-form-item label="老师">
+        <el-form-item label="时间">
              <el-date-picker
 		      v-model="form.time"
 		      style="width: 100%!important"
@@ -405,6 +405,12 @@
                     ],
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },
+                    ],
+                    address: [
+                        { required: true, message: "请输入地址", trigger: "blur" },
+                    ],
+                    teachers: [
+                        { required: true, message: "请输入老师", trigger: "blur" },
                     ]
                 },
 

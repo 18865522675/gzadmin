@@ -73,6 +73,11 @@
                 <template slot="append">%</template>
               </el-input>
             </el-form-item>
+            <el-form-item label="视频满分时长: " prop="wareFullMarkTime">
+              <el-input v-model="form.wareFullMarkTime" :disabled="userInfo.stationId||editType===0">
+                <template slot="append">秒</template>
+              </el-input>
+            </el-form-item>
           </div>
         </div>
         <div class="learn-group"  style="margin-top: 60px;">
@@ -171,6 +176,9 @@ export default {
           { validator: this.$fun.form.score, required: true, trigger: "blur" }
         ],
         examScore: [
+          { validator: this.$fun.form.score, required: true, trigger: "blur" }
+        ],
+        wareFullMarkTime: [
           { validator: this.$fun.form.score, required: true, trigger: "blur" }
         ]
       },

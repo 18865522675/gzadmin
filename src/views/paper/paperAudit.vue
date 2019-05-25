@@ -223,10 +223,10 @@
                             prop="teacherName"
                             label="导师" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <el-table-column
+                    <!--<el-table-column
                             prop="direction"
                             label="选题方向" :show-overflow-tooltip="true">
-                    </el-table-column>
+                    </el-table-column>-->
                     <el-table-column
                             prop="topicName"
                             label="论题" :show-overflow-tooltip="true">
