@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                <div class="headTopItem"    v-if="!userInfo.stationId">
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -236,8 +236,9 @@
                             label="论题" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="attachmentName"
+                            prop="topicName"
                             label="论文" :show-overflow-tooltip="true">
+                            <template slot-scope="scope"><a style="color:blue;cursor: pointer;text-decoration: underline;font-size: 14px;" :href="scope.row.attachmentUrl" download>附件下载</a></template>
                     </el-table-column>
                     <el-table-column
                             prop="replyScore"
@@ -248,7 +249,7 @@
                             label="审核状态" :show-overflow-tooltip="true" :formatter="formats">
                     </el-table-column>
                     <el-table-column
-                            prop="teacherAdvises"
+                            prop="agreeRemark"
                             label="院校回复" :show-overflow-tooltip="true">
                     </el-table-column>
                     <!--<el-table-column
@@ -375,10 +376,10 @@
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
         <el-form-item label="成绩" prop="score">
-          <el-input v-model.trim="form.score" placeholder="请输入答辩成绩"></el-input>
+          <el-input v-model.trim="form.score"  onkeypress="return event.keyCode>=48&&event.keyCode<=57" type="number" min="0" max="100"   placeholder="请输入答辩成绩"></el-input>
         </el-form-item>
-        <el-form-item label="拒绝理由" prop="remark">
-          <el-input v-model.trim="form.remark" placeholder="请输入回复理由"></el-input>
+        <el-form-item label="院校回复" prop="remark"   v-if="!userInfo.stationId">
+          <el-input v-model.trim="form.remark" placeholder="请输入院校回复"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -444,6 +445,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -534,6 +536,7 @@
             };
         },
         components: {},
+        computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
@@ -832,6 +835,7 @@
                 }
             },
             submitApplyForm(){
+            	
             	 if (this.applyType) {
                     this.$api.paper
                         .ScoreApplyPass({
@@ -863,6 +867,9 @@
                 }
             },
             submitForm() {
+            	if(this.form.score>100||this.form.score<0){
+            		return this.$message.warning("分数必须大于0且小于100")
+            	}
                 this.$refs["form"].validate(valid => {
                     if (valid) {
                         this.add_ajax();

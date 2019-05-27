@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                <div class="headTopItem"  v-if="!userInfo.stationId">
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -282,7 +282,7 @@
         <el-form-item label="地址" prop="address">
           <el-input v-model.trim="form.address" placeholder="请输入答辩地址"></el-input>
         </el-form-item>
-        <el-form-item label="简介" prop="remark">
+        <el-form-item label="备注" prop="remark">
           <el-input v-model.trim="form.remark" placeholder="请输入备注"></el-input>
         </el-form-item>
       </el-form>
@@ -316,6 +316,7 @@
 </template>
 
 <script>
+	   import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -448,6 +449,7 @@
             };
         },
         components: {},
+        computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();

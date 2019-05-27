@@ -1,4 +1,4 @@
-<template>
+	 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
             <div class="pageHead flexItem" style="flex-wrap:wrap">
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                <div class="headTopItem"   v-if="!userInfo.stationId"> 
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -219,9 +219,10 @@
                             prop="cardNo"
                             label="证件号码" :show-overflow-tooltip="true">
                     </el-table-column>
-                    <el-table-column
-                            prop="commitTime"
+                     <el-table-column
+                            prop="topicName"
                             label="论文" :show-overflow-tooltip="true">
+                            <template slot-scope="scope"><a style="color:blue;cursor: pointer;text-decoration: underline;font-size: 14px;" :href="scope.row.attachmentUrl" download>附件下载</a></template>
                     </el-table-column>
                     <el-table-column
                             prop="score"
@@ -404,9 +405,10 @@
       :visible.sync="applyDialog"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
-      <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
+      <el-form ref="applyForm" :rules="applyForm" :model="form" label-width="120px" class="kf-form-add">
       	<el-form-item label="理由">
                <el-input v-model.trim="form.remark" placeholder="请输入理由"></el-input>
        </el-form-item>
@@ -422,6 +424,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -532,6 +535,7 @@
             };
         },
         components: {},
+        computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
@@ -557,6 +561,11 @@
         },
         methods: {
             //获取数据
+            closeDialog(){
+            	this.$nextTick(()=>{
+            		this.form.remark="";
+            	})
+            },
             showApply(type,row){
             	this.applyId=row.id,
             	this.applyType=type;

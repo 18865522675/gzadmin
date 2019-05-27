@@ -17,7 +17,7 @@
                 </div>
                 
                 <div class="headTopItem" style="width: 360px">
-                    <span class='label marL10'>论文</span>
+                    <span class='label marL10'>论题</span>
                     <div class="marL10">
                         <!--searchInp-->
                         <el-input v-model="tableForm.topicName" class='searchInp' placeholder="请输入论题名称">

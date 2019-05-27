@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                <div class="headTopItem"   v-if="!userInfo.stationId">
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -396,6 +396,7 @@
       :visible.sync="applyDialog"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
@@ -414,6 +415,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -524,6 +526,7 @@
             };
         },
         components: {},
+        computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
@@ -548,6 +551,11 @@
             }
         },
         methods: {
+        	closeDialog(){
+            	this.$nextTick(()=>{
+            		this.form.remark="";
+            	})
+            },
             //获取数据
             showApply(type,row){
             	this.applyId=row.id,

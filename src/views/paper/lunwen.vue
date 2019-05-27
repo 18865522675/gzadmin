@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                <div class="headTopItem"   v-if="!userInfo.stationId">
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -413,11 +413,12 @@
       :visible.sync="applyDialog"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="applyForm" :rules="rules" :model="applyForm" label-width="120px" class="kf-form-add">
        <el-form-item  v-if="applyType"  label="分数" prop="score">
-               <el-input v-model.trim="applyForm.score"placeholder="请输入分数"></el-input>
+               <el-input v-model.trim="applyForm.score" onkeypress="return event.keyCode>=48&&event.keyCode<=57" type="number" min="0" max="100"  placeholder="请输入分数"></el-input>
        </el-form-item>        
       	<el-form-item label="理由">
                <el-input v-model.trim="applyForm.remark" placeholder="请输入理由"></el-input>
@@ -434,6 +435,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -518,6 +520,7 @@
             };
         },
         components: {},
+         computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
@@ -543,6 +546,12 @@
         },
         methods: {
             //获取数据
+            closeDialog(){
+            	this.$nextTick(()=>{
+            		this.applyForm.remark="";
+            		this.applyForm.score="";
+            	})
+            },
             showApply(type,row){
             	this.applyId=row.id,
             	this.applyType=type;
@@ -724,7 +733,16 @@
                 }
             },
             submitApplyForm(){
+            	
+            	
+            	
             	 if (this.applyType) {
+            	 	if(!this.applyForm.score){
+            		return this.$message.warning("请填写分数！")
+            	}
+            	 	if(this.applyForm.score>100||this.applyForm.score<0){
+            		return this.$message.warning("分数必须大于0且小于100")
+            	}
                     this.$api.paper
                         .LunwenApplyPass(this.applyId,this.applyForm)
                         .then(() => {

@@ -52,13 +52,13 @@
                             <el-option label="所有" value=""/>
                             <el-option label="未分配" :value="0"></el-option>
                             <el-option label="已分配" :value="1"></el-option>
-                            <el-option label="当前场地" :value="2"></el-option>
+                            <!--<el-option label="当前场地" :value="2"></el-option>-->
                         </el-select>
                     </div>
                 </div>
                 
                 
-                <div class="headTopItem">
+                <div class="headTopItem"    v-if="!userInfo.stationId">
                     <span class='label marL10'>函授站</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.stationId" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -228,7 +228,7 @@
                             label="操作" width="250">
                         <template slot-scope="scope">
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="$route.params.id" :studentThesisIds="scope.row.id" :delOk="get_ajax" />
+                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="scope.row.id" :delOk="get_ajax" />
                         </template>
                     </el-table-column>
                     <!--<el-table-column-->
@@ -392,6 +392,7 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
     export default {
         data() {
             return {
@@ -526,6 +527,7 @@
             };
         },
         components: {},
+        computed: mapState(["userInfo"]),
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
