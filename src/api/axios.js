@@ -27,7 +27,7 @@ if(window.location.href.indexOf("localhost")<0){
 //	 HOST="http://hlh.gzsqwhcm.com:81"
 //	 PREFIX_URL="http://hlh.gzsqwhcm.com:81/manager-api/"
 
-//		测试
+//		测试d
 	   HOST="http://47.107.105.141:88/";
 	   PREFIX_URL="http://47.107.105.141:88/manager-api/";
 }

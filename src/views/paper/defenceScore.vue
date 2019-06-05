@@ -177,11 +177,12 @@
                         v-loading="tableLoading"
                         :data="tableData"
                         border
+                        
                         @selection-change="handleSelectionChange"
                         class="kf-table"
                         style="width: 100%">
                     <el-table-column
-				      type="selection"
+				      type="selection" :selectable="selectable1"
 				      width="55">
 				    </el-table-column>
                     <el-table-column
@@ -245,7 +246,7 @@
                             label="答辩成绩" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="auditStatus"
+                            prop="agreeStatus"
                             label="审核状态" :show-overflow-tooltip="true" :formatter="formats">
                     </el-table-column>
                     <el-table-column
@@ -264,7 +265,7 @@
                             fixed="right"
                             label="操作" width="250">
                         <template slot-scope="scope">
-                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
+                        	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" :disabled="scope.row.agreeStatus==2" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
                         	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(true,scope.row)" v-if="(scope.row.auditStatus==1||scope.row.auditStatus==3)&&extra.indexOf('通过')>-1">通过</el-button>
                         	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(false,scope.row)"   v-if="(scope.row.auditStatus==1||scope.row.auditStatus==2)&&extra.indexOf('拒绝')>-1">拒绝</el-button>
@@ -372,6 +373,7 @@
       :visible.sync="dialogAddVisible"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
@@ -394,6 +396,7 @@
       :visible.sync="applyDialog"
       width="660px"
       center
+      @close="closeDialog"
       :append-to-body="true"
       class="kf-dialog-add">
       <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
@@ -518,6 +521,9 @@
                 actionRow:{},
                 batchList:[],
                 auditStatusList:[{
+                	name:'未提交',
+                	id:0
+                },{
                 	name:'审核中',
                 	id:1
                 },{
@@ -552,6 +558,18 @@
             this.getTeacherList();
             this.getStudentPreSimpleStations();
             this.get_ajax();
+            if(!this.userInfo.stationId){
+            	this.auditStatusList=[{
+                	name:'审核中',
+                	id:1
+                },{
+                	name:'通过',
+                	id:2
+                },{
+                	name:'拒绝',
+                	id:3
+                },]
+            }
         },
         watch:{
             "tableForm.name":function(n,o){
@@ -562,6 +580,16 @@
         },
         methods: {
             //获取数据
+            closeDialog(){
+            	this.form.remark="";
+            	this.form.score="";
+            },
+            selectable1(row){
+            	if(!this.userInfo.stationId){
+            		return row.agreeStatus!=2;
+            	}
+            	return row.agreeStatus!=2&&row.agreeStatus!=1
+            },
             showApply(type,row){
             	this.applyId=row.id,
             	this.applyType=type;
@@ -572,7 +600,8 @@
                 this.allotDialogVisible=true;
             },
             formats(row){
-            	switch(row.auditStatus){
+            	switch(row.agreeStatus){
+            		case 0:return "未提交";
             		case 1:return "审核中";
             		case 2:return "通过";
             		case 3:return "拒绝";

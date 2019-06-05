@@ -35,7 +35,7 @@
 
 
 
-                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' >
+                <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1"  >
                     添加
                 </div>
                 <!--<download url="student/before/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
@@ -152,7 +152,7 @@
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showApply(true,scope.row)" v-if="(scope.row.auditStatus==1||scope.row.auditStatus==3)&&extra.indexOf('通过')>-1">通过</el-button>-->
                         	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/paper/defenceArrangeSee/${scope.row.id}`)"   v-if="extra.indexOf('弹出答辩关联学生列表')>-1">查看</el-button>
-                            <baseDelBtn delUrl="/thesis/reply/remove"  :delId="scope.row.id" :delOk="get_ajax" />
+                            <baseDelBtn delUrl="/thesis/reply/remove"  :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1" />
                         </template>
                     </el-table-column>
                     <!--<el-table-column-->

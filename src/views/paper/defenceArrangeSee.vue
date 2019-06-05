@@ -228,7 +228,7 @@
                             label="操作" width="250">
                         <template slot-scope="scope">
                         	<!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" v-if="extra.indexOf('编辑')>-1">编辑</el-button>-->
-                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="scope.row.id" :delOk="get_ajax" />
+                            <baseDelBtn delUrl="/thesis/reply/removeAllotStudent"  :delId="scope.row.id" :delOk="get_ajax"   v-if="extra.indexOf('删除分配学生')>-1"/>
                         </template>
                     </el-table-column>
                     <!--<el-table-column-->

@@ -458,13 +458,7 @@
                 	remark:""
                 },
                 form: {
-                    name:"",
-                    email:"",
-                    batchId:"",
-                    majorId:"",
-                    level:"",
-                    summary:"",
-                    ableStatus:1
+                    remark:""
                 },
                 teacherList:[],
                 applyId:"",
@@ -749,7 +743,7 @@
             submitApplyForm(){
             	 if (this.applyType) {
                     this.$api.paper
-                        .PositionApplyPass(this.applyId,this.applyForm)
+                        .PositionApplyPass(this.applyId,this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -760,7 +754,7 @@
                         });
                } else {
                     this.$api.paper
-                        .PositionApplyRefuse(this.applyId,this.applyForm)
+                        .PositionApplyRefuse(this.applyId,this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",

@@ -707,7 +707,7 @@
             submitApplyForm(){
             	 if (this.applyType) {
                     this.$api.paper
-                        .applyPass(this.applyId,this.applyForm)
+                        .applyPass(this.applyId,this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -718,7 +718,7 @@
                         });
                } else {
                     this.$api.paper
-                        .applyRefuse(this.applyId,this.applyForm)
+                        .applyRefuse(this.applyId,this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
