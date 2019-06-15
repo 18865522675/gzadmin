@@ -67,7 +67,21 @@
                     </div>
                 </div>
                 
-                <div class="headTopItem">
+                
+                <div class="headTopItem"  v-if="!userInfo.stationId">
+                    <span class='label marL10'>审核状态</span>
+                    <div class="marL10">
+                        <el-select v-model="tableForm.agreeStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
+                            <el-option label="所有" value=""/>
+                            <el-option
+                                    v-for="(item,index) in auditStatusList"
+                                    :key="index"
+                                    :label="item.name"
+                                    :value="item.id"/>
+                        </el-select>
+                    </div>
+                </div>
+                <div class="headTopItem" v-if="userInfo.stationId">
                     <span class='label marL10'>审核状态</span>
                     <div class="marL10">
                         <el-select v-model="tableForm.auditStatus" class="kf-select" placeholder="请选择" filterable  @change="searchChange">
@@ -80,6 +94,8 @@
                         </el-select>
                     </div>
                 </div>
+                
+                
 
                  <div class="headTopItem">
                 <div class="flexItem">
@@ -401,7 +417,7 @@
       class="kf-dialog-add">
       <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
       	<el-form-item label="理由">
-               <el-input v-model.trim="form.remark" placeholder="请输入理由"></el-input>
+               <el-input v-model.trim="applyForm.remark" placeholder="请输入理由"></el-input>
        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -464,7 +480,8 @@
                     auditStatus:"",
                     teacherId:"",
                     cardNo:"",
-                    stationId:""
+                    stationId:"",
+                    agreeStatus:""
                     // enrollYear:"",
                 },
                 tableData: [],
@@ -869,7 +886,7 @@
                     this.$api.paper
                         .ScoreApplyPass({
                         	ids:this.applyId,
-                        	...this.form
+                        	...this.applyForm
                         })
                         .then(() => {
                             this.$message({
@@ -883,7 +900,7 @@
                     this.$api.paper
                         .ScoreApplyRefuse({
                         	ids:this.applyId,
-                        	...this.form
+                        	...this.applyForm
                         })
                         .then(() => {
                             this.$message({

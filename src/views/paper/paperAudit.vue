@@ -409,7 +409,7 @@
       class="kf-dialog-add">
       <el-form ref="applyForm" :rules="applyForm" :model="applyForm" label-width="120px" class="kf-form-add">
       	<el-form-item label="理由">
-               <el-input v-model.trim="form.remark" placeholder="请输入理由"></el-input>
+               <el-input v-model.trim="applyForm.remark" placeholder="请输入理由"></el-input>
        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
