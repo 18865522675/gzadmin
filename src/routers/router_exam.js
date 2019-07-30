@@ -54,6 +54,22 @@ const router_module = {
         title: "学生成绩"
       },
       component: resolve => require(["@/views/exam/studentScore.vue"], resolve)
+    },
+    {
+      path: "/exam/onlineScore",
+      meta: {	
+        show: true,
+        title: "在线成绩"
+      },
+      component: resolve => require(["@/views/exam/onlineScore.vue"], resolve)
+    },
+    {
+      path: "/exam/onlineExam",
+      meta: {	
+        show: true,
+        title: "在线考试"
+      },
+      component: resolve => require(["@/views/exam/onlineExam.vue"], resolve)
     }
   ]
 };

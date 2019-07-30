@@ -44,4 +44,8 @@ export default {
    getRelateStudents: (id,params) => $.get("/exam/exam/"+id+"/listStudent", params),
    
    saveRelateStudents: (id,params) => $.post("/exam/exam/"+id+"/addStudent",params),
+   
+   
+     //在线成绩
+  getOnlineScoreList: params => $.get("/exam/online/score/list", params),
 };

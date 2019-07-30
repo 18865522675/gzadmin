@@ -17,6 +17,7 @@ import preGuide from "./preGuide";
 import exam from "./exam";
 import paper from "./paper";
 import schoolManage from "./schoolManage";
+import noticePaper from "./noticePaper";
 //模块目录
 const api = {
   global: {
@@ -40,7 +41,8 @@ const api = {
     preGuide,
     exam,
     paper,
-    schoolManage
+    schoolManage,
+    noticePaper
 };
 
 export default api;

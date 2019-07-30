@@ -24,7 +24,7 @@ export default {
       message: null
     };
   },
-  props: ["url", "ok", "isMultiPay","text","isMore"],
+  props: ["url", "ok", "isMultiPay","text","isMore","successInfo"],
   mounted() {},
 
   methods: {
@@ -116,7 +116,13 @@ export default {
 //				return this.$message.success("导入成功")
 //			}
 			if(this.isMore){
-				return this.$message.success("图片导入成功")
+				if(this.successInfo){
+					 this.$message.success("通知书上传成功");
+					 return this.ok&&this.ok()
+				}else{
+					return this.$message.success("图片导入成功")
+				}
+				
 			}
 			let msgStr = [];
             let {
