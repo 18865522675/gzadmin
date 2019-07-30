@@ -107,8 +107,8 @@
                 <div class="comTopSaveBtn comTopOrangeBtn topBtn marL10 marT20" @click='dialogAdd_show' v-if="extra.indexOf('添加')>-1">
                     添加
                 </div>
-                <download url="/exam/examlScore/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
-                <upload class="marL10 marT20" url="/exam/examlScore/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
+                <download url="/exam/examlScore/downloadMould" class="marL10 marT20"   />
+                <upload class="marL10 marT20" url="/exam/examlScore/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量上传')>-1"  ></upload>
 
 
 

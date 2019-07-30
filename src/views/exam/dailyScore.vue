@@ -118,6 +118,7 @@
                     添加
                 </div>
                 <download url="/exam/usualScore/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                	 <download :url="'/exam/usualScore/export?batchId='+tableForm.batchId+'&level='+tableForm.level+'&majorId='+tableForm.majorId+'&planId='+tableForm.planId" text='导出平时成绩' class="marL10 marT20"  />
                 <upload class="marL10 marT20" url="/exam/usualScore/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 

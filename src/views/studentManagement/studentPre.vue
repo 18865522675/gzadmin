@@ -253,6 +253,9 @@
         <el-form-item label="邮编">
           <el-input v-model.trim="form.zipCode" placeholder="请输入邮编"></el-input>
         </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model.trim="form.phone" placeholder="请输入手机号码"></el-input>
+        </el-form-item>
         <el-form-item label="email">
           <el-input v-model.trim="form.email" placeholder="请输入email"></el-input>
         </el-form-item>
@@ -394,6 +397,7 @@ export default {
       	disciplineId:"",
       	majorId:"",
       	level:"",
+      	phone:"",
       	enrollYear:"",
       	remark:"",
 		  ableStatus:1,
@@ -628,13 +632,14 @@ export default {
       	enrollYear:row.enrollYear,
           ableStatus:row.ableStatus,
       	remark:row.remark,
+      	phone:row.phone,
       };
       
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
       });
        this.$api.studentManagement.getStudentPreDetail(row.id).then((res)=>{
-                    this.form={...res.data.studentDetail,...this.form}
+                    this.form={...res.data.studentDetail,...this.form,id:row.id}
                 }).catch((e)=>{
                     // console.log(e)
                     this.$message.error("获取学生详情失败")

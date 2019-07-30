@@ -17,6 +17,9 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="loginOffical">
+    	成人高等教育网络学习平台管理系统
+    </div>
     <div class="login-cent">
       <!--<img src="../assets/img/logo.png" alt="" class="login-logo">-->
       <div class="login-cap">Welcome back</div>
@@ -119,6 +122,16 @@ export default {
 </script>
 <style lang="less">
 body {
+	.loginOffical{
+		  font-size: 30px;
+		  color: gray;
+		  font-weight: bold;
+		  line-height: 80px;
+		  /*float: right;*/
+		  position: absolute;
+		  right: 8.6%;
+		  /*margin-top: 60px;*/
+	}
   .login {
     background-image: url("../assets/img/background_2.png");
     background-repeat: no-repeat;

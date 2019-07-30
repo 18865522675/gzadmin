@@ -156,8 +156,23 @@
 		          label="提交时间" :formatter="$fun.table.time">
 		        </el-table-column>
 		        <el-table-column
-		          prop="content"
-		          label="成绩">
+		          prop="rightCount"
+		          label="正确数量">
+		        </el-table-column>
+		        <el-table-column
+		          prop="rightRate"
+		          label="正确率">
+		          <template slot-scope="scope">
+		          	{{scope.row.rightRate*100+'%'}}
+		          </template>
+		        </el-table-column>
+		        <el-table-column
+		          prop="wrongCount"
+		          label="错误数量">
+		        </el-table-column>
+		        <el-table-column
+		          prop="workScore"
+		          label="得分">
 		        </el-table-column>
 
 		        <!--<el-table-column

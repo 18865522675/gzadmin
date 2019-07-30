@@ -588,9 +588,9 @@
         methods: {
             //获取数据
             save(){
-            	if(!this.multipleSelection.length){
-            		return this.$message.warning("请先选择学生")
-            	}
+//          	if(!this.multipleSelection.length){
+//          		return this.$message.warning("请先选择学生")
+//          	}
             	let studentIds=[]
             	this.multipleSelection.map((item)=>{
             		studentIds.push(item.id)
@@ -767,6 +767,14 @@
                         this.tableData = res.data.pageList;
                         this.total = +res.data.total;
                         this.tableLoading = false;
+                       	this.tableData.map((item)=>{
+                       		if(item.selected==1){
+                       			 this.$nextTick(()=>{
+                       			 	this.$refs.multipleTable.toggleRowSelection(item);
+                       			 	this.multiSelection.push(item);    
+                       			 })
+                       		}
+                       	})
                     });
             },
             ready_ajax() {

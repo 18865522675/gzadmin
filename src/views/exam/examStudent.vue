@@ -123,8 +123,9 @@
                     添加
                 </div>
                 <download url="/student/normal/downloadNormalMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <download :url="'/exam/sutdents/export?batchId='+tableForm.batchId+'&level='+tableForm.level+'&majorId='+tableForm.majorId+'&planId='+tableForm.planId+'&examType='+tableForm.examType" text='导出考试学生' class="marL10 marT20"  />
                 <upload class="marL10 marT20" url="/student/normal/uploadNormal"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
-
+					
 
 
 

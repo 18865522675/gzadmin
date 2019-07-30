@@ -328,6 +328,9 @@
         <el-form-item label="email">
           <el-input v-model.trim="form.email" placeholder="请输入email"></el-input>
         </el-form-item>
+        <el-form-item label="手机号码">
+          <el-input v-model.trim="form.phone" placeholder="请输入手机号码"></el-input>
+        </el-form-item>
         <el-form-item label="标识">
           <el-input v-model.trim="form.identifying" placeholder="请输入标识"></el-input>
         </el-form-item>
@@ -522,7 +525,8 @@
                     batchId:"",
                     schoolRollStatu:"",
                     agreeStatus:"",
-                    logo:""
+                    logo:"",
+                    phone:""
                 },
                 tableData: [],
                 //分页——start
@@ -944,7 +948,8 @@
                     enrollYear:"",
                     remark:"",
                     ableStatus:1,
-                    code:""
+                    code:"",
+                    phone:""
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
@@ -974,13 +979,14 @@
                     code:row.code,
                     stationId:row.stationId,
                     ableStatus:row.ableStatus,
+                    phone:row.phone
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
                 });
                 
                 this.$api.studentManagement.getStudentPreDetail(row.id).then((res)=>{
-                    this.form={...this.form,...res.data.studentDetail}
+                    this.form={...this.form,...res.data.studentDetail,id:row.id}
                 }).catch((e)=>{
                     // console.log(e)
                     this.$message.error("获取学生详情失败")

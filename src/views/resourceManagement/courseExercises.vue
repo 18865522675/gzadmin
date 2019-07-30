@@ -310,6 +310,7 @@
         <el-form-item label="题目名称" prop="content">
           <el-input v-model.trim="form.content" placeholder="请输入题目名称（不超过200个字）" style="width: 500px!important;"></el-input>
           <div style="width: 100px;float: right;">
+          	<!--v-if="!isEdit"-->
           	<uploadImg v-model="form.content"></uploadImg>
           </div>
         </el-form-item>
@@ -419,6 +420,7 @@ export default {
       //分页——end
       dialogAddVisible: false,
       dialogType: 0,
+      isEdit:false,
       form: {
         type: "", //类型 1判断 2单选 3多选
         courseId: "", //课程id
@@ -555,6 +557,7 @@ export default {
     },
     //显示添加框
     dialogAdd_show() {
+    	this.isEdit=false;	
       this.dialogType = 0;
       this.dialogAddVisible = true;
       this.form = {
@@ -608,6 +611,7 @@ export default {
     },
     //显示编辑框
     dialogEdit_show(row) {
+    	this.isEdit=true;
       this.$api.resourceManagement
         .courseExercises_info({
           id: row.id

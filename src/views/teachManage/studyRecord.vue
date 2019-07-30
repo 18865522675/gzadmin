@@ -113,6 +113,7 @@
 				添加
 			</div>
 			<download url="teaching/plan/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1"/>
+				  <download :url="'/teaching/record/export?batchId='+tableForm.batchId+'&level='+tableForm.level+'&majorId='+tableForm.majorId+'&stationId='+tableForm.stationId" text='导出学习记录' class="marL10 marT20"  />
 			<upload class="mr10 marT20" url="/teaching/plan/upload"  :ok="get_ajax" v-if="extra.indexOf('批量上传')>-1" ></upload>
 
 

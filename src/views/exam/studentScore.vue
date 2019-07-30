@@ -1,3 +1,4 @@
+
 <template>
     <div class="schoolManagementWrap">
         <el-card class="pageCard">
@@ -116,6 +117,7 @@
                     添加
                 </div>
                 <download url="/exam/examlScore/downloadMould" class="marL10 marT20"  v-if="extra.indexOf('下载模板')>-1" />
+                <download :url="'/exam/studentScore/export?batchId='+tableForm.batchId+'&level='+tableForm.level+'&majorId='+tableForm.majorId+'&planId='+tableForm.planId" text='导出学生成绩' class="marL10 marT20"  />
                 <upload class="marL10 marT20" url="/exam/examlScore/upload"    :ok="get_ajax"  v-if="extra.indexOf('批量导入')>-1"  ></upload>
 
 
