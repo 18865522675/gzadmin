@@ -565,7 +565,8 @@
                 allotDialogVisible:false,
                 courseList:[],
                 placeId:"",
-                multipleSelection: []
+                multipleSelection: [],
+                saveArr:[]
             };
         },
         components: {},
@@ -591,8 +592,9 @@
 //          	if(!this.multipleSelection.length){
 //          		return this.$message.warning("请先选择学生")
 //          	}
-            	let studentIds=[]
-            	this.multipleSelection.map((item)=>{
+            	let studentIds=[];
+            	let changeArr=[...new Set(this.saveArr)];
+            	changeArr.map((item)=>{
             		studentIds.push(item.id)
             	})
             	this.$api.exam.saveRelateStudents(this.placeId,{
@@ -605,6 +607,7 @@
             },
             handleSelectionChange(val){
             	 this.multipleSelection = val;
+            	 this.saveArr.push(...this.multipleSelection);
             },
             showTrail(row){
             	this.trailDialogVisible=true;
