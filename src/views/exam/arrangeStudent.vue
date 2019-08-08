@@ -565,7 +565,11 @@
                 allotDialogVisible:false,
                 courseList:[],
                 placeId:"",
-                multipleSelection: []
+                multipleSelection: [],
+               	saveMultiArr:[],
+               	
+               	
+//             	reduceArr:[]
             };
         },
         components: {},
@@ -591,10 +595,19 @@
 //          	if(!this.multipleSelection.length){
 //          		return this.$message.warning("请先选择学生")
 //          	}
-            	let studentIds=[]
-            	this.multipleSelection.map((item)=>{
+
+
+            	let studentIds=[];
+            	this.saveMultiArr.push(...this.multipleSelection);
+            	let changeArr=[...new Set(this.saveMultiArr)];
+            	changeArr.map((item)=>{
             		studentIds.push(item.id)
             	})
+            	
+            	console.log(studentIds);
+            	
+            	
+            	
             	this.$api.exam.saveRelateStudents(this.placeId,{
             		studentIds:studentIds.join(",")
             	}).then((res)=>{
@@ -604,7 +617,27 @@
             	})
             },
             handleSelectionChange(val){
+//               this.reduceArr=this.saveMultiArr;
             	 this.multipleSelection = val;
+//          	 console.log(this.getArrDifference(this.reduceArr,this.multipleSelection))
+//          	 this.saveMultiArr.push(...this.multipleSelection);
+//          	 console.log(this.getArrDifference(this.reduceArr,this.saveMultiArr))
+            },
+            
+			getArrDifference(arr1, arr2) {
+			 
+			    return arr1.concat(arr2).filter(function(v, i, arr) {
+			 
+			        return arr.indexOf(v) === arr.lastIndexOf(v);
+			 
+			    });
+			 
+			},
+             handleCurrentChange(val) {
+                this.pageNum = val;
+               	this.saveMultiArr.push(...this.multipleSelection);
+               	
+                this.get_ajax();
             },
             showTrail(row){
             	this.trailDialogVisible=true;
@@ -771,7 +804,7 @@
                        		if(item.selected==1){
                        			 this.$nextTick(()=>{
                        			 	this.$refs.multipleTable.toggleRowSelection(item);
-                       			 	this.multiSelection.push(item);    
+                       			 	this.multipleSelection.push(item);    
                        			 })
                        		}
                        	})
@@ -870,10 +903,6 @@
             //分页start
             handleSizeChange(val) {
                 this.pageSize = val;
-                this.get_ajax();
-            },
-            handleCurrentChange(val) {
-                this.pageNum = val;
                 this.get_ajax();
             },
             getKindList(){

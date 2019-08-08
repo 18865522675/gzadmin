@@ -9,7 +9,7 @@ import fun from "./public/fun";
 import Cookies from "js-cookie";
 import "./components/globalComponets/globalComponets.js"; // 全局组件的管理
 
-let codeType = 0;	 // 0 权限关闭，1 打开权限
+let codeType = 1;	 // 0 权限关闭，1 打开权限
 
 Vue.config.productionTip = false;
 Vue.prototype.$api = api;

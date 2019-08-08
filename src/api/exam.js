@@ -48,4 +48,16 @@ export default {
    
      //在线成绩
   getOnlineScoreList: params => $.get("/exam/online/score/list", params),
+  
+       //在线考试
+  getOnlineTaskList: params => $.get("/exam/online/task/list", params),
+  
+  getOnlineBatchList: params => $.get("/exam/online/task/listBatchs", params),
+  
+  getOnlineCourseList: params => $.get("/exam/online/task/listCourses", params),
+  getOnlineMajorList: params => $.get("/exam/online/task/listMajors", params),
+  
+  addTask: params => $.post("/exam/online/task", params),
+  
+  editTask: (params,id) => $.put("/exam/online/task/"+id, params),
 };

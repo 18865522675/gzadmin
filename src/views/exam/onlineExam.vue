@@ -72,30 +72,34 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="作业" :show-overflow-tooltip="true">
+                            label="试卷名称" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="siteCourseName"
                             label="课程" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="cardNo" :show-overflow-tooltip="true"
-                             label="适用">
-                        <template slot-scope="scope">
-                            {{scope.row.stationName?scope.row.stationName:'全部'}}
-                        </template>
+                            prop="majorName"
+                            label="专业 " :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime" :show-overflow-tooltip="true"
-                            label="创建时间" :formatter="$fun.table.time">
+                            prop="batchName"
+                            label="年级 " :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column
+                            prop="batchName"
+                            label="考试类型" :show-overflow-tooltip="true">
+                            <template slot-scope="scope">
+                            	{{scope.row.examType==1?'正考':'补考'}}
+                            </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="timeName"
+                            label="年份 " :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             prop="updateTime" :show-overflow-tooltip="true"
                             label="更新时间"  :formatter="$fun.table.time">
-                    </el-table-column>
-                    <el-table-column
-                            prop="remark"
-                            label="备注" :show-overflow-tooltip="true">
                     </el-table-column>
                     <el-table-column
                             label="状态"
@@ -114,7 +118,7 @@
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="goWorkDetail(scope.row)" >关联习题</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/2/${scope.row.planId}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" >编辑</el-button>
-                            <baseDelBtn delUrl="/teaching/work" :delId="scope.row.id" :delOk="get_ajax" />
+                            <baseDelBtn delUrl="/exam/online/task" :delId="scope.row.id" :delOk="get_ajax" />
                         </template>
                     </el-table-column>
                 </el-table>
@@ -138,22 +142,40 @@
 			      :append-to-body="true"
 			      class="kf-dialog-add">
 			      <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
-			        <el-form-item label="教学计划" prop="planId">
-                        <el-select v-model="form.planId" class="kf-select" placeholder="请选择" filterable  @change="searchChange" style="width: 100%">
+			        <el-form-item label="试卷名称" prop="name">
+			          <el-input v-model.trim="form.name" placeholder="请输入作业名称"></el-input>
+			        </el-form-item>
+			        <el-form-item label="批次" prop="batchId">
+                        <el-select v-model="form.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange" style="width: 100%">
+                            <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+			        </el-form-item>
+			        <el-form-item label="专业" prop="majorId">
+                        <el-select v-model="form.majorId" class="kf-select" placeholder="请选择" filterable style="width: 100%">
+                            <el-option v-for="(item,index) in majorList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+			        </el-form-item>
+			        <el-form-item label="课程" prop="planId">
+                        <el-select v-model="form.planId" class="kf-select" placeholder="请选择" filterable  style="width: 100%">
                             <el-option v-for="(item,index) in teachPlanList" :key="index" :label="item.siteCourseName" :value="item.planId"></el-option>
                         </el-select>
 			        </el-form-item>
-			        <el-form-item label="作业名称" prop="name">
-			          <el-input v-model.trim="form.name" placeholder="请输入作业名称"></el-input>
+			        <el-form-item label="类型" prop="examType">
+                        <el-select v-model="form.examType" class="kf-select" placeholder="请选择" filterable   style="width: 100%">
+                            <el-option  label="正考" value="1"></el-option>
+                            <el-option  label="补考" value="2"></el-option>
+                        </el-select>
+			        </el-form-item>
+			        <el-form-item label="年份" prop="timeId">
+                        <el-select v-model="form.timeId" class="kf-select" placeholder="请选择" filterable  style="width: 100%">
+                            <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
+                        </el-select>
 			        </el-form-item>
 			        <el-form-item label="状态">
 			          <el-radio-group v-model="form.ableStatus">
 			            <el-radio :label="1">启用</el-radio>
 			            <el-radio :label="0">禁用</el-radio>
 			          </el-radio-group>
-			        </el-form-item>
-			        <el-form-item label="备注" prop="remark">
-			          <el-input v-model.trim="form.remark" placeholder="请输入备注" type="textarea" :rows="2"></el-input>
 			        </el-form-item>
 			      </el-form>
 			      <div slot="footer" class="dialog-footer">
@@ -228,7 +250,7 @@
                 },
                 rulesForm: {
                     name: [
-                        { required: true, message: "请输入作业名称", trigger: "blur" },
+                        { required: true, message: "请输入试卷名称", trigger: "blur" },
                         {
                             min: 1,
                             max: 20,
@@ -239,20 +261,23 @@
                     planId: [
                         { required: true, message: "请选择教学计划", trigger: "blur" },
                     ],
-                    cardNo: [
-                        { required: true, message: "请输入证件号码", trigger: "blur" },
+                    batchId: [
+                        { required: true, message: "请选择年级", trigger: "blur" },
                     ],
                     disciplineId: [
                         { required: true, message: "请选择科类", trigger: "blur" },
                     ],
-                    level: [
-                        { required: true, message: "请选择层次", trigger: "blur" },
+                    examType: [
+                        { required: true, message: "请选择类型", trigger: "blur" },
                     ],
                     majorId: [
                         { required: true, message: "请选择专业", trigger: "blur" },
                     ],
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },
+                    ],
+                    timeId: [
+                        { required: true, message: "请选择年份", trigger: "blur" },
                     ]
                 },
 
@@ -274,7 +299,8 @@
                 yearList:[],
                 actionId:"",
                 actionRow:{},
-                teachPlanList:[]
+                teachPlanList:[],
+                batchList:[]
             };
         },
         components: {},
@@ -288,11 +314,12 @@
                 this.yearList.push(i)
             }
             // this.tableForm.batchId=now;
-            this.getStudentPreSimpleDisplines();
+//          this.getStudentPreSimpleDisplines();
             this.getStudentPreSimpleMajors();
             this.getStudentPreSimpleStations();
             this.get_discussTeachPlanList()
             this.get_ajax();
+            this.getBacthList();
         },
         watch:{
             "tableForm.name":function(n,o){
@@ -304,8 +331,8 @@
         methods: {
             //获取数据
             get_discussTeachPlanList(){
-                this.$api.teachManage
-                    .get_courseWorkTeachPlanList()
+                this.$api.exam
+                    .getOnlineCourseList()
                     .then(res => {
                         this.teachPlanList=res.data
                     });
@@ -371,8 +398,13 @@
                 })
             },
             getStudentPreSimpleMajors(){
-                this.$api.studentManagement.getStudentEnrollSimpleMajors().then((res)=>{
+                this.$api.exam.getOnlineMajorList().then((res)=>{
                     this.majorList=res.data
+                })
+            },
+            getBacthList(){
+                this.$api.exam.getOnlineBatchList().then((res)=>{
+                    this.batchList=res.data
                 })
             },
             getStudentPreSimpleStations(){
@@ -382,8 +414,8 @@
             },
             get_ajax() {
                 this.tableLoading = true;
-                this.$api.teachManage
-                    .get_courseWorkList({
+                this.$api.exam
+                    .getOnlineTaskList({
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         ...this.tableForm
@@ -439,8 +471,7 @@
             //添加编辑数据
             add_ajax() {
                 if (this.dialogType === 0) {
-                    this.$api.teachManage
-                        .courseWork_add(this.form)
+                    this.$api.exam.addTask(this.form)
                         .then(() => {
                             this.$message({
                                 type: "success",
@@ -450,8 +481,8 @@
                             this.ready_ajax();
                         });
                 } else {
-                    this.$api.teachManage
-                        .courseWork_edit(this.form.id,this.form)
+                    this.$api.exam
+                        .editTask(this.form,this.form.id)
                         .then(() => {
                             this.$message({
                                 type: "success",
