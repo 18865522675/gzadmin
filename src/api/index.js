@@ -18,6 +18,7 @@ import exam from "./exam";
 import paper from "./paper";
 import schoolManage from "./schoolManage";
 import noticePaper from "./noticePaper";
+import duanxin from "./duanxin";
 //模块目录
 const api = {
   global: {
@@ -42,7 +43,8 @@ const api = {
     exam,
     paper,
     schoolManage,
-    noticePaper
+    noticePaper,
+    duanxin
 };
 
 export default api;

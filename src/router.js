@@ -22,6 +22,7 @@ import router_exam from "./routers/router_exam"; //订单缴费
 import router_paper from "./routers/router_paper"; //订单缴费
 import router_schoolManage from "./routers/router_schoolManage"; //订单缴费
 import router_noticePaper from "./routers/router_noticePaper"; //订单缴费
+import router_duanxin from "./routers/router_duanxin"; //订单缴费
 Vue.use(Router);
 
 export default new Router({
@@ -77,7 +78,8 @@ export default new Router({
         router_paper,
         router_schoolManage,
         router_systemManagement, //系统管理
-        router_noticePaper
+        router_noticePaper,
+        router_duanxin
       ]
     }
   ]
