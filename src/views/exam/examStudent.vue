@@ -211,6 +211,14 @@
                             prop="endTime"
                             label="考试结束时间" :show-overflow-tooltip="true" :formatter='$fun.table.time'>
                     </el-table-column>
+                    <el-table-column
+				      fixed="right"
+				      label="操作"
+				      width="100">
+				      <template slot-scope="scope">
+				        <el-button type="success" round @click='download(scope.row.studentId)'>下载准考证</el-button>
+				      </template>
+				    </el-table-column>
                 </el-table>
                 <el-pagination
                         @size-change="handleSizeChange"
@@ -604,6 +612,14 @@
         },
         methods: {
             //获取数据
+            download(id){
+//          	this.$api.studentManagement.getXiazaiZhunkaozheng(id).then((res)=>{
+//          		window.location.href=res.data;
+//          	}).catch((e)=>{
+//          		
+//          	})
+            	window.location.href="http://"+window.location.host.split(":")[0]+":81/manager-api/exam/sutdents/exportExamCard/"+id
+            },
             showTrail(row){
             	this.trailDialogVisible=true;
             	this.trailRow={...row}

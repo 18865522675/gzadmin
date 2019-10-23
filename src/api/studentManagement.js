@@ -4,6 +4,7 @@ export default {
 //		考前学生
   //	考前学生列表
   getStudentPreList: params => $.get("student/before/list", params),
+  getXiazaiZhunkaozheng: params => $.get("/exam/sutdents/exportExamCard/"+params, {}),
   //	考前学生科类
   getStudentPreSimpleDisplines: params => $.get("student/before/listDisciplines", params),
    //	考前学生科类

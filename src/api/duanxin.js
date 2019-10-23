@@ -3,9 +3,17 @@ import { $ } from "./axios";
 export default {
   //      批量缴费列表
   getDuanxinList: params => $.get("/outside/note/list", params),
+  
+    //      批量缴费列表
+  getDuanxinSenderList: params => $.get("/outside/note/listPhone/"+params.id, params),
 
   //      批量缴费高校
   addDuanxin: params => $.post("/outside/note", params),
+  
+  duanxin_publish: params => $.post("/outside/note/send/"+params, {}),
+  
+  
+  
   
   editDuanxin: (id,params) => $.post("/outside/note/update/"+id, params),
 

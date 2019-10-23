@@ -82,17 +82,17 @@
 				  :show-overflow-tooltip="true"
 		          label="内容">
 		        </el-table-column>
-		         <el-table-column
+		         <!--<el-table-column
 		          prop="sendName"
 		          width="120"
 		          label="发布者">
-		        </el-table-column>
+		        </el-table-column>-->
 		        <el-table-column
 		          prop="sendName"
 		          width="120"
-		          label="短信个数">
+		          label="发送数量">
 		         	<template slot-scope="scope">
-		         		<span>{{scope.row.sendCount}}</span>
+		         		<span style="cursor: pointer" @click="showDialog(scope.row.id)">{{scope.row.sendCount}}</span>
 		         	</template>
 		        </el-table-column>
 		        <!--<el-table-column
@@ -131,9 +131,9 @@
 		          fixed="right"
 		          label="操作" width="200">
 		          <template slot-scope="scope">
-		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发布')>-1" >发布</el-button>
+		          	<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="publish(scope.row.id)" v-if="scope.row.publishStatus!=1&&extra.indexOf('发送')>-1" >发送</el-button>
 		            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)"  v-if="extra.indexOf('编辑')>-1&&scope.row.publishStatus!=1">编辑</el-button>
-		            <baseDelBtn delUrl="/notice/notice" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+		            <baseDelBtn delUrl="/outside/note/remove" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
 		          </template>
 		        </el-table-column>
 		      </el-table>
@@ -158,13 +158,14 @@
       class="kf-dialog-add">
       <el-form ref="form" :rules="rulesForm" :model="form" label-width="120px" class="kf-form-add">
          <el-form-item label="类别" prop="type">
-          <el-select  style="width:100%" v-model="form.type" placeholder="请选择类别">
+          <el-select  style="width:100%" v-model="form.type" :disabled="dialogType==1" placeholder="请选择类别">
           	<el-option label="所有" value="1"/>
 		    <el-option label="单个" value="0"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="手机号" prop="phones" v-if="form.type==0&&dialogType==0">
-          <el-input v-model.trim="form.phones" placeholder="请输入手机号" type="textarea" :rows="2"></el-input>
+        <el-form-item label="手机号" prop="phones" v-if='form.type==0&&dialogType==0'>
+        	<!--v-if="form.type==0"-->
+          <el-input v-model.trim="form.phones" placeholder="请输入手机号" ></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <el-input v-model.trim="form.content" placeholder="请输入内容" type="textarea" :rows="2"></el-input>
@@ -174,6 +175,62 @@
         <el-button type="primary" @click="submitForm">保 存</el-button>
       </div>
     </el-dialog>
+    
+    
+    <el-dialog
+      title="发送人列表"
+      :visible.sync="numberDialog"
+      width="660px"
+      center
+      @close="closeDialog"
+      :append-to-body="true"
+      class="kf-dialog-add">
+     	<div>
+     		<div class="marL10">
+ 					<!--searchInp-->
+ 				<div class="pageCard">
+ 					<el-input v-model="senderPhone" placeholder="请输入手机号码">
+				 	<el-button slot="append" icon="el-icon-search" @click="getSenderList()"></el-button>
+				</el-input>
+ 				</div>
+				
+ 			</div>
+ 			
+     		<el-table
+     			class="marL10"
+			    :data="senderList"
+			    border
+			    style="width: 100%;margin-top: 50px;">
+			    <el-table-column
+			      fixed
+			      prop="date"
+			      label="姓名">
+			      <template  slot-scope="scope">
+			      	{{scope.row.userName||'未知'}}
+			      </template>
+			    </el-table-column>
+			    
+			    <el-table-column
+			      prop="phone"
+			      label="手机号">
+			    </el-table-column>
+			    <el-table-column
+			      fixed="right"
+			      label="操作"
+			      width="100">
+			      <template slot-scope="scope">
+			        <baseDelBtn delUrl="/outside/note/removePhone" :delId="scope.row.id" :delOk="get_ajax" v-if="extra.indexOf('删除')>-1"/>
+			      </template>
+			    </el-table-column>
+			  </el-table>
+			  
+     	</div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="numberDialog=false">关闭</el-button>
+      </div>
+    </el-dialog>
+    
+    
   	</el-card>
   </div>
 </template>
@@ -232,7 +289,13 @@ export default {
 //      ]
      },
 //   kindList:[],
-     stationList:[]
+     stationList:[],
+     numberDialog:false,
+     senderList:[],
+     senderPageNumber:1,
+     senderpageSize:10,
+     senderPhone:"",
+     senderId:""
     };
   },
   components: {},
@@ -252,16 +315,37 @@ export default {
   },
   methods: {
     //获取数据
+    closeDialog(){
+    	this.senderPhone=""
+    },
+    showDialog(id){
+    	this.numberDialog=true;
+    	this.senderId=id;
+    	this.getSenderList();
+    },
+    getSenderList(){
+    	this.$api.duanxin.getDuanxinSenderList({
+    		id:this.senderId,
+    		pageNum:this.senderPageNumber,
+    		pageSize:this.senderpageSize,
+    		phone:this.senderPhone
+    	}).then((res)=>{
+    		this.senderList=res.data.pageList;
+    		
+    	}).catch((e)=>{
+    		this.$message.warning("获取发送人失败")
+    	})
+    },
     publish(id){
-    	this.$alert('确认发布此公告？', '发布', {
+    	this.$alert('确认发送此短信？', '发送', {
           confirmButtonText: '确定',
           callback: action => {
               if(action=='confirm'){
-                  this.$api.message.notice_publish(id).then((res)=>{
-                      this.$message.success("发布成功");
+                  this.$api.duanxin.duanxin_publish(id).then((res)=>{
+                      this.$message.success("短信发送成功");
                       this.get_ajax()
                   }).catch((e)=>{
-                      this.$message.error("发布失败")
+//                    this.$message.error("发布失败")
                   })
 			  }else{
                   this.$message.info("已取消发布")
@@ -343,7 +427,7 @@ export default {
             this.ready_ajax();
           });
       } else {
-        this.$api.message
+        this.$api.duanxin
           .editDuanxin(this.form.id,this.form)
           .then(() => {
             this.$message({

@@ -25,15 +25,15 @@ const router_module = {
       component: resolve =>
         require(["../views/systemManagement/learningSettings.vue"], resolve)
     },
-//  {
-//    path: "/systemManagement/timeSetting",
-//    meta: {
-//      title: "时间设置",
-//      show: true
-//    },
-//    component: resolve =>
-//      require(["../views/systemManagement/timeSetting.vue"], resolve)
-//  },
+    {
+      path: "/systemManagement/timeSetting",
+      meta: {
+        title: "时间设置",
+        show: true
+      },
+      component: resolve =>
+        require(["../views/systemManagement/timeSetting.vue"], resolve)
+    },
 //  {
 //    path: "/systemManagement/banner",
 //    meta: {

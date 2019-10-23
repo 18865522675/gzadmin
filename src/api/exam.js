@@ -60,4 +60,14 @@ export default {
   addTask: params => $.post("/exam/online/task", params),
   
   editTask: (params,id) => $.put("/exam/online/task/"+id, params),
+  
+  get_yearList: params => $.get("/exam/online/task/listSimpleExamTime", params),
+  
+  get_courseExamExerciseList: params => $.get("/exam/online/task/details/"+params, {}),
+  
+    get_courseExamExerciseListAll: params => $.get("/exam/online/task/listExercises",params, {}),
+    
+    examAddExercises: params => $.post("/exam/online/task/addExercises", params),
+  
+  
 };

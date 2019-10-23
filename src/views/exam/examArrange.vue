@@ -134,6 +134,9 @@
       	 <el-form-item label="考试地点" prop="address">
           <el-input v-model.trim="form.address	" placeholder="请输入考试地点"></el-input>
         </el-form-item>
+        <el-form-item label="考场号" prop="areaNo">
+          <el-input v-model.trim="form.areaNo" placeholder="请输入考场号"></el-input>
+        </el-form-item>
          <el-form-item label="考试类型" prop="examType">
           <el-select  style="width:100%" v-model="form.examType" :disabled="dialogType==1" placeholder="请选择考试类型">
           	<el-option label="正考" :value='1'></el-option>
@@ -195,6 +198,11 @@ export default {
         address: [
           { required: true, message: "请输入考场地址", trigger: "blur" },
         ],
+        areaNo: [
+          { required: true, message: "请输入考场号", trigger: "blur" },
+        ],
+        
+        
         examType: [
           { required: true, message: "请选择考试类型", trigger: "blur" },
         ],
@@ -304,7 +312,8 @@ export default {
           examType:"",
           remark:"",
           address:"",
-          time:""
+          time:"",
+          areaNo:""
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();
@@ -322,6 +331,7 @@ export default {
         end:row.endTime,
  				examType:row.examType,
         remark: row.remark, //备注
+        areaNo:row.areaNo
       };
       this.$nextTick(() => {
         this.$refs["form"].clearValidate();

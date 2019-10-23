@@ -116,7 +116,7 @@
 
                             <!--<el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="showSaveAppend(scope.row.id)">补录</el-button>-->
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="goWorkDetail(scope.row)" >关联习题</el-button>
-                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/teachManage/courseWorkRelete/${scope.row.id}/${scope.row.name}/2/${scope.row.planId}`)" >查看</el-button>
+                            <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="$router.push(`/exam/courseExamRelete/${scope.row.id}/${scope.row.name}/2/${scope.row.planId}`)" >查看</el-button>
                             <el-button type="text" size="small" class="kf-btn kf-btn-table kf-orange-btn small" @click="dialogEdit_show(scope.row)" >编辑</el-button>
                             <baseDelBtn delUrl="/exam/online/task" :delId="scope.row.id" :delOk="get_ajax" />
                         </template>
@@ -146,31 +146,50 @@
 			          <el-input v-model.trim="form.name" placeholder="请输入作业名称"></el-input>
 			        </el-form-item>
 			        <el-form-item label="批次" prop="batchId">
-                        <el-select v-model="form.batchId" class="kf-select" placeholder="请选择" filterable  @change="searchChange" style="width: 100%">
+                        <el-select v-model="form.batchId" :disabled="dialogType"   class="kf-select" placeholder="请选择" filterable  @change="searchChange" style="width: 100%">
                             <el-option v-for="(item,index) in batchList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
 			        </el-form-item>
 			        <el-form-item label="专业" prop="majorId">
-                        <el-select v-model="form.majorId" class="kf-select" placeholder="请选择" filterable style="width: 100%">
+                        <el-select v-model="form.majorId" :disabled="dialogType"   class="kf-select" placeholder="请选择" filterable style="width: 100%">
                             <el-option v-for="(item,index) in majorList" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
 			        </el-form-item>
 			        <el-form-item label="课程" prop="planId">
-                        <el-select v-model="form.planId" class="kf-select" placeholder="请选择" filterable  style="width: 100%">
+                        <el-select v-model="form.planId" :disabled="dialogType"   class="kf-select" placeholder="请选择" filterable  style="width: 100%">
                             <el-option v-for="(item,index) in teachPlanList" :key="index" :label="item.siteCourseName" :value="item.planId"></el-option>
                         </el-select>
 			        </el-form-item>
 			        <el-form-item label="类型" prop="examType">
-                        <el-select v-model="form.examType" class="kf-select" placeholder="请选择" filterable   style="width: 100%">
-                            <el-option  label="正考" value="1"></el-option>
-                            <el-option  label="补考" value="2"></el-option>
+                        <el-select v-model="form.examType" :disabled="dialogType"   class="kf-select" placeholder="请选择" filterable   style="width: 100%">
+                            <el-option  label="正考" :value="1"></el-option>
+                            <el-option  label="补考" :value="2"></el-option>
                         </el-select>
 			        </el-form-item>
-			        <el-form-item label="年份" prop="timeId">
-                        <el-select v-model="form.timeId" class="kf-select" placeholder="请选择" filterable  style="width: 100%">
+			        <el-form-item label="年份" prop="year">
+                        <el-select v-model="form.year" class="kf-select" placeholder="请选择" filterable :disabled="dialogType"  style="width: 100%">
                             <el-option v-for="(item,index) in yearList" :key="index" :label="item" :value="item"></el-option>
                         </el-select>
 			        </el-form-item>
+			        
+			         <el-form-item label="考试开始时间" prop="start">
+			              <el-date-picker
+					      v-model="form.start"
+					      type="datetime"
+					      style="width:100%!important"
+					      placeholder="选择日期时间">
+					    </el-date-picker>
+			        </el-form-item>
+			         <el-form-item label="考试结束时间" prop="end">
+			              <el-date-picker
+					      v-model="form.end"
+					      type="datetime"
+					      style="width:100%!important"
+					      placeholder="选择日期时间">
+					    </el-date-picker>
+			        </el-form-item>
+        
+        
 			        <el-form-item label="状态">
 			          <el-radio-group v-model="form.ableStatus">
 			            <el-radio :label="1">启用</el-radio>
@@ -245,8 +264,13 @@
                 form: {
                     name:"",
                     planId:"",
-                    remark:"",
-                    ableStatus:1
+                    batchId:"",
+                    majorId:1,
+                    examType:"",
+                    year:"",
+                    ableStatus:1,
+                    start:"",
+                    end:''
                 },
                 rulesForm: {
                     name: [
@@ -276,9 +300,15 @@
                     enrollYear: [
                         { required: true, message: "请输入年份", trigger: "blur" },
                     ],
-                    timeId: [
+                    year: [
                         { required: true, message: "请选择年份", trigger: "blur" },
-                    ]
+                    ],
+                    start: [
+			          { required: true, message: "请选择开始时间", trigger: "blur" },
+			        ],
+			        end: [
+			          { required: true, message: "请选择结束时间", trigger: "blur" },
+			        ],
                 },
 
 
@@ -308,9 +338,9 @@
         mounted() {
 //	this.getKindList();
 //	this.getStationList();
-            console.log(new Date().getFullYear())
+//          console.log(new Date().getFullYear())
             let now=new Date().getFullYear()
-            for(let i=now;i<now+5;i++){
+            for(let i=now;i<now+10;i++){
                 this.yearList.push(i)
             }
             // this.tableForm.batchId=now;
@@ -320,6 +350,7 @@
             this.get_discussTeachPlanList()
             this.get_ajax();
             this.getBacthList();
+//          this.get_yearList();
         },
         watch:{
             "tableForm.name":function(n,o){
@@ -337,11 +368,18 @@
                         this.teachPlanList=res.data
                     });
             },
+            get_yearList(){
+                this.$api.exam
+                    .get_yearList()
+                    .then(res => {
+                        this.yearList=res.data
+                    });
+            },
             goWorkDetail(row){
-            	if(!row.courseId){
-            		return this.$message.warning("该课程没有匹配课程资源，无法选择习题")
-            	}
-            	this.$router.push(`/teachManage/courseWorkRelete/${row.id}/${row.name}/1/${row.planId}`)
+//          	if(!row.courseId){
+//          		return this.$message.warning("该课程没有匹配课程资源，无法选择习题")
+//          	}
+            	this.$router.push(`/exam/courseExamRelete/${row.id}/${row.name}/1/${row.planId}`)
             },
             showAllot(item){
                 this.actionRow={...item};
@@ -441,8 +479,13 @@
                 this.form = {
                    name:"",
                     planId:"",
-                    remark:"",
-                    ableStatus:1
+                    batchId:"",
+                    majorId:"",
+                    examType:"",
+                    year:"",
+                    ableStatus:1,
+                    start:"",
+                    end:""
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
@@ -461,8 +504,14 @@
                     id:row.id,
                     name:row.name,
                     planId:row.planId,
-                    remark:row.remark,
-                    ableStatus:row.ableStatus
+                    batchId:row.batchId,
+                    majorId:row.majorId,
+                    examType:+row.examType,
+                    year:row.year,
+                    ableStatus:row.ableStatus,
+                    start:"",
+                    end:""
+                    
                 };
                 this.$nextTick(() => {
                     this.$refs["form"].clearValidate();
@@ -471,6 +520,8 @@
             //添加编辑数据
             add_ajax() {
                 if (this.dialogType === 0) {
+                	this.form.start=this.$fun.time(this.form.start);
+    			  	this.form.end=this.$fun.time(this.form.end);
                     this.$api.exam.addTask(this.form)
                         .then(() => {
                             this.$message({
@@ -481,6 +532,8 @@
                             this.ready_ajax();
                         });
                 } else {
+                	this.form.start=this.$fun.time(this.form.start);
+      				this.form.end=this.$fun.time(this.form.end);
                     this.$api.exam
                         .editTask(this.form,this.form.id)
                         .then(() => {

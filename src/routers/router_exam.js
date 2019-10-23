@@ -70,6 +70,14 @@ const router_module = {
         title: "在线考试"
       },
       component: resolve => require(["@/views/exam/onlineExam.vue"], resolve)
+    },
+    {
+      path: "/exam/courseExamRelete/:workId/:workName/:type/:planId",
+      meta: {	
+        show: false,
+        title: "在线考试-查看"
+      },
+      component: resolve => require(["@/views/exam/courseExamRelete.vue"], resolve)
     }
   ]
 };
